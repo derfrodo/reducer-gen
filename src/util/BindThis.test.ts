@@ -1,4 +1,4 @@
-import { BindToClass } from "frodo-s-little-helpers";
+import { BindToClass } from "@derfrodo/frodo-s-little-helpers";
 
 @BindToClass()
 class TestClassBase {

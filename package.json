@@ -21,7 +21,7 @@
     "author": "Stefan Pauka",
     "license": "MIT",
     "dependencies": {
-        "@derfrodo/frodo-s-little-helpers": "^0.1.7",
+        "@derfrodo/frodo-s-little-helpers": "^0.1.8",
         "loglevel": "^1.6.8",
         "typescript": "^3.8.3",
         "yargs": "^15.3.1"
