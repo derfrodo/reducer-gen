@@ -1,0 +1,49 @@
+{
+    "name": "@derfrodo/reducer-gen",
+    "version": "0.1.11",
+    "description": "",
+    "main": "dist/index.js",
+    "bin": {
+        "reducer-gen": "./dist/cli.js"
+    },
+    "scripts": {
+        "prepareForPublish": "npm run build && npm install --production && npm run cleanForPublish",
+        "cleanForPublish": "node cleanForPublish.js",
+        "test": "jest",
+        "clean": "node clean.js",
+        "build": "tsc --project tsconfig.build.json ",
+        "buildWatch": "tsc -w",
+        "prebuild": "npm run clean",
+        "prestart": "npm run clean",
+        "start": "tsc -w",
+        "lint": "tsc -p tsconfig.test.json --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    },
+    "author": "Stefan Pauka",
+    "license": "MIT",
+    "dependencies": {
+        "@derfrodo/frodo-s-little-helpers": "^0.1.7",
+        "loglevel": "^1.6.8",
+        "typescript": "^3.8.3",
+        "yargs": "^15.3.1"
+    },
+    "devDependencies": {
+        "@babel/core": "*",
+        "@babel/plugin-proposal-class-properties": "^7.8.3",
+        "@babel/plugin-proposal-decorators": "^7.8.3",
+        "@babel/preset-env": "*",
+        "@babel/preset-react": "*",
+        "@babel/preset-typescript": "*",
+        "@types/fs-extra": "^8.1.0",
+        "@types/jest": "^25.2.1",
+        "@types/yargs": "^15.0.4",
+        "@typescript-eslint/eslint-plugin": "^2.26.0",
+        "@typescript-eslint/parser": "^2.26.0",
+        "babel-jest": "*",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-plugin-prettier": "^3.1.2",
+        "fs-extra": "^9.0.0",
+        "jest": "*",
+        "prettier": "^2.0.2"
+    }
+}

@@ -1,0 +1,5 @@
+{
+    "jest.pathToJest": "node_modules/.bin/jest",
+    "jest.pathToConfig": "./jest.config.js",
+    "typescript.tsdk": "node_modules\\typescript\\lib"
+}
