@@ -412,8 +412,7 @@ export default ${reducerMethod}`;
         );
         const stateName = this.getStateInterfaceName(stateInfo);
         const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
-            stateInfo,
-            { pathToState: "./../state" }
+            stateInfo
         );
         return `${stateImport}
         
