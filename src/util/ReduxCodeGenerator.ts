@@ -446,7 +446,7 @@ export default ${defaultStateMethodName}`;
         );
         return `${this.getImportClauses(stateInfo)}
 import ExtenedReducerAction from "./../reducerActions/${reducerActions}";
-import extendedActions from "./../actions/${action}";
+// import extendedActions from "./../actions/${action}";
 
 /**
  * You may add here extending actionCreators for this features reducer
