@@ -169,6 +169,17 @@ export class ReduxModuleNamingHelper {
         const { stateInterfaceName } = stateInfo;
         return `${stateInterfaceName || "IState"}`;
     }
+
+    getStateInterfaceImportLine(
+        stateInfo: StateInterfaceInfo,
+        options?: { pathToState?: string }
+    ): string {
+        const stateName = this.getStateInterfaceName(stateInfo);
+
+        return `import ${
+            stateInfo.hasStateAsDefaultExport ? stateName : `{ ${stateName} }`
+        } from "${options?.pathToState || "./state"}";`;
+    }
 }
 
 export default ReduxModuleNamingHelper;

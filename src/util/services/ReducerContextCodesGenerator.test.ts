@@ -70,6 +70,9 @@ describe("ReducerContextCodesGenerator tests", () => {
                 (_, type) => `ReducerTestAction.${type}`
             );
 
+            moduleNamingHelper.mock.getStateInterfaceImportLine.mockImplementation(
+                (_, type) => `import state from "./state";`
+            );
             moduleNamingHelper.mock.getReducerActionTypeGuardMethodName.mockImplementation(
                 (_, type) => `ReducerTestActionTypeGuard.${type}`
             );
@@ -83,7 +86,7 @@ describe("ReducerContextCodesGenerator tests", () => {
             // console.log(result);
             // assert
             expect(result).toEqual(`import React from "react";
-import undefined from "./state";
+import state from "./state";
 import undefined from "./reducer/reducerMain";
 import ReducerTestAction.main from "./reducerActions/reducerActionsMain";
 import undefined from "./defaultState";

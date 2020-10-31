@@ -35,12 +35,14 @@ export class ReducerContextCodesGenerator {
         } = this.fileService.getMainModulNames();
         const reducerActionsName = this.getReducerActionName(stateInfo, "main");
         const stateName = this.getStateInterfaceName(stateInfo);
+        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
+            stateInfo
+        );
         const reducerContextName = `${this.stringHelper.toPascalCased(
             reducerName
         )}Context`;
-
         return `import React from "react";
-import ${stateName} from "./state";
+${stateImport}
 import ${reducerName} from "./reducer/${reducerModuleName}";
 import ${reducerActionsName} from "./reducerActions/${reducerActionsModuleName}";
 import ${defaultStateMethodName} from "./${defaultState}";
@@ -67,6 +69,9 @@ ${this.generateReducerContextProviderContent(stateInfo)}
 ${this.generateReducerContextHooksContent(stateInfo)}`;
     }
 
+    /**
+     * extending the method @see {generateReducerContextContent} content, do not use directly aside from testing
+     */
     generateReducerContextProviderContent(
         stateInfo: StateInterfaceInfo
     ): string {
@@ -111,6 +116,9 @@ ${this.generateReducerContextHooksContent(stateInfo)}`;
 `;
     }
 
+    /**
+     * extending the method @see {generateReducerContextContent} content, do not use directly aside from testing
+     */
     generateReducerContextHooksContent(stateInfo: StateInterfaceInfo): string {
         const reducerName = this.getReducerMethodName(stateInfo, "main");
         const reducerContextName = `${this.stringHelper.toPascalCased(

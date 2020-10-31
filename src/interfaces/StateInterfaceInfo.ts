@@ -3,6 +3,7 @@ import FeatureStateDataObject from "./FeatureStateDataObject";
 export interface StateInterfaceInfo {
     featureData: FeatureStateDataObject;
     stateInterfaceName?: string | undefined;
+    hasStateAsDefaultExport?: boolean;
     stateProperties: StatePropertyInfo[];
     importClauses: ImportClause[];
 }

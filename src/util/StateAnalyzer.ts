@@ -113,8 +113,8 @@ export class StateAnalyzer {
         data: FeatureStateDataObject
     ): Promise<StateInterfaceInfo> {
         const { pathToStateFile: path } = data;
-        const fsHelper = new FileSystemHelper();
-        const stringHelper = new StringHelper();
+        const fsHelper = this.fsHelper;
+        const stringHelper = this.strHelper;
         const doc = ts.createSourceFile(
             await fsHelper.getObjectNameFromFSObjectsPath(path),
             await fsHelper.readFile(path),
@@ -143,6 +143,7 @@ export class StateAnalyzer {
                             "ADDITIONAL INTERFACE => WILL BE IGNORED"
                         );
                     }
+                    break;
                 case ts.SyntaxKind.ImportDeclaration:
                     if (ts.isImportDeclaration(node)) {
                         result.importClauses.push(
@@ -151,6 +152,12 @@ export class StateAnalyzer {
                     }
                     break;
                 case ts.SyntaxKind.ExportAssignment:
+                    if (ts.isExportAssignment(node)) {
+                        const text = node.expression.getText(doc);
+                        result.hasStateAsDefaultExport =
+                            typeof text === "string" &&
+                            result.stateInterfaceName === text;
+                    }
                     log.debug("Found export in state file");
                     // TODO: Check if exported item used in state (may also be state itself :) )
                     break;

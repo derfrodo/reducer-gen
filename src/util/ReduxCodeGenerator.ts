@@ -203,6 +203,10 @@ export default ${actionsEnumName}`;
         );
 
         const stateName = this.getStateInterfaceName(stateInfo);
+        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
+            stateInfo,
+            { pathToState: "./../state" }
+        );
 
         const methodBase = this.reducerActionCodesGenerator.getReducerActionTypeGuardMethodName(
             stateInfo,
@@ -223,7 +227,7 @@ import ${nameExt} from "./${this.fileService.getExtensionModulNames().reducer}";
 import { ${methodBase} } from "./../reducerActions/${
             this.fileService.getGeneratedModulNames().reducerActions
         }";
-import ${stateName} from "./../state";
+${stateImport}
 import getDefaultState from "./../${defaultState}";
 import ${reducerActionsName} from "./../reducerActions/${reducerActions}";
         
@@ -357,12 +361,16 @@ export default ${actionsEnumName};
             action,
         } = this.fileService.getGeneratedModulNames();
         const stateName = this.getStateInterfaceName(stateInfo);
+        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
+            stateInfo,
+            { pathToState: "./../state" }
+        );
 
         const reducerMethod = this.reduxModuleNamingHelper.getReducerMethodName(
             stateInfo,
             "base"
         );
-        return `import ${stateName} from "./../state";
+        return `${stateImport}
 import getDefaultState from "./../${defaultState}";
 import ReducerAction from "./../reducerActions/${reducerActions}";
 import actions from "./../actions/${action}";
@@ -403,7 +411,11 @@ export default ${reducerMethod}`;
             "main"
         );
         const stateName = this.getStateInterfaceName(stateInfo);
-        return `import ${stateName} from "./state";
+        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
+            stateInfo,
+            { pathToState: "./../state" }
+        );
+        return `${stateImport}
         
 export const ${defaultStateMethodName} = (): ${stateName} => ({
 ${stateInfo.stateProperties
@@ -510,42 +522,14 @@ export default ${actionsEnumName}`;
             "ext"
         );
         const stateName = this.getStateInterfaceName(stateInfo);
-
-        /* OLD CODE
-        
-import { ${reducerActionsTestMethodName} } from "./../reducerActions/${baseReducerActions}";
-import { ${reducerActionsExtTestMethodName} } from "./../reducerActions/${raExt}";
-       
-const ${reducerMethod} = (state: ${stateName} = getDefaultState(), action: ${reducerActionsName} ): ${stateName} => {
-    if (${reducerActionsTestMethodName}(action)){
-        switch (action.type) {
-//             case actions["[actionName]"]:
-//                 return {
-//                     ...state, 
-//                     // [action payload]
-//                };  
-            default:
-                return state; 
-        }
-    } else if(${reducerActionsExtTestMethodName}(action)){
-        switch (action.type) {
-//             case extendedActions["[actionName]"]:
-//                 return {
-//                      ...state, 
-//                     // [action payload]
-//                  };  
-            default:
-                return state; 
-        }
-    } else {
-        return state; 
-    }
-}
-        */
-        return `import ${stateName} from "./../state";
+        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
+            stateInfo,
+            { pathToState: "./../state" }
+        );
+        return `${stateImport}
 import getDefaultState from "./../${defaultState}";
-import extendedActions from "./../actions/${action}";
-import actions from "./../actions/${baseActions}";
+// import extendedActions from "./../actions/${action}";
+// import actions from "./../actions/${baseActions}";
 import ${reducerActionsName} from "./../reducerActions/${reducerActions}";
     
 // Uncomment for some typechecking:
