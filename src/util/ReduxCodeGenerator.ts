@@ -1,16 +1,15 @@
-import StateInterfaceInfo, {
-    StatePropertyInfo,
-    STATE_PROPERT_TYPES,
-} from "../interfaces/StateInterfaceInfo";
-import GeneratedReduxStateData from "../interfaces/GeneratedReduxStateData";
-import log from "loglevel";
-import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
-import ReduxModulFileService from "./ReduxModulFileService";
-import ReduxModuleNamingHelper from "./ReduxModuleNamingHelper";
 import { BindToClass, StringHelper } from "@derfrodo/frodo-s-little-helpers";
+import log from "loglevel";
+import GeneratedReduxStateData from "../interfaces/GeneratedReduxStateData";
+import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
+import StateInterfaceInfo, {
+    StatePropertyInfo
+} from "../interfaces/StateInterfaceInfo";
+import ReduxModuleNamingHelper from "./ReduxModuleNamingHelper";
+import ReduxModulFileService from "./ReduxModulFileService";
 import { ReducerActionCodesGenerator } from "./services/ReducerActionCodesGenerator";
-import { StateService } from "./services/StateService";
 import { ReducerContextCodesGenerator } from "./services/ReducerContextCodesGenerator";
+import { StateService } from "./services/StateService";
 
 @BindToClass()
 export class ReduxCodeGenerator {
