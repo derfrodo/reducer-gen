@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@derfrodo/reducer-gen)](https://www.npmjs.com/package/@derfrodo/reducer-gen) 
 [![weekly downloads](https://img.shields.io/npm/dw/@derfrodo/reducer-gen)](https://www.npmjs.com/package/@derfrodo/reducer-gen)
+
 ## Installation
 ```
 npm install --save-dev @derfrodo/reducer-gen
