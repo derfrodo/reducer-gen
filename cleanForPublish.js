@@ -1,6 +1,8 @@
 const fs = require("fs-extra");
 
 fs.remove("./src");
+fs.remove("./.git");
+fs.remove("./.github");
 fs.remove("./.vscode");
 fs.remove("./node_modules");
 fs.remove("clean.js");
