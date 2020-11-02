@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@derfrodo/reducer-gen)](https://www.npmjs.com/package/@derfrodo/reducer-gen) 
 [![weekly downloads](https://img.shields.io/npm/dw/@derfrodo/reducer-gen)](https://www.npmjs.com/package/@derfrodo/reducer-gen)
+![Compile Action](https://github.com/derfrodo/reducer-gen/workflows/Node.js%20CI%20Lets%20try%20an%20action/badge.svg)
 
 ## Installation
 ```
