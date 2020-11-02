@@ -23,9 +23,9 @@ steps:
   displayName: 'npm install and build'
 
 - task: ArchiveFiles@2
-  displayName: 'Archive $(Build.SourcesDirectory)/'
+  displayName: 'Archive $(Build.SourcesDirectory)/lib/'
   inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)/'
+    rootFolderOrFile: '$(Build.SourcesDirectory)/lib/'
     includeRootFolder: false
     archiveFile: '$(Build.ArtifactStagingDirectory)/NPMBundle_$(Build.BuildNumber).zip'
 
