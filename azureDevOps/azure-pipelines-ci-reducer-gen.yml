@@ -28,6 +28,7 @@ steps:
     npm run build
     npm install --production 
     npm run cleanForPublish
+  workingDirectory: '$(Build.SourcesDirectory)/lib/'
   displayName: 'npm install and build'
 
 - task: ArchiveFiles@2
