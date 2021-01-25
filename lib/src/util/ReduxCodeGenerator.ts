@@ -3,7 +3,7 @@ import log from "loglevel";
 import GeneratedReduxStateData from "../interfaces/GeneratedReduxStateData";
 import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo, {
-    StatePropertyInfo
+    StatePropertyInfo,
 } from "../interfaces/StateInterfaceInfo";
 import ReduxModuleNamingHelper from "./ReduxModuleNamingHelper";
 import ReduxModulFileService from "./ReduxModulFileService";
@@ -272,6 +272,13 @@ export default ${name};
               }";
 `;
 
+        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
+            stateInfo
+        );
+        const stateName = this.reduxModuleNamingHelper.getStateInterfaceName(
+            stateInfo
+        );
+
         return `import { ${reducerActionsName} as RAs } from "./reducerActions/${
             this.fileService.getMainModulNames().reducerActions
         }";
@@ -285,7 +292,13 @@ export { ${actionCreatorsName} } from "./actionCreators/${
             this.fileService.getMainModulNames().actionCreators
         }";
 ${reducerContextLine}
-export type ${reducerActionsName} = RAs 
+${stateImport}
+
+export type ${reducerActionsName} = RAs;
+export type ${this.reduxModuleNamingHelper.getPascalCasedFeatureName(
+            stateInfo
+        )}State = ${stateName};
+
 `;
     }
 

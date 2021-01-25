@@ -41,7 +41,8 @@ export class ReducerContextCodesGenerator {
         const reducerContextName = `${this.stringHelper.toPascalCased(
             reducerName
         )}Context`;
-        return `import React from "react";
+
+        return `import React, { useCallback, useEffect, useRef, useState } from "react";
 ${stateImport}
 import ${reducerName} from "./reducer/${reducerModuleName}";
 import ${reducerActionsName} from "./reducerActions/${reducerActionsModuleName}";
@@ -66,7 +67,7 @@ export const Dispatch${reducerContextName} = React.createContext<IDispatch${redu
 export const State${reducerContextName} = React.createContext<IState${reducerContextName}>(${defaultStateMethodName}());
 
 ${this.generateReducerContextProviderContent(stateInfo)}
-${this.generateReducerContextHooksContent(stateInfo)}`;
+${this.generateReducerContextHooksContent(stateInfo)}${this.generateUseStateChangedEffectHooks(stateInfo)}`;
     }
 
     /**
@@ -135,6 +136,89 @@ export const use${reducerContextName}State: () => IState${reducerContextName} = 
 
 export const use${reducerContextName}Dispatch: () => IDispatch${reducerContextName} = () => {
     return React.useContext<IDispatch${reducerContextName}>(Dispatch${reducerContextName});
+};
+`;
+    }
+
+    public generateUseStateChangedEffectHooks(
+        stateInfo: StateInterfaceInfo
+    ): string {
+        const reducerName = this.getReducerMethodName(stateInfo, "main");
+        const feature = this.reduxModuleNamingHelper.getPascalCasedFeatureName(
+            stateInfo
+        );
+        const reducerContextName = `${this.stringHelper.toPascalCased(
+            reducerName
+        )}Context`;
+
+        return `
+/**
+ * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
+ * @param onStateChanged callback which will be called if ${feature}State changes
+ */
+export const use${feature}StateChangedEffect = <T extends IState>(
+    onStateChanged: (next: IState, old: IState | null) => Promise<void> | void
+) => {
+    const state = use${reducerContextName}State();
+
+    const callbackRef = useRef<typeof onStateChanged>(onStateChanged);
+    const [old, setOld] = useState<IState | null>(null);
+
+    useEffect(() => {
+        callbackRef.current = onStateChanged;
+    }, [onStateChanged]);
+
+    useEffect(() => {
+        setOld((prev) => {
+            if (callbackRef.current && state !== prev) {
+                callbackRef.current(state, prev);
+            }
+            return state;
+        });
+    }, [state]);
+};
+
+/**
+ * Use this method if you want to react on state changes concerning a specific property
+ * @param property property which is to be watched
+ * @param onStatePropertyChanged callback which will be called if property in state changes
+ */
+export const use${feature}StatePropertyChangedEffect = <
+    T extends IState,
+    TKey extends keyof IState
+>(
+    property: TKey,
+    onStatePropertyChanged: (
+        next: IState[TKey],
+        old: IState[TKey] | null,
+        state: IState,
+        oldState: IState | null
+    ) => Promise<void> | void
+) => {
+    const callbackRef = useRef<typeof onStatePropertyChanged>(
+        onStatePropertyChanged
+    );
+
+    useEffect(() => {
+        callbackRef.current = onStatePropertyChanged;
+    }, [onStatePropertyChanged]);
+
+    const changedCallback = useCallback(
+        async (next: IState, old: IState | null) => {
+            const cb = callbackRef.current;
+            if (cb && (!old || next[property] !== old[property])) {
+                await cb(
+                    next[property],
+                    old !== null ? old[property] : null,
+                    next,
+                    old
+                );
+            }
+        },
+        [property]
+    );
+
+    use${feature}StateChangedEffect(changedCallback);
 };
 `;
     }

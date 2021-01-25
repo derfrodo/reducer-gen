@@ -85,7 +85,7 @@ describe("ReducerContextCodesGenerator tests", () => {
             const result = clazz.generateReducerContextContent(state);
             // console.log(result);
             // assert
-            expect(result).toEqual(`import React from "react";
+            expect(result).toEqual(`import React, { useCallback, useEffect, useRef, useState } from "react";
 import state from "./state";
 import undefined from "./reducer/reducerMain";
 import ReducerTestAction.main from "./reducerActions/reducerActionsMain";
@@ -146,6 +146,75 @@ export const useundefinedContextState: () => IStateundefinedContext = () => {
 
 export const useundefinedContextDispatch: () => IDispatchundefinedContext = () => {
     return React.useContext<IDispatchundefinedContext>(DispatchundefinedContext);
+};
+
+/**
+ * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
+ * @param onStateChanged callback which will be called if undefinedState changes
+ */
+export const useundefinedStateChangedEffect = <T extends IState>(
+    onStateChanged: (next: IState, old: IState | null) => Promise<void> | void
+) => {
+    const state = useundefinedContextState();
+
+    const callbackRef = useRef<typeof onStateChanged>(onStateChanged);
+    const [old, setOld] = useState<IState | null>(null);
+
+    useEffect(() => {
+        callbackRef.current = onStateChanged;
+    }, [onStateChanged]);
+
+    useEffect(() => {
+        setOld((prev) => {
+            if (callbackRef.current && state !== prev) {
+                callbackRef.current(state, prev);
+            }
+            return state;
+        });
+    }, [state]);
+};
+
+/**
+ * Use this method if you want to react on state changes concerning a specific property
+ * @param property property which is to be watched
+ * @param onStatePropertyChanged callback which will be called if property in state changes
+ */
+export const useundefinedStatePropertyChangedEffect = <
+    T extends IState,
+    TKey extends keyof IState
+>(
+    property: TKey,
+    onStatePropertyChanged: (
+        next: IState[TKey],
+        old: IState[TKey] | null,
+        state: IState,
+        oldState: IState | null
+    ) => Promise<void> | void
+) => {
+    const callbackRef = useRef<typeof onStatePropertyChanged>(
+        onStatePropertyChanged
+    );
+
+    useEffect(() => {
+        callbackRef.current = onStatePropertyChanged;
+    }, [onStatePropertyChanged]);
+
+    const changedCallback = useCallback(
+        async (next: IState, old: IState | null) => {
+            const cb = callbackRef.current;
+            if (cb && (!old || next[property] !== old[property])) {
+                await cb(
+                    next[property],
+                    old !== null ? old[property] : null,
+                    next,
+                    old
+                );
+            }
+        },
+        [property]
+    );
+
+    useundefinedStateChangedEffect(changedCallback);
 };
 `);
         });
