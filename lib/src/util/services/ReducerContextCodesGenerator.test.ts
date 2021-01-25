@@ -128,11 +128,11 @@ export const undefinedContextProvider = (props: {
 
 
     const dispatchWillBeCalledCallbacks = useRef<
-        OnundefinedDispatchWillBeCalled[]
+        OnundefinedContextDispatchWillBeCalled[]
     >([]);
 
     const listenOnDispatchWillBeCalled = useCallback(
-        (callback: OnundefinedDispatchWillBeCalled) => {
+        (callback: OnundefinedContextDispatchWillBeCalled) => {
             if (!dispatchWillBeCalledCallbacks.current) {
                 dispatchWillBeCalledCallbacks.current = [callback];
             } else if (
@@ -147,7 +147,7 @@ export const undefinedContextProvider = (props: {
     );
 
     const removeOnDispatchWillBeCalled = useCallback(
-        (callback: OnundefinedDispatchWillBeCalled) => {
+        (callback: OnundefinedContextDispatchWillBeCalled) => {
             if (!dispatchWillBeCalledCallbacks.current) {
                 dispatchWillBeCalledCallbacks.current = [callback];
             } else if (
@@ -213,7 +213,7 @@ export const useundefinedContextDispatch: () => IDispatchundefinedContext = () =
  * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
  * @param callback callback which will be called dispatch gets called
  */
-export const useundefinedDispatchWillBeCalledEffect = (callback: OnundefinedDispatchWillBeCalled) => {
+export const useundefinedDispatchWillBeCalledEffect = (callback: OnundefinedContextDispatchWillBeCalled) => {
     const {
         listenOnDispatchWillBeCalled,
         removeOnDispatchWillBeCalled,
