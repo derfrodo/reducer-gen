@@ -226,7 +226,7 @@ export const useundefinedDispatchWillBeCalledEffect = (callback: OnundefinedCont
                 removeOnDispatchWillBeCalled(callback)
             }
         }
-    }, [callback]);
+    }, [callback, listenOnDispatchWillBeCalled, removeOnDispatchWillBeCalled]);
 };
 
 /**

@@ -232,7 +232,7 @@ export const use${feature}DispatchWillBeCalledEffect = (callback: On${reducerCon
                 removeOnDispatchWillBeCalled(callback)
             }
         }
-    }, [callback]);
+    }, [callback, listenOnDispatchWillBeCalled, removeOnDispatchWillBeCalled]);
 };
 
 /**
