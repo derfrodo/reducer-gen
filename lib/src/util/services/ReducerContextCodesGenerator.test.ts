@@ -91,9 +91,13 @@ import undefined from "./reducer/reducerMain";
 import ReducerTestAction.main from "./reducerActions/reducerActionsMain";
 import undefined from "./defaultState";
 
+export type OnundefinedContextDispatchWillBeCalled = (action: ReducerTestAction.main) => void;
+
 export interface IundefinedContext {
     state: undefined;
     dispatch: React.Dispatch<ReducerTestAction.main>;
+    listenOnDispatchWillBeCalled: (callback: OnundefinedContextDispatchWillBeCalled) => void;
+    removeOnDispatchWillBeCalled: (callback: OnundefinedContextDispatchWillBeCalled) => void;
 }
 
 export type IDispatchundefinedContext = React.Dispatch<ReducerTestAction.main>;
@@ -103,6 +107,8 @@ export type IStateundefinedContext = undefined;
 export const undefinedContext = React.createContext<IundefinedContext>({
     state: undefined(),
     dispatch: () => undefined,
+    listenOnDispatchWillBeCalled: () => undefined,
+    removeOnDispatchWillBeCalled: () => undefined,
 });
 
 export const DispatchundefinedContext = React.createContext<IDispatchundefinedContext>(() => undefined);
@@ -120,19 +126,74 @@ export const undefinedContextProvider = (props: {
     undefined
     );
 
-    const context: {
-    state: undefined;
-    dispatch: React.Dispatch<ReducerTestAction.main>;
-    } = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);
+
+    const dispatchWillBeCalledCallbacks = useRef<
+        OnAppReducerContextDispatchWillBeCalled[]
+    >([]);
+
+    const listenOnDispatchWillBeCalled = useCallback(
+        (callback: OnAppReducerContextDispatchWillBeCalled) => {
+            if (!dispatchWillBeCalledCallbacks.current) {
+                dispatchWillBeCalledCallbacks.current = [callback];
+            } else if (
+                dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item === callback
+                ).length === 0
+            ) {
+                dispatchWillBeCalledCallbacks.current.push(callback);
+            }
+        },
+        []
+    );
+
+    const removeOnDispatchWillBeCalled = useCallback(
+        (callback: OnAppReducerContextDispatchWillBeCalled) => {
+            if (!dispatchWillBeCalledCallbacks.current) {
+                dispatchWillBeCalledCallbacks.current = [callback];
+            } else if (
+                dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item === callback
+                ).length !== 0
+            ) {
+                dispatchWillBeCalledCallbacks.current = dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item !== callback
+                );
+            }
+        },
+        []
+    );
+
+    const dispatchCallback = useCallback<typeof dispatch>((...args) => {
+        const callbacks = dispatchWillBeCalledCallbacks.current;
+        for (const cb of callbacks || []) {
+            cb(args[0]);
+        }
+        dispatch(...args);
+    }, []);
+
+    const context: IundefinedContext = React.useMemo(
+        () => ({
+            state,
+            dispatch: dispatchCallback,
+            listenOnDispatchWillBeCalled,
+            removeOnDispatchWillBeCalled,
+        }),
+        [
+            state,
+            dispatchCallback,
+            listenOnDispatchWillBeCalled,
+            removeOnDispatchWillBeCalled,
+        ]
+    );
 
     return (
-    <DispatchundefinedContext.Provider value={dispatch}>
-        <StateundefinedContext.Provider value={state}>
-            <undefinedContext.Provider value={context}>
-                {children}
-            </undefinedContext.Provider>
-        </StateundefinedContext.Provider>
-    </DispatchundefinedContext.Provider>
+        <DispatchundefinedContext.Provider value={dispatch}>
+            <StateundefinedContext.Provider value={state}>
+                <undefinedContext.Provider value={context}>
+                    {children}
+                </undefinedContext.Provider>
+            </StateundefinedContext.Provider>
+        </DispatchundefinedContext.Provider>
     );
 };
 
@@ -158,7 +219,7 @@ export const useundefinedStateChangedEffect = <T extends IState>(
     const state = useundefinedContextState();
 
     const callbackRef = useRef<typeof onStateChanged>(onStateChanged);
-    const [old, setOld] = useState<IState | null>(null);
+    const [, setOld] = useState<IState | null>(null);
 
     useEffect(() => {
         callbackRef.current = onStateChanged;

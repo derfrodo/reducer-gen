@@ -48,9 +48,13 @@ import ${reducerName} from "./reducer/${reducerModuleName}";
 import ${reducerActionsName} from "./reducerActions/${reducerActionsModuleName}";
 import ${defaultStateMethodName} from "./${defaultState}";
 
+export type On${reducerContextName}DispatchWillBeCalled = (action: ${reducerActionsName}) => void;
+
 export interface I${reducerContextName} {
     state: ${stateName};
     dispatch: React.Dispatch<${reducerActionsName}>;
+    listenOnDispatchWillBeCalled: (callback: On${reducerContextName}DispatchWillBeCalled) => void;
+    removeOnDispatchWillBeCalled: (callback: On${reducerContextName}DispatchWillBeCalled) => void;
 }
 
 export type IDispatch${reducerContextName} = React.Dispatch<${reducerActionsName}>;
@@ -60,6 +64,8 @@ export type IState${reducerContextName} = ${stateName};
 export const ${reducerContextName} = React.createContext<I${reducerContextName}>({
     state: ${defaultStateMethodName}(),
     dispatch: () => undefined,
+    listenOnDispatchWillBeCalled: () => undefined,
+    removeOnDispatchWillBeCalled: () => undefined,
 });
 
 export const Dispatch${reducerContextName} = React.createContext<IDispatch${reducerContextName}>(() => undefined);
@@ -67,7 +73,9 @@ export const Dispatch${reducerContextName} = React.createContext<IDispatch${redu
 export const State${reducerContextName} = React.createContext<IState${reducerContextName}>(${defaultStateMethodName}());
 
 ${this.generateReducerContextProviderContent(stateInfo)}
-${this.generateReducerContextHooksContent(stateInfo)}${this.generateUseStateChangedEffectHooks(stateInfo)}`;
+${this.generateReducerContextHooksContent(
+    stateInfo
+)}${this.generateUseStateChangedEffectHooks(stateInfo)}`;
     }
 
     /**
@@ -99,19 +107,74 @@ ${this.generateReducerContextHooksContent(stateInfo)}${this.generateUseStateChan
     ${defaultStateMethodName}
     );
 
-    const context: {
-    state: ${stateName};
-    dispatch: React.Dispatch<${reducerActionsName}>;
-    } = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);
+
+    const dispatchWillBeCalledCallbacks = useRef<
+        OnAppReducerContextDispatchWillBeCalled[]
+    >([]);
+
+    const listenOnDispatchWillBeCalled = useCallback(
+        (callback: OnAppReducerContextDispatchWillBeCalled) => {
+            if (!dispatchWillBeCalledCallbacks.current) {
+                dispatchWillBeCalledCallbacks.current = [callback];
+            } else if (
+                dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item === callback
+                ).length === 0
+            ) {
+                dispatchWillBeCalledCallbacks.current.push(callback);
+            }
+        },
+        []
+    );
+
+    const removeOnDispatchWillBeCalled = useCallback(
+        (callback: OnAppReducerContextDispatchWillBeCalled) => {
+            if (!dispatchWillBeCalledCallbacks.current) {
+                dispatchWillBeCalledCallbacks.current = [callback];
+            } else if (
+                dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item === callback
+                ).length !== 0
+            ) {
+                dispatchWillBeCalledCallbacks.current = dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item !== callback
+                );
+            }
+        },
+        []
+    );
+
+    const dispatchCallback = useCallback<typeof dispatch>((...args) => {
+        const callbacks = dispatchWillBeCalledCallbacks.current;
+        for (const cb of callbacks || []) {
+            cb(args[0]);
+        }
+        dispatch(...args);
+    }, []);
+
+    const context: I${reducerContextName} = React.useMemo(
+        () => ({
+            state,
+            dispatch: dispatchCallback,
+            listenOnDispatchWillBeCalled,
+            removeOnDispatchWillBeCalled,
+        }),
+        [
+            state,
+            dispatchCallback,
+            listenOnDispatchWillBeCalled,
+            removeOnDispatchWillBeCalled,
+        ]
+    );
 
     return (
-    <Dispatch${reducerContextName}.Provider value={dispatch}>
-        <State${reducerContextName}.Provider value={state}>
-            <${reducerContextName}.Provider value={context}>
-                {children}
-            </${reducerContextName}.Provider>
-        </State${reducerContextName}.Provider>
-    </Dispatch${reducerContextName}.Provider>
+        <Dispatch${reducerContextName}.Provider value={dispatch}>
+            <State${reducerContextName}.Provider value={state}>
+                <${reducerContextName}.Provider value={context}>
+                    {children}
+                </${reducerContextName}.Provider>
+            </State${reducerContextName}.Provider>
+        </Dispatch${reducerContextName}.Provider>
     );
 };
 `;
@@ -162,7 +225,7 @@ export const use${feature}StateChangedEffect = <T extends IState>(
     const state = use${reducerContextName}State();
 
     const callbackRef = useRef<typeof onStateChanged>(onStateChanged);
-    const [old, setOld] = useState<IState | null>(null);
+    const [, setOld] = useState<IState | null>(null);
 
     useEffect(() => {
         callbackRef.current = onStateChanged;
