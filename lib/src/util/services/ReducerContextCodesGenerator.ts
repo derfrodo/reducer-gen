@@ -102,18 +102,18 @@ ${this.generateReducerContextHooksContent(
     const { children } = props;
 
     const [state, dispatch] = React.useReducer(
-    ${reducerName},
-    undefined,
-    ${defaultStateMethodName}
+        ${reducerName},
+        undefined,
+        ${defaultStateMethodName}
     );
 
 
     const dispatchWillBeCalledCallbacks = useRef<
-        OnAppReducerContextDispatchWillBeCalled[]
+        On${reducerContextName}DispatchWillBeCalled[]
     >([]);
 
     const listenOnDispatchWillBeCalled = useCallback(
-        (callback: OnAppReducerContextDispatchWillBeCalled) => {
+        (callback: On${reducerContextName}DispatchWillBeCalled) => {
             if (!dispatchWillBeCalledCallbacks.current) {
                 dispatchWillBeCalledCallbacks.current = [callback];
             } else if (
@@ -128,7 +128,7 @@ ${this.generateReducerContextHooksContent(
     );
 
     const removeOnDispatchWillBeCalled = useCallback(
-        (callback: OnAppReducerContextDispatchWillBeCalled) => {
+        (callback: On${reducerContextName}DispatchWillBeCalled) => {
             if (!dispatchWillBeCalledCallbacks.current) {
                 dispatchWillBeCalledCallbacks.current = [callback];
             } else if (
@@ -215,6 +215,26 @@ export const use${reducerContextName}Dispatch: () => IDispatch${reducerContextNa
         )}Context`;
 
         return `
+/**
+ * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
+ * @param callback callback which will be called dispatch gets called
+ */
+export const use${feature}DispatchWillBeCalledEffect = (callback: On${reducerContextName}DispatchWillBeCalled) => {
+    const {
+        listenOnDispatchWillBeCalled,
+        removeOnDispatchWillBeCalled,
+    } = use${reducerContextName}();
+
+    useEffect(() => {
+        if(callback){
+            listenOnDispatchWillBeCalled(callback)
+            return () => {
+                removeOnDispatchWillBeCalled(callback)
+            }
+        }
+    }, [callback]);
+};
+
 /**
  * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
  * @param onStateChanged callback which will be called if ${feature}State changes

@@ -121,18 +121,18 @@ export const undefinedContextProvider = (props: {
     const { children } = props;
 
     const [state, dispatch] = React.useReducer(
-    undefined,
-    undefined,
-    undefined
+        undefined,
+        undefined,
+        undefined
     );
 
 
     const dispatchWillBeCalledCallbacks = useRef<
-        OnAppReducerContextDispatchWillBeCalled[]
+        OnundefinedDispatchWillBeCalled[]
     >([]);
 
     const listenOnDispatchWillBeCalled = useCallback(
-        (callback: OnAppReducerContextDispatchWillBeCalled) => {
+        (callback: OnundefinedDispatchWillBeCalled) => {
             if (!dispatchWillBeCalledCallbacks.current) {
                 dispatchWillBeCalledCallbacks.current = [callback];
             } else if (
@@ -147,7 +147,7 @@ export const undefinedContextProvider = (props: {
     );
 
     const removeOnDispatchWillBeCalled = useCallback(
-        (callback: OnAppReducerContextDispatchWillBeCalled) => {
+        (callback: OnundefinedDispatchWillBeCalled) => {
             if (!dispatchWillBeCalledCallbacks.current) {
                 dispatchWillBeCalledCallbacks.current = [callback];
             } else if (
@@ -207,6 +207,26 @@ export const useundefinedContextState: () => IStateundefinedContext = () => {
 
 export const useundefinedContextDispatch: () => IDispatchundefinedContext = () => {
     return React.useContext<IDispatchundefinedContext>(DispatchundefinedContext);
+};
+
+/**
+ * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
+ * @param callback callback which will be called dispatch gets called
+ */
+export const useundefinedDispatchWillBeCalledEffect = (callback: OnundefinedDispatchWillBeCalled) => {
+    const {
+        listenOnDispatchWillBeCalled,
+        removeOnDispatchWillBeCalled,
+    } = useundefinedContext();
+
+    useEffect(() => {
+        if(callback){
+            listenOnDispatchWillBeCalled(callback)
+            return () => {
+                removeOnDispatchWillBeCalled(callback)
+            }
+        }
+    }, [callback]);
 };
 
 /**
