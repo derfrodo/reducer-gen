@@ -213,6 +213,7 @@ export const use${reducerContextName}Dispatch: () => IDispatch${reducerContextNa
         const reducerContextName = `${this.stringHelper.toPascalCased(
             reducerName
         )}Context`;
+        const stateName = this.getStateInterfaceName(stateInfo);
 
         return `
 /**
@@ -239,13 +240,13 @@ export const use${feature}DispatchWillBeCalledEffect = (callback: On${reducerCon
  * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
  * @param onStateChanged callback which will be called if ${feature}State changes
  */
-export const use${feature}StateChangedEffect = <T extends IState>(
-    onStateChanged: (next: IState, old: IState | null) => Promise<void> | void
+export const use${feature}StateChangedEffect = <T extends ${stateName}>(
+    onStateChanged: (next: ${stateName}, old: ${stateName} | null) => Promise<void> | void
 ) => {
     const state = use${reducerContextName}State();
 
     const callbackRef = useRef<typeof onStateChanged>(onStateChanged);
-    const [, setOld] = useState<IState | null>(null);
+    const [, setOld] = useState<${stateName} | null>(null);
 
     useEffect(() => {
         callbackRef.current = onStateChanged;
@@ -267,15 +268,15 @@ export const use${feature}StateChangedEffect = <T extends IState>(
  * @param onStatePropertyChanged callback which will be called if property in state changes
  */
 export const use${feature}StatePropertyChangedEffect = <
-    T extends IState,
-    TKey extends keyof IState
+    T extends ${stateName},
+    TKey extends keyof ${stateName}
 >(
     property: TKey,
     onStatePropertyChanged: (
-        next: IState[TKey],
-        old: IState[TKey] | null,
-        state: IState,
-        oldState: IState | null
+        next: ${stateName}[TKey],
+        old: ${stateName}[TKey] | null,
+        state: ${stateName},
+        oldState: ${stateName} | null
     ) => Promise<void> | void
 ) => {
     const callbackRef = useRef<typeof onStatePropertyChanged>(
@@ -287,7 +288,7 @@ export const use${feature}StatePropertyChangedEffect = <
     }, [onStatePropertyChanged]);
 
     const changedCallback = useCallback(
-        async (next: IState, old: IState | null) => {
+        async (next: ${stateName}, old: ${stateName} | null) => {
             const cb = callbackRef.current;
             if (cb && (!old || next[property] !== old[property])) {
                 await cb(
