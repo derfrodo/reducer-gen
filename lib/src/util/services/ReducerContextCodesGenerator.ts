@@ -168,7 +168,7 @@ ${this.generateReducerContextHooksContent(
     );
 
     return (
-        <Dispatch${reducerContextName}.Provider value={dispatch}>
+        <Dispatch${reducerContextName}.Provider value={dispatchCallback}>
             <State${reducerContextName}.Provider value={state}>
                 <${reducerContextName}.Provider value={context}>
                     {children}
