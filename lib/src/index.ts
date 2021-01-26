@@ -17,9 +17,12 @@ const getGeneratorOptionsFromArgs = (
     argv: CliArgs
 ): ReduxCodeGeneratorOptions => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { createReducerContext } = argv;
+    const { createReducerContext, addBubbleFlagForActions } = argv;
     const result: ReduxCodeGeneratorOptions = {
         createReducerContext: createReducerContext,
+        addBubbleFlagForActions:
+            addBubbleFlagForActions === undefined ||
+            addBubbleFlagForActions === true,
     };
     return result;
 };

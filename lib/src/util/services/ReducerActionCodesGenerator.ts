@@ -69,6 +69,7 @@ export default ${name};
 
     // Base Elements
     generateBaseReducerActionContent(stateInfo: StateInterfaceInfo): string {
+        const { addBubbleFlagForActions } = this.options;
         const reducerActionsName = this.getReducerActionName(stateInfo, "base");
         const reducerActionsTestMethodName = this.getReducerActionTypeGuardMethodName(
             stateInfo,
@@ -79,7 +80,9 @@ export default ${name};
         return `${this.getImportClauses(stateInfo)}
 import actions from "./../actions/${action}";
         
-export type ${reducerActionsName} = { type: actions } & (
+export type ${reducerActionsName} = { type: actions${
+            addBubbleFlagForActions ? "; isBubbled?: boolean" : ""
+        } } & (
 ${stateInfo.stateProperties
     .map(
         (p) => `   | {
@@ -108,6 +111,7 @@ export default ${reducerActionsName}`;
 
     // Ext Elements
     generateExtReducerActionContent(stateInfo: StateInterfaceInfo): string {
+        const { addBubbleFlagForActions } = this.options;
         const reducerActionsName = this.getReducerActionName(stateInfo, "ext");
         const reducerActionsTestMethodName = this.getReducerActionTypeGuardMethodName(
             stateInfo,
@@ -122,7 +126,9 @@ import extenededActions from "./../actions/${action}";
 /**
  * You may add here extending reducer actions for this features reducer
  */        
-export type ${reducerActionsName} = { type: extenededActions } & (
+export type ${reducerActionsName} = { type: extenededActions${
+            addBubbleFlagForActions ? "; isBubbled?: boolean" : ""
+        } } & (
     | {} // replace by following template for every extenededActions
 //    | {
 //        type: extenededActions["[action name]"];

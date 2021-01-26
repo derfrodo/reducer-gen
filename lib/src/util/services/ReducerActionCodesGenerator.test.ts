@@ -15,6 +15,7 @@ const getDefaultTestGeneratorOptions = (): ReduxCodeGeneratorOptions => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const result: ReduxCodeGeneratorOptions = {
         createReducerContext: false,
+        addBubbleFlagForActions: true,
     };
     return result;
 };
@@ -175,7 +176,7 @@ import extenededActions from "./../actions/actionModulName";
 /**
  * You may add here extending reducer actions for this features reducer
  */        
-export type ReducerTestAction.ext = { type: extenededActions } & (
+export type ReducerTestAction.ext = { type: extenededActions; isBubbled?: boolean } & (
     | {} // replace by following template for every extenededActions
 //    | {
 //        type: extenededActions["[action name]"];
