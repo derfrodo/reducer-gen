@@ -268,7 +268,6 @@ export const use${feature}StateChangedEffect = <T extends ${stateName}>(
  * @param onStatePropertyChanged callback which will be called if property in state changes
  */
 export const use${feature}StatePropertyChangedEffect = <
-    T extends ${stateName},
     TKey extends keyof ${stateName}
 >(
     property: TKey,

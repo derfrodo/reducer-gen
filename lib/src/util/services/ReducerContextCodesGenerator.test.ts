@@ -261,7 +261,6 @@ export const useundefinedStateChangedEffect = <T extends IState>(
  * @param onStatePropertyChanged callback which will be called if property in state changes
  */
 export const useundefinedStatePropertyChangedEffect = <
-    T extends IState,
     TKey extends keyof IState
 >(
     property: TKey,
