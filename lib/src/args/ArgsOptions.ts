@@ -33,6 +33,7 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
     mainFilesSuffix: { demandOption: false, default: ".main.generated" },
     mainFilesPrefix: { demandOption: false, default: "" },
     createReducerContext: { boolean: true, default: false },
+    addBubbleFlagForActions: { boolean: true, default: true },
 };
 
 export default ArgsOptions;
