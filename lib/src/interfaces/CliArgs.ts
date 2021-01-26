@@ -7,7 +7,7 @@ export interface CliArgs {
     mainFilesSuffix: string;
     mainFilesPrefix: string;
     createReducerContext: boolean;
-    addBubbleFlagForActions?: boolean;
+    addBubbleFlagForActions: boolean;
 }
 
 export default CliArgs;
