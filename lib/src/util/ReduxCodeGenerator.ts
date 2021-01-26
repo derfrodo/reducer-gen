@@ -279,9 +279,11 @@ export default ${name};
             stateInfo
         );
 
-        return `import { ${reducerActionsName} as RAs } from "./reducerActions/${
+return `import { ${reducerActionsName} as RAs } from "./reducerActions/${
             this.fileService.getMainModulNames().reducerActions
         }";
+${stateImport}
+
 export { ${reducerName} } from "./reducer/${
             this.fileService.getMainModulNames().reducer
         }";
@@ -292,7 +294,6 @@ export { ${actionCreatorsName} } from "./actionCreators/${
             this.fileService.getMainModulNames().actionCreators
         }";
 ${reducerContextLine}
-${stateImport}
 
 export type ${reducerActionsName} = RAs;
 export type ${this.reduxModuleNamingHelper.getPascalCasedFeatureName(
