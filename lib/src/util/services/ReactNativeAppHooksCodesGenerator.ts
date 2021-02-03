@@ -35,7 +35,7 @@ export class ReactNativeAppHooksCodesGenerator {
     // Main Elements
     generateHybridReactNativeHooksContent(): string {
         return `${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
-import { useCallback } from "react";
+import { MutableRefObject, useCallback } from "react";
 import {
     asSyncStateAction,
     createSyncStateAction,
