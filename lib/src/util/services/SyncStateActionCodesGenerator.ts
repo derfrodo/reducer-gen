@@ -33,7 +33,7 @@ export class SyncStateActionCodesGenerator {
     }
 
     // Main Elements
-    generateMainReducerActionContent(): string {
+    generateSyncStateActionsContent(): string {
         return `${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
 export const SYNC_STATE_ACTION_TYPE = "SyncStateAction";
 export const SYNC_STATE_ACTION_SOURCE_WEBAPP = "WebApp";
@@ -44,9 +44,11 @@ export const SYNC_STATE_ACTION_SOURCES = {
     frame: SYNC_STATE_ACTION_SOURCE_FRAME,
 };
 
+export type SyncActionSources = "WebApp" | "Frame";
+
 export interface SyncStateAction<T> {
     type: "SyncStateAction";
-    source: "WebApp" | "Frame";
+    source: SyncActionSources;
     payload: T;
 }
 
@@ -87,6 +89,17 @@ export const asSyncStateAction = <T>(
         });
     }
     return null;
+};
+
+export const createSyncStateAction = <T>(
+    action: T,
+    source: SyncActionSources
+): SyncStateAction<T> | null => {
+    return {
+        type: SYNC_STATE_ACTION_TYPE,
+        source,
+        payload: action,
+    };
 };
 `;
     }

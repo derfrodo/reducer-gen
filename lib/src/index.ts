@@ -14,6 +14,7 @@ import ReduxModuleNamingHelperOptions from "./interfaces/ReduxModuleNamingHelper
 import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import ArgsOptions from "./args/ArgsOptions";
 import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
+import { WebAppHooksCodesGeneratorGenerator } from "./util/services/WebAppHooksCodesGenerator";
 
 const getGeneratorOptionsFromArgs = (
     argv: CliArgs
@@ -128,11 +129,30 @@ export const generate = async (argv: CliArgs): Promise<void> => {
             reduxModuleNamingHelper,
             fileService
         );
-        const code = codeGen.generateMainReducerActionContent();
+        const code = codeGen.generateSyncStateActionsContent();
         const fsHelper = new FileSystemHelper();
 
         await fsHelper.writeFile(
             fsHelper.combinePath("./src", "syncState", "index.generated.ts"),
+            code
+        );
+    }
+    if (argv.generateWebAppHybridHooks) {
+        if (!argv.generateSyncStateActions) {
+            throw new Error(
+                "Sync State Actions has to be generated to generate hybrid webapp hooks. Please add --generateSyncStateActions"
+            );
+        }
+        const codeGen = new WebAppHooksCodesGeneratorGenerator(
+            {},
+            reduxModuleNamingHelper,
+            fileService
+        );
+        const code = codeGen.generateHybridWebAppHooksContent();
+        const fsHelper = new FileSystemHelper();
+
+        await fsHelper.writeFile(
+            fsHelper.combinePath("./src", "syncState", "hybridWebappHooks.generated.ts"),
             code
         );
     }
