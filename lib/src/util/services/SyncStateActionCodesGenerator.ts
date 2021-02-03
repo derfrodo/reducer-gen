@@ -3,15 +3,15 @@ import StateInterfaceInfo from "../../interfaces/StateInterfaceInfo";
 import ReduxModuleNamingHelper from "../ReduxModuleNamingHelper";
 import ReduxModulFileService from "../ReduxModulFileService";
 
-export interface SyncActionCodesGeneratorOptions {}
+export interface SyncStateActionCodesGeneratorOptions {}
 
-export class SyncActionCodesGenerator {
+export class SyncStateActionCodesGenerator {
     constructor(
-        private options: SyncActionCodesGeneratorOptions,
+        private options: SyncStateActionCodesGeneratorOptions,
         private reduxModuleNamingHelper: ReduxModuleNamingHelper,
         private fileService: ReduxModulFileService
     ) {
-        doBindPrototype(this, SyncActionCodesGenerator.prototype);
+        doBindPrototype(this, SyncStateActionCodesGenerator.prototype);
     }
 
     getImportClauses(

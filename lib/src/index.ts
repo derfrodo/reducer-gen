@@ -13,7 +13,7 @@ import ReduxModuleNamingHelper from "./util/ReduxModuleNamingHelper";
 import ReduxModuleNamingHelperOptions from "./interfaces/ReduxModuleNamingHelperOptions";
 import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import ArgsOptions from "./args/ArgsOptions";
-import { SyncActionCodesGenerator } from "./util/services/SyncActionCodesGenerator";
+import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
 
 const getGeneratorOptionsFromArgs = (
     argv: CliArgs
@@ -123,7 +123,7 @@ export const generate = async (argv: CliArgs): Promise<void> => {
     );
 
     if (argv.generateSyncStateActions) {
-        const codeGen = new SyncActionCodesGenerator(
+        const codeGen = new SyncStateActionCodesGenerator(
             {},
             reduxModuleNamingHelper,
             fileService
