@@ -12,6 +12,8 @@ import ReduxModulFileServiceOptions from "./interfaces/ReduxModulFileServiceOpti
 import ReduxModuleNamingHelper from "./util/ReduxModuleNamingHelper";
 import ReduxModuleNamingHelperOptions from "./interfaces/ReduxModuleNamingHelperOptions";
 import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
+import ArgsOptions from "./args/ArgsOptions";
+import { SyncActionCodesGenerator } from "./util/services/SyncActionCodesGenerator";
 
 const getGeneratorOptionsFromArgs = (
     argv: CliArgs
@@ -119,6 +121,21 @@ export const generate = async (argv: CliArgs): Promise<void> => {
     await Promise.all(
         generatedCodes.map((codes) => fileGenerator.writeIndexFile(codes))
     );
+
+    if (argv.generateSyncStateActions) {
+        const codeGen = new SyncActionCodesGenerator(
+            {},
+            reduxModuleNamingHelper,
+            fileService
+        );
+        const code = codeGen.generateMainReducerActionContent();
+        const fsHelper = new FileSystemHelper();
+
+        await fsHelper.writeFile(
+            fsHelper.combinePath("./src", "syncState", "index.generated.ts"),
+            code
+        );
+    }
 };
 
 export default generate;
