@@ -15,6 +15,7 @@ import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import ArgsOptions from "./args/ArgsOptions";
 import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
 import { WebAppHooksCodesGeneratorGenerator } from "./util/services/WebAppHooksCodesGenerator";
+import { ReactNativeAppHooksCodesGenerator } from "./util/services/ReactNativeAppHooksCodesGenerator";
 
 const getGeneratorOptionsFromArgs = (
     argv: CliArgs
@@ -152,7 +153,34 @@ export const generate = async (argv: CliArgs): Promise<void> => {
         const fsHelper = new FileSystemHelper();
 
         await fsHelper.writeFile(
-            fsHelper.combinePath("./src", "syncState", "hybridWebappHooks.generated.ts"),
+            fsHelper.combinePath(
+                "./src",
+                "syncState",
+                "hybridWebappHooks.generated.ts"
+            ),
+            code
+        );
+    }
+    if (argv.generateReactNativeHybridHooks) {
+        if (!argv.generateSyncStateActions) {
+            throw new Error(
+                "Sync State Actions has to be generated to generate hybrid react native hooks. Please add --generateSyncStateActions"
+            );
+        }
+        const codeGen = new ReactNativeAppHooksCodesGenerator(
+            {},
+            reduxModuleNamingHelper,
+            fileService
+        );
+        const code = codeGen.generateHybridReactNativeHooksContent();
+        const fsHelper = new FileSystemHelper();
+
+        await fsHelper.writeFile(
+            fsHelper.combinePath(
+                "./src",
+                "syncState",
+                "hybridReactNativeHooks.generated.ts"
+            ),
             code
         );
     }
