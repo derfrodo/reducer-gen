@@ -59,6 +59,9 @@ export interface IPostMessageToReactNativeContext<T extends ContextAction> {
 }
 
 export const useSendReactNativeMessageToWebApp = <T extends ContextAction>(
+    webViewRef: MutableRefObject<
+        { injectJavaScript: (js: string) => void } | undefined
+    > | null,
     targetOrigin = "*"
 ) => {
     const postMessageJavascriptCode = useCallback(
@@ -73,6 +76,21 @@ export const useSendReactNativeMessageToWebApp = <T extends ContextAction>(
             )}, \${targetOrigin})\`;
         },
         [targetOrigin]
+    );
+
+    return useCallback(
+        (action: T) => {
+            const { current } = webViewRef || {};
+            if (!current) {
+                console.warn(
+                    "Can not inject javascript into webview. No webview has been resolved."
+                );
+            } else {
+                const js = postMessageJavascriptCode(action);
+                current.injectJavaScript(js);
+            }
+        },
+        [postMessageJavascriptCode, webViewRef]
     );
 };
 
