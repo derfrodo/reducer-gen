@@ -140,7 +140,7 @@ export const useConsumePostMessages = <T extends ContextAction>(
                 }
 
                 const action = asSyncStateAction(data, isActionTypeguard);
-                if (action) {
+                if (action && action.source !== SYNC_STATE_ACTION_SOURCE_WEBAPP) {
                     dispatch(action.payload);
                 }
             } catch (err) {
