@@ -225,8 +225,12 @@ export const useInvokeWpfWebViewOnDispatch = <T extends ContextAction>(
                     SYNC_STATE_ACTION_SOURCE_WEBAPP
                 );
                 const wpfWindow = window as WpfWebviewWindow;
-                if (wpfWindow.external && wpfWindow.external.notify) {
-                    wpfWindow.external.notify(JSON.stringify(syncStateAction));
+                try{
+                    if (wpfWindow.external) {
+                        wpfWindow.external.notify(JSON.stringify(syncStateAction));
+                    }
+                }catch(err){
+                    console.error("Failed to notify wpf frame", { error: err });
                 }
             }
         },
