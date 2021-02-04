@@ -112,7 +112,7 @@ export const usePostMessageToReactNativeOnDispatch = <T extends ContextAction>(
  * Use this method to consume post messages from react native
  * @param callback callback which will be called dispatch gets called
  */
-export const useConsumeReactNativeAppMessages = <T extends ContextAction>(
+export const useConsumePostMessages = <T extends ContextAction>(
     dispatch: React.Dispatch<T>,
     isActionTypeguard: (data: any) => data is T
 ) => {
