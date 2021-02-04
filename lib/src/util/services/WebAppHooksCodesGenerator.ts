@@ -66,8 +66,10 @@ export type ReactNativeWebviewWindow = {
  * @param callback callback which will be called dispatch gets called
  */
 export const usePostMessageToReactNativeOnDispatch = <T extends ContextAction>(
-    context: IPostMessageToReactNativeContext<T>
+    context: IPostMessageToReactNativeContext<T>,
+    options: { onError?:(error: any) => Promise<void> | void }
 ) => {
+    const { onError } = options;
     const onDispatch = useCallback<OnContextDispatchWillBeCalled<T>>(
         (action) => {
             const origin = document.location.origin || window.location.origin;
@@ -82,9 +84,15 @@ export const usePostMessageToReactNativeOnDispatch = <T extends ContextAction>(
                     rnWindow.ReactNativeWebView &&
                     rnWindow.ReactNativeWebView.postMessage
                 ) {
-                    rnWindow.ReactNativeWebView.postMessage(
-                        JSON.stringify(syncStateAction)
-                    );
+                    try {
+                        rnWindow.ReactNativeWebView.postMessage(
+                            JSON.stringify(syncStateAction)
+                        );
+                    } catch (err) {
+                        if (onError) {
+                            onError(err);
+                        }
+                    }
                 }
             }
         },
@@ -114,8 +122,10 @@ export const usePostMessageToReactNativeOnDispatch = <T extends ContextAction>(
  */
 export const useConsumePostMessages = <T extends ContextAction>(
     dispatch: React.Dispatch<T>,
-    isActionTypeguard: (data: any) => data is T
+    isActionTypeguard: (data: any) => data is T,
+    options: { onError?:(error: any) => Promise<void> | void }
 ) => {
+    const { onError } = options;
     const postMessageCallback = useCallback(
         (event: MessageEvent) => {
             try {
@@ -145,6 +155,9 @@ export const useConsumePostMessages = <T extends ContextAction>(
                 }
             } catch (err) {
                 console.error("Processing post event failed", { error: err });
+                if (onError) {
+                    onError(err);
+                }
             }
         },
         [dispatch, isActionTypeguard]
@@ -207,7 +220,7 @@ export const useConsumePostMessages = <T extends ContextAction>(
 
 export type WpfWebviewWindow = {
     InvokeFromExternal?: (message: string) => any;
-    external?: { notify?: (message: string) => any };
+    external?: { notify: (message: string) => any };
 };
 
 /**
@@ -215,8 +228,10 @@ export type WpfWebviewWindow = {
  * @param callback callback which will be called dispatch gets called
  */
 export const useInvokeWpfWebViewOnDispatch = <T extends ContextAction>(
-    context: IPostMessageToReactNativeContext<T>
+    context: IPostMessageToReactNativeContext<T>,
+    options: { onError?:(error: any) => Promise<void> | void }
 ) => {
+    const { onError } = options;
     const onDispatch = useCallback<OnContextDispatchWillBeCalled<T>>(
         (action) => {
             if (!action.isBubbled) {
@@ -231,6 +246,9 @@ export const useInvokeWpfWebViewOnDispatch = <T extends ContextAction>(
                     }
                 }catch(err){
                     console.error("Failed to notify wpf frame", { error: err });
+                    if (onError) {
+                        onError(err);
+                    }
                 }
             }
         },
