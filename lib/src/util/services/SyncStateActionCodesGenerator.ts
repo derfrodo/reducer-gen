@@ -94,7 +94,7 @@ export const asSyncStateAction = <T>(
 export const createSyncStateAction = <T>(
     action: T,
     source: SyncActionSources
-): SyncStateAction<T> | null => {
+): SyncStateAction<T> => {
     return {
         type: SYNC_STATE_ACTION_TYPE,
         source,

@@ -35,7 +35,7 @@ export class ReactNativeAppHooksCodesGenerator {
     // Main Elements
     generateHybridReactNativeHooksContent(): string {
         return `${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
-import { MutableRefObject, useCallback } from "react";
+import { MutableRefObject, useCallback, useEffect } from "react";
 import {
     asSyncStateAction,
     createSyncStateAction,
@@ -58,25 +58,63 @@ export interface IPostMessageToReactNativeContext<T extends ContextAction> {
     ) => void;
 }
 
-export const useSendReactNativeMessageToWebApp = <T extends ContextAction>(
-    webViewRef: MutableRefObject<
-        { injectJavaScript: (js: string) => void } | undefined
-    > | null,
-    targetOrigin = "*"
-) => {
-    const postMessageJavascriptCode = useCallback(
-        (action: T) => {
-            const syncStateAction = createSyncStateAction(
-                action,
-                SYNC_STATE_ACTION_SOURCE_FRAME
-            );
+type WebViewRef = MutableRefObject<
+    | {
+            injectJavaScript: (js: string) => void;
+        }
+    | undefined
+> | null;
 
-            return \`window.postMessage(\${JSON.stringify(
-                JSON.stringify(syncStateAction)
-            )}, \${targetOrigin})\`;
+/**
+ * Use this method to enable post message on non bubbled actions for react native
+ * @param callback callback which will be called dispatch gets called
+ */
+export const usePostMessageToWebViewOnDispatch = <T extends ContextAction>(
+    webViewRef: WebViewRef,
+    context: IPostMessageToReactNativeContext<T>
+) => {
+    const sendMessage = useSendReactNativeMessageToWebApp<T>(webViewRef);
+    const onDispatch = useCallback<OnContextDispatchWillBeCalled<T>>(
+        (action) => {
+            if (!action.isBubbled) {
+                sendMessage({ ...action, isBubbled: true });
+            }
         },
-        [targetOrigin]
+        [sendMessage]
     );
+
+    const {
+        listenOnDispatchWillBeCalled,
+        removeOnDispatchWillBeCalled,
+    } = context;
+
+    useEffect(() => {
+        if (onDispatch) {
+            listenOnDispatchWillBeCalled(onDispatch);
+            return () => {
+                removeOnDispatchWillBeCalled(onDispatch);
+            };
+        }
+    }, [
+        onDispatch,
+        listenOnDispatchWillBeCalled,
+        removeOnDispatchWillBeCalled,
+    ]);
+};
+
+export const useSendReactNativeMessageToWebApp = <T extends ContextAction>(
+    webViewRef: WebViewRef
+) => {
+    const postMessageJavascriptCode = useCallback((action: T) => {
+        const syncStateAction = createSyncStateAction(
+            action,
+            SYNC_STATE_ACTION_SOURCE_FRAME
+        );
+
+        return \`window.postMessage(\${JSON.stringify(
+            JSON.stringify(syncStateAction)
+        )}, window.location.origin)\`;
+    }, []);
 
     return useCallback(
         (action: T) => {
