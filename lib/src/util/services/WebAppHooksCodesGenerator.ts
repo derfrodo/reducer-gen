@@ -67,9 +67,9 @@ export type ReactNativeWebviewWindow = {
  */
 export const usePostMessageToReactNativeOnDispatch = <T extends ContextAction>(
     context: IPostMessageToReactNativeContext<T>,
-    options: { onError?:(error: any) => Promise<void> | void }
+    options?: { onError?:(error: any) => Promise<void> | void }
 ) => {
-    const { onError } = options;
+    const { onError } = options || {};
     const onDispatch = useCallback<OnContextDispatchWillBeCalled<T>>(
         (action) => {
             const origin = document.location.origin || window.location.origin;
@@ -123,9 +123,9 @@ export const usePostMessageToReactNativeOnDispatch = <T extends ContextAction>(
 export const useConsumePostMessages = <T extends ContextAction>(
     dispatch: React.Dispatch<T>,
     isActionTypeguard: (data: any) => data is T,
-    options: { onError?:(error: any) => Promise<void> | void }
+    options?: { onError?:(error: any) => Promise<void> | void }
 ) => {
-    const { onError } = options;
+    const { onError } = options || {};
     const postMessageCallback = useCallback(
         (event: MessageEvent) => {
             try {
@@ -229,9 +229,9 @@ export type WpfWebviewWindow = {
  */
 export const useInvokeWpfWebViewOnDispatch = <T extends ContextAction>(
     context: IPostMessageToReactNativeContext<T>,
-    options: { onError?:(error: any) => Promise<void> | void }
+    options?: { onError?:(error: any) => Promise<void> | void }
 ) => {
-    const { onError } = options;
+    const { onError } = options || {};
     const onDispatch = useCallback<OnContextDispatchWillBeCalled<T>>(
         (action) => {
             if (!action.isBubbled) {
