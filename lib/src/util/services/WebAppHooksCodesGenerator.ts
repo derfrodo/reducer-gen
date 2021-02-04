@@ -73,7 +73,7 @@ export const usePostMessageToReactNativeOnDispatch = <T extends ContextAction>(
             const origin = document.location.origin || window.location.origin;
             if (!action.isBubbled) {
                 const syncStateAction = createSyncStateAction(
-                    action,
+                    { ...action, isBubbled: true },
                     SYNC_STATE_ACTION_SOURCE_WEBAPP
                 );
                 window.postMessage(syncStateAction, origin);
