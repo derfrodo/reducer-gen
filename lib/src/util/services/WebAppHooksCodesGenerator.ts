@@ -35,7 +35,7 @@ export class WebAppHooksCodesGeneratorGenerator {
     // Main Elements
     generateHybridWebAppHooksContent(): string {
         return `${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import {
     asSyncStateAction,
     createSyncStateAction,
