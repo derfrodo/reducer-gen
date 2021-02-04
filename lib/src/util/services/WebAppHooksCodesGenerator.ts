@@ -119,15 +119,26 @@ export const useConsumeReactNativeAppMessages = <T extends ContextAction>(
     const postMessageCallback = useCallback(
         (event: MessageEvent) => {
             try {
-                const { data, origin } = event;
+                const { data, origin, source } = event;
+                if(origin !== window.location.origin){
+                    console.debug(
+                        "Processing posted event: Origin differs",
+                        {
+                            eventOrigin: origin,
+                        }
+                    );
+                    return;
+                }
+                if(source !== window){
+                    console.debug(
+                        "Processing posted event: Source differs",
+                        {
+                            eventOrigin: origin,
+                        }
+                    );
+                    return;
+                }
 
-                // TODO: Generate generated code for origin validation!
-                console.debug(
-                    "Processing posted event: Generate generated code for origin validation",
-                    {
-                        eventOrigin: origin,
-                    }
-                );
                 const action = asSyncStateAction(data, isActionTypeguard);
                 if (action) {
                     dispatch(action.payload);
