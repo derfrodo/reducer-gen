@@ -251,46 +251,6 @@ export const useInvokeWpfWebViewOnDispatch = <T extends ContextAction>(
         removeOnDispatchWillBeCalled,
     ]);
 };
-
-/**
- * Use this method to consume messages from wpf webviews (calling InvokeFromExternal)
- * @param callback callback which will be called dispatch gets called
- */
-export const useConsumeWpfWebViewAppMessages = <T extends ContextAction>(
-    dispatch: React.Dispatch<T>,
-    isActionTypeguard: (data: any) => data is T
-) => {
-    const originalCallback = useMemo(() => {
-        const wpfWindow = window as WpfWebviewWindow;
-        const oldInvoke = wpfWindow.InvokeFromExternal;
-        return oldInvoke;
-    }, []);
-
-    const invokeMessageCallback = useCallback(
-        (data: string) => {
-            try {
-                console.debug("Processing event by wpf.");
-                const action = asSyncStateAction(data, isActionTypeguard);
-                if (action) {
-                    dispatch(action.payload);
-                }
-            } catch (err) {
-                console.error("Processing post event failed", { error: err });
-            }
-        },
-        [dispatch, isActionTypeguard]
-    );
-
-    useEffect(() => {
-        const wpfWindow = window as WpfWebviewWindow;
-        wpfWindow.InvokeFromExternal = (msg) => {
-            if (originalCallback) {
-                originalCallback(msg);
-            }
-            invokeMessageCallback(msg);
-        };
-    }, [invokeMessageCallback, originalCallback]);
-};
 `;
     }
 }
