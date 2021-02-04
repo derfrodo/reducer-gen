@@ -60,7 +60,7 @@ export const isSyncStateAction = <T>(
         typeof obj === "object" &&
         obj.type === SYNC_STATE_ACTION_TYPE &&
         (obj.source === SYNC_STATE_ACTION_SOURCE_WEBAPP ||
-            obj.source === SYNC_STATE_ACTION_SOURCE_WEBAPP) &&
+            obj.source === SYNC_STATE_ACTION_SOURCE_FRAME) &&
         payloadTypeGuard(obj.payload)
     );
 };
