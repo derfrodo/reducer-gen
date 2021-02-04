@@ -39,6 +39,7 @@ import { MutableRefObject, useCallback, useEffect } from "react";
 import {
     asSyncStateAction,
     createSyncStateAction,
+    SyncStateAction,
     SYNC_STATE_ACTION_SOURCE_FRAME,
     SYNC_STATE_ACTION_SOURCE_WEBAPP,
 } from "./index.generated";
@@ -60,8 +61,8 @@ export interface IPostMessageToReactNativeContext<T extends ContextAction> {
 
 type WebViewRef = MutableRefObject<
     | {
-            injectJavaScript: (js: string) => void;
-        }
+          injectJavaScript: (js: string) => void;
+      }
     | undefined
 > | null;
 
@@ -133,16 +134,46 @@ export const useSendReactNativeMessageToWebApp = <T extends ContextAction>(
 };
 
 export const useReactNativeWebViewOnMessage = <T extends ContextAction>(
-    dispatch: React.Dispatch<T>,
-    actionTypeguard: (data: any) => data is T
+    onMessage: (action: SyncStateAction<T>) => Promise<void> | void,
+    isActionTypeguard: (data: any) => data is T,
+    options?: { onError?: (error: any) => Promise<void> | void }
 ) => {
+    const { onError } = options || {};
     const callback = useCallback(
         (event: { nativeEvent: { data: string } }) => {
             try {
                 const action = asSyncStateAction(
                     event?.nativeEvent?.data,
-                    actionTypeguard
+                    isActionTypeguard
                 );
+                if (action !== null) {
+                    onMessage(action);
+                }
+            } catch (err) {
+                console.error("Failed to react on sync state action event", {
+                    error: err,
+                });
+                if (onError) {
+                    onError(err);
+                }
+            }
+        },
+        [isActionTypeguard, onError, onMessage]
+    );
+    return callback;
+};
+
+export const useDispatchOnReactNativeWebViewOnMessage = <
+    T extends ContextAction
+>(
+    dispatch: React.Dispatch<T>,
+    isActionTypeguard: (data: any) => data is T,
+    options?: { onError?: (error: any) => Promise<void> | void }
+) => {
+    const { onError } = options || {};
+    const callback = useCallback(
+        (action: SyncStateAction<T>) => {
+            try {
                 if (
                     action !== null &&
                     action.source === SYNC_STATE_ACTION_SOURCE_WEBAPP
@@ -153,11 +184,15 @@ export const useReactNativeWebViewOnMessage = <T extends ContextAction>(
                 console.error("Failed to react on sync state action event", {
                     error: err,
                 });
+                if (onError) {
+                    onError(err);
+                }
             }
         },
-        [actionTypeguard, dispatch]
+        [dispatch, onError]
     );
-    return callback;
+
+    return useReactNativeWebViewOnMessage(callback, isActionTypeguard, options);
 };
 `;
     }
