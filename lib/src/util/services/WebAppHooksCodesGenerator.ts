@@ -221,7 +221,7 @@ export const useInvokeWpfWebViewOnDispatch = <T extends ContextAction>(
         (action) => {
             if (!action.isBubbled) {
                 const syncStateAction = createSyncStateAction(
-                    action,
+                    { ...action, isBubbled: true },
                     SYNC_STATE_ACTION_SOURCE_WEBAPP
                 );
                 const wpfWindow = window as WpfWebviewWindow;
