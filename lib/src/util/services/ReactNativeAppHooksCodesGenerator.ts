@@ -34,7 +34,8 @@ export class ReactNativeAppHooksCodesGenerator {
 
     // Main Elements
     generateHybridReactNativeHooksContent(): string {
-        return `${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
+        return `// DEPRECATED -> Better use @derfrodo/call-of-action package for this :)
+${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
 import { MutableRefObject, useCallback, useEffect } from "react";
 import {
     asSyncStateAction,

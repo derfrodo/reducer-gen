@@ -34,7 +34,8 @@ export class SyncStateActionCodesGenerator {
 
     // Main Elements
     generateSyncStateActionsContent(): string {
-        return `${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
+        return `// DEPRECATED -> Better use @derfrodo/call-of-action package for this :)
+${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
 export const SYNC_STATE_ACTION_TYPE = "SyncStateAction";
 export const SYNC_STATE_ACTION_SOURCE_WEBAPP = "WebApp";
 export const SYNC_STATE_ACTION_SOURCE_FRAME = "Frame";

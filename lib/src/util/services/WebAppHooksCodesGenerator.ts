@@ -34,7 +34,8 @@ export class WebAppHooksCodesGeneratorGenerator {
 
     // Main Elements
     generateHybridWebAppHooksContent(): string {
-        return `${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
+        return `// DEPRECATED -> Better use @derfrodo/call-of-action package for this :)
+${this.reduxModuleNamingHelper.getGeneralGenertedFileInformation()}
 import { useCallback, useEffect } from "react";
 import {
     asSyncStateAction,
