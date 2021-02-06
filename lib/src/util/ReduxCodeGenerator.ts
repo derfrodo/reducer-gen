@@ -295,6 +295,9 @@ export { ${actionCreatorsName} } from "./actionCreators/${
         }";
 ${reducerContextLine}
 
+export { is${reducerActionsName} } from "./reducerActions/${
+    this.fileService.getMainModulNames().reducerActions
+}";
 export type ${reducerActionsName} = RAs;
 export type ${this.reduxModuleNamingHelper.getPascalCasedFeatureName(
             stateInfo
