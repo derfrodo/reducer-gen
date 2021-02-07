@@ -116,11 +116,20 @@ export class ReduxCodeGenerator {
         return result;
     }
 
-    getImportClauses(stateInfo: StateInterfaceInfo, asNested = true): string {
+    getImportClauses(
+        stateInfo: StateInterfaceInfo,
+        asNested = true,
+        asComment = false
+    ): string {
         const { importClauses } = stateInfo;
         return asNested
             ? `${importClauses
                   .map(this.fileService.addLevelToImportClause)
+                  .map((clause) =>
+                      asComment
+                          ? this.fileService.addCommentToImportClause(clause)
+                          : clause
+                  )
                   .join("\n")}`
             : `${importClauses.join("\n")}`;
     }
@@ -411,7 +420,7 @@ export default ${defaultStateMethodName}`;
             stateInfo,
             "ext"
         );
-        return `${this.getImportClauses(stateInfo)}
+        return `${this.getImportClauses(stateInfo, true, true)}
 import ExtenedReducerAction from "./../reducerActions/${reducerActions}";
 // import extendedActions from "./../actions/${action}";
 
