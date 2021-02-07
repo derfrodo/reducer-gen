@@ -89,6 +89,19 @@ ${reducerContextLine}
 export { is${reducerActionsName} } from "./reducerActions/${
             this.fileService.getMainModulNames().reducerActions
         }";
+export { is${this.reducerActionCodesGenerator.getReducerActionName(
+            stateInfo,
+            "ext"
+        )} } from "./reducerActions/${
+            this.fileService.getExtensionModulNames().reducerActions
+        }";
+export { is${this.reducerActionCodesGenerator.getReducerActionName(
+            stateInfo,
+            "base"
+        )} } from "./reducerActions/${
+            this.fileService.getGeneratedModulNames().reducerActions
+        }";
+
 export type ${reducerActionsName} = RAs;
 export type ${this.reduxModuleNamingHelper.getPascalCasedFeatureName(
             stateInfo
