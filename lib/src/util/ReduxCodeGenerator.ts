@@ -7,6 +7,7 @@ import StateInterfaceInfo, {
 } from "../interfaces/StateInterfaceInfo";
 import ReduxModuleNamingHelper from "./ReduxModuleNamingHelper";
 import ReduxModulFileService from "./ReduxModulFileService";
+import { IndexCodeGenerator } from "./services/IndexCodeGenerator";
 import { ReducerActionCodesGenerator } from "./services/ReducerActionCodesGenerator";
 import { ReducerContextCodesGenerator } from "./services/ReducerContextCodesGenerator";
 import { StateService } from "./services/StateService";
@@ -25,6 +26,12 @@ export class ReduxCodeGenerator {
             fileService
         ),
         private reducerContextCodesGenerator: ReducerContextCodesGenerator = new ReducerContextCodesGenerator(
+            options,
+            reduxModuleNamingHelper,
+            fileService,
+            stringHelper
+        ),
+        private indexCodeGenerator = new IndexCodeGenerator(
             options,
             reduxModuleNamingHelper,
             fileService,
@@ -248,62 +255,7 @@ export default ${name};
     }
 
     generateMainIndexContent(stateInfo: StateInterfaceInfo): string {
-        const reducerName = this.reduxModuleNamingHelper.getReducerMethodName(
-            stateInfo,
-            "main"
-        );
-        const reducerActionsName = this.reducerActionCodesGenerator.getReducerActionName(
-            stateInfo,
-            "main"
-        );
-        const actionsEnumName = this.reduxModuleNamingHelper.getActionEnumName(
-            stateInfo,
-            "main"
-        );
-        const actionCreatorsName = this.reduxModuleNamingHelper.getActionCreatorsName(
-            stateInfo,
-            "main"
-        );
-
-        const reducerContextLine = !this.options.createReducerContext
-            ? ""
-            : `export * from "./${
-                  this.fileService.getMainModulNames().reducerContext
-              }";
-`;
-
-        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
-            stateInfo
-        );
-        const stateName = this.reduxModuleNamingHelper.getStateInterfaceName(
-            stateInfo
-        );
-
-return `import { ${reducerActionsName} as RAs } from "./reducerActions/${
-            this.fileService.getMainModulNames().reducerActions
-        }";
-${stateImport}
-
-export { ${reducerName} } from "./reducer/${
-            this.fileService.getMainModulNames().reducer
-        }";
-export { ${actionsEnumName} } from "./actions/${
-            this.fileService.getMainModulNames().action
-        }";
-export { ${actionCreatorsName} } from "./actionCreators/${
-            this.fileService.getMainModulNames().actionCreators
-        }";
-${reducerContextLine}
-
-export { is${reducerActionsName} } from "./reducerActions/${
-    this.fileService.getMainModulNames().reducerActions
-}";
-export type ${reducerActionsName} = RAs;
-export type ${this.reduxModuleNamingHelper.getPascalCasedFeatureName(
-            stateInfo
-        )}State = ${stateName};
-
-`;
+        return this.indexCodeGenerator.generateMainIndexContent(stateInfo);
     }
 
     generateMainReducerContextContent(stateInfo: StateInterfaceInfo): string {
