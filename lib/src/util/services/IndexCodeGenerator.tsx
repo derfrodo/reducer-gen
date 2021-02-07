@@ -110,3 +110,4 @@ export type ${this.reduxModuleNamingHelper.getPascalCasedFeatureName(
 `;
     }
 }
+
