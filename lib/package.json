@@ -1,6 +1,6 @@
 {
     "name": "@derfrodo/reducer-gen",
-    "version": "0.1.42",
+    "version": "0.1.43",
     "description": "",
     "repository": {
         "type": "git",
@@ -15,6 +15,7 @@
         "cleanForPublish": "node cleanForPublish.js",
         "test": "jest",
         "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
         "clean": "npm ci && node clean.js",
         "build": "tsc --project tsconfig.build.json",
         "buildWatch": "tsc -w --project tsconfig.build.json",
