@@ -1,0 +1,7 @@
+export enum {{actions.baseActionsEnumName}} {
+{{#each actions.baseActions}}
+    {{this}} = "{{this}}"{{#unless @last}},{{/unless}}
+{{/each}}
+}
+
+export default {{actions.baseActionsEnumName}};
