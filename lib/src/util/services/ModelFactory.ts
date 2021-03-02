@@ -1,6 +1,7 @@
 import { doBindPrototype } from "@derfrodo/frodo-s-little-helpers/dist";
 import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo from "../../interfaces/StateInterfaceInfo";
+import { ActionCreatorsHandlebarModel } from "../models/ActionCreatorsHandlebarModel";
 import { ActionsHandlebarModel } from "../models/ActionsHandlebarModel";
 import { HandlebarModel } from "../models/HandlebarModel";
 import { ModuleNamesHandlebarModel } from "../models/ModuleNamesHandlebarModel";
@@ -16,6 +17,25 @@ export class ModelFactory {
         doBindPrototype(this, ModelFactory.prototype);
     }
 
+    createActionCreatorsHandlebarModel(
+        stateInfo: StateInterfaceInfo
+    ): ActionCreatorsHandlebarModel {
+        const result: ActionCreatorsHandlebarModel = {
+            baseActionCreatorsName: this.reduxModuleNamingHelper.getActionCreatorsName(
+                stateInfo,
+                "base"
+            ),
+            mainActionCreatorsName: this.reduxModuleNamingHelper.getActionCreatorsName(
+                stateInfo,
+                "main"
+            ),
+            extendedActionCreatorsName: this.reduxModuleNamingHelper.getActionCreatorsName(
+                stateInfo,
+                "ext"
+            ),
+        };
+        return result;
+    }
     createActionsHandlebarModel(
         stateInfo: StateInterfaceInfo
     ): ActionsHandlebarModel {
@@ -50,6 +70,7 @@ export class ModelFactory {
     createHandlebarModel(stateInfo: StateInterfaceInfo): HandlebarModel {
         return {
             actions: this.createActionsHandlebarModel(stateInfo),
+            actionCreators: this.createActionCreatorsHandlebarModel(stateInfo),
             moduleNames: this.createModuleNamesHandlebarModel(),
         };
     }

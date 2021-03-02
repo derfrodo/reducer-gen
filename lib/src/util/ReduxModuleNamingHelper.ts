@@ -126,7 +126,7 @@ export class ReduxModuleNamingHelper {
         return result;
     }
 
-    getPascalCasedFeatureName(stateInfo: StateInterfaceInfo) {
+    getPascalCasedFeatureName(stateInfo: StateInterfaceInfo): string {
         const { toPascalCased } = this.stringHelper;
         return toPascalCased(this.getFeatureName(stateInfo));
     }

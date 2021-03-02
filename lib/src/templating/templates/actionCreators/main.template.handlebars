@@ -1,0 +1,10 @@
+import {{actionCreators.baseActionCreatorsName}} from "./{{
+            moduleNames.base.actionCreators
+        }}";
+import {{actionCreators.extendedActionCreatorsName}} from "./{{
+            moduleNames.extended.actionCreators
+        }}";
+
+export const {{actionCreators.mainActionCreatorsName}} = { ...{{actionCreators.baseActionCreatorsName}}, ...{{actionCreators.extendedActionCreatorsName}} }
+
+export default {{actionCreators.mainActionCreatorsName}}

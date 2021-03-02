@@ -89,12 +89,47 @@ export default EXT_ACTIONS;
                 } as HandlebarModel));
             // assert
             console.log(typeof result);
-            expect(result).toBe(`import BASE_ACTIONS from "./action.base.generated";
+            expect(result)
+                .toBe(`import BASE_ACTIONS from "./action.base.generated";
 import EXT_ACTIONS from "./action.extended";
 
 export const MAIN_ACTIONS = { ...BASE_ACTIONS, ...EXT_ACTIONS };
 
 export default MAIN_ACTIONS;
+`);
+        });
+
+        it("... and actioncreators main template is passed, Then result will match expected string", async () => {
+            // arrange:
+            const clazz = new TemplatingEngine();
+
+            // act
+            await clazz.initialize();
+            const result =
+                clazz.actionCreatorsTemplates &&
+                (await clazz.compile(clazz.actionCreatorsTemplates.main, {
+                    actions: {
+                        baseActionsEnumName: "BASE_ACTIONS",
+                        extendedActionsEnumName: "EXT_ACTIONS",
+                        mainActionsEnumName: "MAIN_ACTIONS",
+                        baseActions: ["ACTION1", "ACTION2"],
+                    },
+                    actionCreators: {
+                        baseActionCreatorsName: "CREATOR_BASE",
+                        mainActionCreatorsName: "CREATOR_MAIN",
+                        extendedActionCreatorsName: "CREATOR_EXT",
+                    },
+                    moduleNames: createTestFactory().createModuleNamesHandlebarModel(),
+                } as HandlebarModel));
+            // assert
+            console.log(typeof result);
+            expect(result)
+                .toBe(`import CREATOR_BASE from "./actionCreators.base.generated";
+import CREATOR_EXT from "./actionCreators.extended";
+
+export const CREATOR_MAIN = { ...CREATOR_BASE, ...CREATOR_EXT };
+
+export default CREATOR_MAIN;
 `);
         });
     });

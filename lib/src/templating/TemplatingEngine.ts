@@ -29,6 +29,7 @@ const readTemplate = (filePath: string): Promise<string> =>
 
 export class TemplatingEngine {
     private _actionsTemplates: FeatureTemplate | undefined;
+    private _actionCreatorsTemplates: FeatureTemplate | undefined;
     constructor() {
         doBindPrototype(this, TemplatingEngine.prototype);
     }
@@ -43,8 +44,21 @@ export class TemplatingEngine {
         }
     }
 
+    public get actionCreatorsTemplates(): Readonly<FeatureTemplate> {
+        if (!this._actionCreatorsTemplates) {
+            throw new Error(
+                "Templates have not been initialized. Please call precompile method first."
+            );
+        } else {
+            return { ...this._actionCreatorsTemplates };
+        }
+    }
+
     async initialize(): Promise<void> {
         this._actionsTemplates = await this.readFeatureTemplates("actions");
+        this._actionCreatorsTemplates = await this.readFeatureTemplates(
+            "actionCreators"
+        );
     }
 
     async readFeatureTemplates(featureName: string): Promise<FeatureTemplate> {

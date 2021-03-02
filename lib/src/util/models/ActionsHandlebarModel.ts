@@ -1,6 +1,6 @@
 export interface ActionsHandlebarModel {
-    baseActionsEnumName: string;
     mainActionsEnumName: string;
+    baseActionsEnumName: string;
     extendedActionsEnumName: string;
     /**
      * The values of the actions which will be generated directly
