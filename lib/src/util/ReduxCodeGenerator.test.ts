@@ -48,12 +48,12 @@ describe("ReduxCodeGenerator tests", () => {
                 undefined,
                 undefined,
                 undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
                 modelFactoryService,
-                templateService
+                templateService,
+                undefined,
+                undefined,
+                undefined,
+                undefined
             );
 
             const state: StateInterfaceInfo = getDefaultTestStateInfo();
@@ -95,12 +95,12 @@ describe("ReduxCodeGenerator tests", () => {
                 undefined,
                 undefined,
                 undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
                 modelFactoryService,
-                templateService
+                templateService,
+                undefined,
+                undefined,
+                undefined,
+                undefined
             );
 
             const state: StateInterfaceInfo = getDefaultTestStateInfo();
@@ -126,9 +126,11 @@ describe("ReduxCodeGenerator tests", () => {
 
             const clazz = new ReduxCodeGenerator(
                 options,
+                undefined,
                 moduleNamingHelper.service,
                 fsHelper.service,
-                new StringHelper(),
+                undefined,
+                undefined,
                 undefined,
                 undefined,
                 contextGen.service

@@ -214,7 +214,6 @@ export default CREATOR_EXT;
                         clazz.rootTemplates.indexMain,
                         testModel
                     ));
-                console.log(result);
 
                 // assert
                 expect(result)
@@ -249,7 +248,7 @@ export type TestFeatureState = TESTSTATE;
                         clazz.rootTemplates.indexMain,
                         testModel
                     ));
-                console.log(result);
+
                 // assert
                 expect(result)
                     .toBe(`import { MAIN_REDUCERACTIONS as RAs } from "./reducerActions/reducerActions.main.generated";
