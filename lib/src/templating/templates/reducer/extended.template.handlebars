@@ -1,0 +1,34 @@
+import { {{actions.extendedActionsEnumName}} as extendedActions } from "./../actions/{{moduleNames.extended.actions}}";
+
+/**
+ * You may add here extending reducer actions for this features reducer
+ */
+export type {{reducerActions.extendedReducerActionsName}} = {
+    type: extendedActions;
+    isBubbled?: boolean;
+} & {
+    // replace by following template for every extendedActions
+    //    | {
+    //        type: extendedActions["[action name]"];
+    //        /* [additional payload like : next:  boolean;]*/
+    //    }
+};
+
+export const {{reducerActions.extendedReducerTypeguard}} = (
+    item: any
+): item is {{reducerActions.extendedReducerActionsName}} => {
+    if (!item) {
+        return false;
+    }
+    if (typeof item === "object") {
+        const { type } = item;
+
+        return (
+            typeof type === "string" &&
+            Object.hasOwnProperty.call(extendedActions, type)
+        );
+    }
+    return false;
+};
+
+export default {{reducerActions.extendedReducerActionsName}};

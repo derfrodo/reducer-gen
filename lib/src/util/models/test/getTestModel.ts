@@ -50,14 +50,17 @@ export const getTestModel: () => HandlebarModel = () => {
                     name: "prop1",
                     namePascalCase: "Prop1",
                     type: "function | undefined",
+                    initialValue: '""',
                 },
                 {
                     baseActionEnumValue: "SET_P2",
                     name: "prop2",
                     namePascalCase: "Prop2",
                     type: "function | undefined",
+                    initialValue: "undefined",
                 },
             ],
+            getDefaultStateMethodName: "getTestStateDefault",
         },
     };
     return result;

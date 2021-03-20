@@ -25,6 +25,7 @@ export class ReduxCodeGenerator {
             reduxModuleNamingHelper,
             fileService,
             options,
+            new StateService(),
             stringHelper
         ),
         private templatingEngine: TemplatingEngine = new TemplatingEngine(),
@@ -308,27 +309,10 @@ export default ${reducerMethod}`;
     }
 
     generateDefaultStateContent(stateInfo: StateInterfaceInfo): string {
-        const defaultStateMethodName = this.reduxModuleNamingHelper.getGetDefaultStateMethodName(
-            stateInfo,
-            "main"
+        return this.templatingEngine.compile(
+            this.templatingEngine.rootTemplates.defaultState,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-        const stateName = this.getStateInterfaceName(stateInfo);
-        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
-            stateInfo
-        );
-        return `${stateImport}
-        
-export const ${defaultStateMethodName} = (): ${stateName} => ({
-${stateInfo.stateProperties
-    .map((info) => {
-        const { name } = info;
-        return `    ${name}: ${this.getInitialPropertyValue(info)},
-`;
-    })
-    .join("")}  
-});
-
-export default ${defaultStateMethodName}`;
     }
 
     // Ext Elements

@@ -1,0 +1,52 @@
+{{#each state.importsWithAdditionalLevel}}
+{{this}}
+{{/each}}
+import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
+import getDefaultState from "./../{{moduleNames.base.defaultState}}";
+import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
+
+import { IState } from "./../state";
+import getDefaultState from "./../defaultState.base.generated";
+import ReducerAction from "./../reducerActions/reducerActions.base.generated";
+import actions from "./../actions/actions.base.generated";
+            
+const postsReducerBase = (state: IState = getDefaultState(), action: ReducerAction): IState => {
+    switch (action.type) {
+       case actions.POSTS_SET_POSTMAN:
+            return {
+                ...state, 
+                postman: action.next,
+            };        
+        default:
+            return state; 
+    }
+}
+
+
+export default postsReducerBase
+
+export type {{reducerActions.baseReducerActionsName}} = { type: actions; isBubbled?: boolean } & ({{#each state.properties}}
+    | {
+        type: actions.{{baseActionEnumValue}};
+        next: {{type}};
+    }{{/each}}
+);
+
+export const {{reducerActions.baseReducerTypeguard}} = (
+    item: any
+): item is {{reducerActions.baseReducerActionsName}} => {
+    if (!item) {
+        return false;
+    }
+    if (typeof item === "object") {
+        const { type } = item;
+
+        return (
+            typeof type === "string" &&
+            Object.hasOwnProperty.call(actions, type)
+        );
+    }
+    return false;
+};
+
+export default {{reducerActions.baseReducerActionsName}};

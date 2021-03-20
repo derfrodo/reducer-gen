@@ -1,8 +1,11 @@
-import { IState } from "./state";
-        
-export const getPostsDefaultState = (): IState => ({
-    postman: "",
-  
+{{#each state.imports}}
+{{this}}
+{{/each}}
+import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
+
+export const {{state.getDefaultStateMethodName}} = (): {{state.stateName}} => ({
+{{#each state.properties}}    {{name}}: {{initialValue}},
+{{/each}}
 });
 
-export default getPostsDefaultState
+export default {{state.getDefaultStateMethodName}};

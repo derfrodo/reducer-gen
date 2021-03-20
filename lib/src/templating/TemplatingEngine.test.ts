@@ -265,7 +265,8 @@ export default BASE_REDUCERACTIONS;
                     ));
                 console.log(result);
                 // assert
-                expect(result).toBe(`import { EXT_ACTIONS as extendedActions } from "./../actions/actions.extended";
+                expect(result)
+                    .toBe(`import { EXT_ACTIONS as extendedActions } from "./../actions/actions.extended";
 
 /**
  * You may add here extending reducer actions for this features reducer
@@ -316,7 +317,8 @@ export default EXTENDED_REDUCERACTIONS;
                     ));
                 console.log(result);
                 // assert
-                expect(result).toBe(`import { BASE_REDUCERACTIONS, isBaseTestReducer } from "./reducerActions.base.generated";
+                expect(result)
+                    .toBe(`import { BASE_REDUCERACTIONS, isBaseTestReducer } from "./reducerActions.base.generated";
 import { EXTENDED_REDUCERACTIONS, isExtendedTestReducer } from "./reducerActions.extended";
 
 export type MAIN_REDUCERACTIONS = BASE_REDUCERACTIONS | EXTENDED_REDUCERACTIONS;
@@ -397,6 +399,34 @@ export { isBaseTestReducer } from "./reducerActions/reducerActions.base.generate
 
 export type MAIN_REDUCERACTIONS = RAs;
 export type TestFeatureState = TESTSTATE;
+`);
+            });
+            it("... and default state template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.actionCreatorsTemplates &&
+                    (await clazz.compile(
+                        clazz.rootTemplates.defaultState,
+                        testModel
+                    ));
+                console.log(result);
+
+                // assert
+                expect(result).toBe(`import test from "same as in info level"
+import test from "same as in info level2"
+import { TESTSTATE } from "./state";
+
+export const getTestStateDefault = (): TESTSTATE => ({
+    prop1: "",
+    prop2: undefined,
+});
+
+export default getTestStateDefault;
 `);
             });
         });

@@ -2,6 +2,7 @@ import {
     doBindPrototype,
     StringHelper,
 } from "@derfrodo/frodo-s-little-helpers/dist";
+import { info } from "loglevel";
 import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo, {
     StatePropertyInfo,
@@ -16,12 +17,14 @@ import { StateHandlebarModel } from "../models/StateHandlebarModel";
 import { StatePropertyHandlebarModel } from "../models/StatePropertyHandlebarModel";
 import ReduxModuleNamingHelper from "../ReduxModuleNamingHelper";
 import ReduxModulFileService from "../ReduxModulFileService";
+import { StateService } from "./StateService";
 
 export class ModelFactory {
     constructor(
         private reduxModuleNamingHelper: ReduxModuleNamingHelper,
         private reduxModulFileService: ReduxModulFileService,
         private options: ReduxCodeGeneratorOptions,
+        private stateService: StateService = new StateService(),
         private stringHelper: StringHelper = new StringHelper()
     ) {
         doBindPrototype(this, ModelFactory.prototype);
@@ -142,6 +145,10 @@ export class ModelFactory {
             importsWithAdditionalLevel: this.getImportClausesWithAdditionalLevel(
                 stateInfo
             ),
+            getDefaultStateMethodName: this.reduxModuleNamingHelper.getGetDefaultStateMethodName(
+                stateInfo,
+                "main"
+            ),
         };
         return result;
     }
@@ -157,6 +164,9 @@ export class ModelFactory {
             baseActionEnumValue: this.reduxModuleNamingHelper.getActionString(
                 propertyInfo,
                 stateInfo
+            ),
+            initialValue: this.stateService.getInitialPropertyValue(
+                propertyInfo
             ),
         };
         return result;

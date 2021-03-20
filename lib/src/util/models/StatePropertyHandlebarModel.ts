@@ -3,4 +3,5 @@ export type StatePropertyHandlebarModel = {
     namePascalCase: string;
     type: string;
     baseActionEnumValue: string;
+    initialValue: string;
 };
