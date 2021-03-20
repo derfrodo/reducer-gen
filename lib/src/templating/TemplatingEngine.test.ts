@@ -228,9 +228,9 @@ export { BASE_ACTIONS } from "./actions/actions.base.generated";
 export { CREATOR_MAIN } from "./actionCreators/actionCreators.main.generated";
 export * from "./ReducerContext.main.generated";
 
-export { ismainTestReducer  } from "./reducerActions/reducerActions.main.generated";
-export { isextendedTestReducer } from "./reducerActions/reducerActions.extended";
-export { isbaseTestReducer } from "./reducerActions/reducerActions.base.generated";
+export { isMainTestReducer  } from "./reducerActions/reducerActions.main.generated";
+export { isExtendedTestReducer } from "./reducerActions/reducerActions.extended";
+export { isBaseTestReducer } from "./reducerActions/reducerActions.base.generated";
 
 export type MAIN_REDUCERACTIONS = RAs;
 export type TestFeatureState = TESTSTATE;
