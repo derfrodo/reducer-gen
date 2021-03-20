@@ -1,18 +1,16 @@
 {{#each state.importsWithAdditionalLevel}}
 {{this}}
 {{/each}}
-
-import { {{reducerActions.baseReducerActionsName}} } from "./../reducerActions/{{moduleNames.base.reducerActions}}";
+import { {{reducerActions.baseReducerActionsName}} as ReducerActions } from "./../reducerActions/{{moduleNames.base.reducerActions}}";
 import { {{actions.mainActionsEnumName}} as actions } from "./../actions/{{moduleNames.main.actions}}";
 
 export const {{actionCreators.baseActionCreatorsName}} = {
 {{#each state.properties}}
-    set{{namePascalCase}}: (next{{namePascalCase}}: {{type}}): {{mainActionsEnumName}} => (
-        {
-            type: actions.{{baseActionEnumValue}},
-            next: next{{namePascalCase}},
-        }),
+    set{{namePascalCase}}: (next{{namePascalCase}}:{{type}}): ReducerActions => ({
+        type: actions.{{baseActionEnumValue}},
+        next: next{{namePascalCase}},
+    }),
 {{/each}}
-}
+};
 
 export default {{actionCreators.baseActionCreatorsName}};
