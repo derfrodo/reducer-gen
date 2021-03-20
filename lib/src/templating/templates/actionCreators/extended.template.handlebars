@@ -1,35 +1,37 @@
-{{#each state.importsWithAdditionalLevel}}
 // Uncomment imports if you need to ;)
+{{#each state.importsWithAdditionalLevel}}
 // {{this}}
 {{/each}}
 
-// import {{reducerActions.extendedReducerActionsName}} from "./../reducerActions/{{reducerActions.extendedReducerActionsName}}";
-import ExtenedReducerAction from "./../reducerActions/${reducerActions}";
-// import extendedActions from "./../actions/${action}";
+import { {{reducerActions.extendedReducerActionsName}} } from "./../reducerActions/{{moduleNames.extended.reducerActions}}";
+// import { {{actions.extendedActionsEnumName}} } from "./../actions/{{moduleNames.extended.actions}}";
 
 /**
  * You may add here extending actionCreators for this features reducer
  * actionCreator: ([params]): ExtenedReducerAction => (
  * {
- *   type: extendedActions["[actionName]"],
+ *   type: {{actions.extendedActionsEnumName}}["[actionName]"],
  *   [payload]
  * }),
- * 
  */
-export const extendedActionCreators = {
+const extendedActionCreators = {
     // Add functions like
-    // addLoadingHandle: (handleToAdd: boolean) => ({
-    //    type: ADD_LOADING_HANDLE = "ADD_LOADING_HANDLE"
-    //    
-    // 
+    // addLoadingHandle: (handleToAdd: symbol) => {
+    //    return {
+    //        type: {{actions.extendedActionsEnumName}}.ADD_LOADING_HANDLE,
+    //        handle: handleToAdd
+    //        };
+    //    },
 }
 
-type ActionCreator = { [key in string]: (...params: any[]) => ExtenedReducerAction };
+// Start: This is just for typechecking, so that you can utilize the awesomeness of Typescript
+type ActionCreator = { [key in string]: (...params: any[]) => {{reducerActions.extendedReducerActionsName}} };
 
 const checkActionCreator: <T>(item: T & ActionCreator) => T = <T>(item: T & ActionCreator) => {
     return item;
 };
+// End (The function above will be used to create the named export below)
 
-export const ${actionCreatorObjectName} = checkActionCreator(extendedActionCreators);
+export const {{actionCreators.extendedActionCreatorsName}} = checkActionCreator(extendedActionCreators);
 
-export default ${actionCreatorObjectName};
+export default {{actionCreators.extendedActionCreatorsName}};

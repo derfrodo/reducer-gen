@@ -178,7 +178,7 @@ export class ReduxModulFileService {
         }
 
         return ({
-            action: combine(prefix, REDUX_FILE_NAME.actions, suffix),
+            actions: combine(prefix, REDUX_FILE_NAME.actions, suffix),
             actionCreators: combine(
                 prefix,
                 REDUX_FILE_NAME.actionCreators,

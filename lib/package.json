@@ -18,7 +18,7 @@
         "test:coverage": "jest --coverage",
         "clean": "npm ci && node clean.js",
         "build": "tsc --project tsconfig.build.json",
-        "buildWatch": "tsc -w --project tsconfig.build.json",
+        "build:watch": "tsc -w --project tsconfig.build.json",
         "prebuild": "npm run clean",
         "prestart": "npm run clean",
         "start": "tsc -w",
