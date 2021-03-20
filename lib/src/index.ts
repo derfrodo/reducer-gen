@@ -95,6 +95,7 @@ export const generate = async (argv: CliArgs): Promise<void> => {
         reduxModuleNamingHelper,
         fileService
     );
+    await codeGenerator.initialize();
     const stateFilePaths = [
         ...(await new FileSystemHelper().findFiles("./src", "/redux/state.ts", {
             includeNested: true,

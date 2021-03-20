@@ -5,9 +5,11 @@ import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo, {
     StatePropertyInfo,
 } from "../interfaces/StateInterfaceInfo";
+import { TemplatingEngine } from "../templating/TemplatingEngine";
 import ReduxModuleNamingHelper from "./ReduxModuleNamingHelper";
 import ReduxModulFileService from "./ReduxModulFileService";
 import { IndexCodeGenerator } from "./services/IndexCodeGenerator";
+import { ModelFactory } from "./services/ModelFactory";
 import { ReducerActionCodesGenerator } from "./services/ReducerActionCodesGenerator";
 import { ReducerContextCodesGenerator } from "./services/ReducerContextCodesGenerator";
 import { StateService } from "./services/StateService";
@@ -36,8 +38,18 @@ export class ReduxCodeGenerator {
             reduxModuleNamingHelper,
             fileService,
             stringHelper
-        )
+        ),
+        private modelFactory: ModelFactory = new ModelFactory(
+            reduxModuleNamingHelper,
+            fileService,
+            options,
+            stringHelper
+        ),
+        private templatingEngine: TemplatingEngine = new TemplatingEngine()
     ) {}
+    initialize(): Promise<void> {
+        return this.templatingEngine.initialize();
+    }
 
     async generateStateCodes(
         stateInfo: StateInterfaceInfo[]
@@ -147,60 +159,17 @@ export class ReduxCodeGenerator {
 
     // Main Elements
     generateMainActionsCreatorContent(stateInfo: StateInterfaceInfo): string {
-        const actionsCreatorNameBase = this.reduxModuleNamingHelper.getActionCreatorsName(
-            stateInfo,
-            "base"
+        return this.templatingEngine.compile(
+            this.templatingEngine.actionCreatorsTemplates.main,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-        const actionsCreatorNameExt = this.reduxModuleNamingHelper.getActionCreatorsName(
-            stateInfo,
-            "ext"
-        );
-        const actionsCreatorName = this.reduxModuleNamingHelper.getActionCreatorsName(
-            stateInfo,
-            "main"
-        );
-
-        const actionCreatorObjectName = this.reduxModuleNamingHelper.getActionCreatorsName(
-            stateInfo,
-            "main"
-        );
-
-        return `import ${actionsCreatorNameBase} from "./${
-            this.fileService.getGeneratedModulNames().actionCreators
-        }";
-import ${actionsCreatorNameExt} from "./${
-            this.fileService.getExtensionModulNames().actionCreators
-        }";
-
-export const ${actionsCreatorName} = { ...${actionsCreatorNameBase}, ...${actionsCreatorNameExt} }
-
-export default ${actionCreatorObjectName}`;
     }
 
     generateMainActionContent(stateInfo: StateInterfaceInfo): string {
-        const actionsEnumNameBase = this.reduxModuleNamingHelper.getActionEnumName(
-            stateInfo,
-            "base"
+        return this.templatingEngine.compile(
+            this.templatingEngine.actionsTemplates.main,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-        const actionsEnumNameExt = this.reduxModuleNamingHelper.getActionEnumName(
-            stateInfo,
-            "ext"
-        );
-        const actionsEnumName = this.reduxModuleNamingHelper.getActionEnumName(
-            stateInfo,
-            "main"
-        );
-
-        return `import ${actionsEnumNameBase} from "./${
-            this.fileService.getGeneratedModulNames().actions
-        }";
-import ${actionsEnumNameExt} from "./${
-            this.fileService.getExtensionModulNames().actions
-        }";
-        
-export const ${actionsEnumName} = { ...${actionsEnumNameBase}, ...${actionsEnumNameExt} };
-
-export default ${actionsEnumName}`;
     }
 
     generateMainReducerContent(stateInfo: StateInterfaceInfo): string {
@@ -275,60 +244,17 @@ export default ${name};
 
     // Base Elements
     generateBaseActionsCreatorContent(stateInfo: StateInterfaceInfo): string {
-        const {
-            reducerActions,
-            actions: action,
-        } = this.fileService.getGeneratedModulNames();
-
-        const actionCreatorObjectName = this.reduxModuleNamingHelper.getActionCreatorsName(
-            stateInfo,
-            "base"
+        return this.templatingEngine.compile(
+            this.templatingEngine.actionCreatorsTemplates.base,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-
-        return `${this.getImportClauses(stateInfo)}
-import ReducerAction from "./../reducerActions/${reducerActions}";
-import actions from "./../actions/${action}";
-
-export const ${actionCreatorObjectName} = {
-${stateInfo.stateProperties
-    .map((p) => {
-        const propertyPascalCased = p.name.replace(/(?<=^)[a-z]/, (mtch) =>
-            mtch.toUpperCase()
-        );
-        return `    set${propertyPascalCased}: (next${propertyPascalCased}: ${
-            p.typesText
-        }): ReducerAction => (
-        {
-            type: actions.${this.reduxModuleNamingHelper.getActionString(
-                p,
-                stateInfo
-            )},
-            next: next${propertyPascalCased},
-        }),`;
-    })
-    .join("\n")}        
-}
-
-export default ${actionCreatorObjectName};
-`;
     }
 
     generateBaseActionContent(stateInfo: StateInterfaceInfo): string {
-        const actionsEnumName = this.reduxModuleNamingHelper.getActionEnumName(
-            stateInfo,
-            "base"
+        return this.templatingEngine.compile(
+            this.templatingEngine.actionsTemplates.base,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-        return `export enum ${actionsEnumName} {
-${this.reduxModuleNamingHelper
-    .getActionStrings(stateInfo)
-    .map(
-        (a) => `    ${a} = "${a}",
-`
-    )
-    .join("")}}
-
-export default ${actionsEnumName};
-`;
     }
 
     generateBaseReducerContent(stateInfo: StateInterfaceInfo): string {
@@ -408,57 +334,17 @@ export default ${defaultStateMethodName}`;
 
     // Ext Elements
     generateExtActCreatorContent(stateInfo: StateInterfaceInfo): string {
-        const {
-            reducerActions,
-            actions: action,
-        } = this.fileService.getExtensionModulNames();
-
-        /**
-         * You may add here extending actionCreators for this features reducer
-         */
-        const actionCreatorObjectName = this.reduxModuleNamingHelper.getActionCreatorsName(
-            stateInfo,
-            "ext"
+        return this.templatingEngine.compile(
+            this.templatingEngine.actionCreatorsTemplates.extended,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-        return `${this.getImportClauses(stateInfo, true, true)}
-import ExtenedReducerAction from "./../reducerActions/${reducerActions}";
-// import extendedActions from "./../actions/${action}";
-
-/**
- * You may add here extending actionCreators for this features reducer
- * actionCreator: ([params]): ExtenedReducerAction => (
- * {
- *   type: extendedActions["[actionName]"],
- *   [payload]
- * }),
- * 
- */
-export const extendedActionCreators = {}
-
-type ActionCreator = { [key in string]: (...params: any[]) => ExtenedReducerAction };
-
-const checkActionCreator: <T>(item: T & ActionCreator) => T = <T>(item: T & ActionCreator) => {
-    return item;
-};
-
-export const ${actionCreatorObjectName} = checkActionCreator(extendedActionCreators);
-
-export default ${actionCreatorObjectName};
-`;
     }
 
     generateExtActionContent(stateInfo: StateInterfaceInfo): string {
-        const actionsEnumName = this.reduxModuleNamingHelper.getActionEnumName(
-            stateInfo,
-            "ext"
+        return this.templatingEngine.compile(
+            this.templatingEngine.actionsTemplates.extended,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-
-        return `export enum ${actionsEnumName} {
-// e.g. SET_IS_LOGGED_IN_EXT = "SET_IS_LOGGED_IN_EXT",
-
-}
-
-export default ${actionsEnumName}`;
     }
 
     generateExtReducerActionContent(stateInfo: StateInterfaceInfo): string {
