@@ -11,7 +11,7 @@ import ReduxModulFileService from "./util/ReduxModulFileService";
 import ReduxModulFileServiceOptions from "./interfaces/ReduxModulFileServiceOptions";
 import ReduxModuleNamingHelper from "./util/ReduxModuleNamingHelper";
 import ReduxModuleNamingHelperOptions from "./interfaces/ReduxModuleNamingHelperOptions";
-import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
+import { FileSystemHelper, StringHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import ArgsOptions from "./args/ArgsOptions";
 import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
 import { WebAppHooksCodesGeneratorGenerator } from "./util/services/WebAppHooksCodesGenerator";
@@ -92,6 +92,7 @@ export const generate = async (argv: CliArgs): Promise<void> => {
     );
     const codeGenerator = new ReduxCodeGenerator(
         generatorOptions,
+        new StringHelper(),
         reduxModuleNamingHelper,
         fileService
     );

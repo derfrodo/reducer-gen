@@ -3,6 +3,16 @@ import { HandlebarModel } from "../HandlebarModel";
 
 export const getTestModel: () => HandlebarModel = () => {
     const result: HandlebarModel = {
+        featureName: {
+            asIs: "test_feature",
+            pascalCase: "TestFeature",
+            camelCase: "testFeature",
+        },
+        reducer: {
+            baseReducerName: "baseTestReducer",
+            mainReducerName: "mainTestReducer",
+            extendedReducerName: "extendedTestReducer",
+        },
         reducerActions: {
             baseReducerActionsName: "BASE_REDUCERACTIONS",
             mainReducerActionsName: "MAIN_REDUCERACTIONS",

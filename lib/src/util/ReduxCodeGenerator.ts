@@ -18,9 +18,16 @@ import { StateService } from "./services/StateService";
 export class ReduxCodeGenerator {
     constructor(
         private options: ReduxCodeGeneratorOptions,
+        private stringHelper: StringHelper = new StringHelper(),
         private reduxModuleNamingHelper: ReduxModuleNamingHelper,
         private fileService: ReduxModulFileService,
-        private stringHelper: StringHelper = new StringHelper(),
+        private modelFactory: ModelFactory = new ModelFactory(
+            reduxModuleNamingHelper,
+            fileService,
+            options,
+            stringHelper
+        ),
+        private templatingEngine: TemplatingEngine = new TemplatingEngine(),
         private stateService: StateService = new StateService(),
         private reducerActionCodesGenerator: ReducerActionCodesGenerator = new ReducerActionCodesGenerator(
             options,
@@ -35,17 +42,9 @@ export class ReduxCodeGenerator {
         ),
         private indexCodeGenerator = new IndexCodeGenerator(
             options,
-            reduxModuleNamingHelper,
-            fileService,
-            stringHelper
-        ),
-        private modelFactory: ModelFactory = new ModelFactory(
-            reduxModuleNamingHelper,
-            fileService,
-            options,
-            stringHelper
-        ),
-        private templatingEngine: TemplatingEngine = new TemplatingEngine()
+            modelFactory,
+            templatingEngine
+        )
     ) {}
     initialize(): Promise<void> {
         return this.templatingEngine.initialize();

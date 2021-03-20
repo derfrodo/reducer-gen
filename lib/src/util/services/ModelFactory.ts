@@ -11,6 +11,7 @@ import { ActionsHandlebarModel } from "../models/ActionsHandlebarModel";
 import { HandlebarModel } from "../models/HandlebarModel";
 import { ModuleNamesHandlebarModel } from "../models/ModuleNamesHandlebarModel";
 import { ReducerActionsHandlebarModel } from "../models/ReducerActionsHandlebarModel";
+import { ReducerHandlebarModel } from "../models/ReducerHandlebarModel";
 import { StateHandlebarModel } from "../models/StateHandlebarModel";
 import { StatePropertyHandlebarModel } from "../models/StatePropertyHandlebarModel";
 import ReduxModuleNamingHelper from "../ReduxModuleNamingHelper";
@@ -91,6 +92,26 @@ export class ModelFactory {
         return result;
     }
 
+    createReducerHandlebarModel(
+        stateInfo: StateInterfaceInfo
+    ): ReducerHandlebarModel {
+        const result: ReducerHandlebarModel = {
+            baseReducerName: this.reduxModuleNamingHelper.getReducerMethodName(
+                stateInfo,
+                "base"
+            ),
+            mainReducerName: this.reduxModuleNamingHelper.getReducerMethodName(
+                stateInfo,
+                "main"
+            ),
+            extendedReducerName: this.reduxModuleNamingHelper.getReducerMethodName(
+                stateInfo,
+                "ext"
+            ),
+        };
+        return result;
+    }
+
     createStateHandlebarModel(
         stateInfo: StateInterfaceInfo
     ): StateHandlebarModel {
@@ -153,6 +174,16 @@ export class ModelFactory {
 
     createHandlebarModel(stateInfo: StateInterfaceInfo): HandlebarModel {
         return {
+            featureName: {
+                asIs: stateInfo.featureData.featureName,
+                pascalCase: this.stringHelper.toPascalCased(
+                    stateInfo.featureData.featureName
+                ),
+                camelCase: this.stringHelper.toCamelCased(
+                    stateInfo.featureData.featureName
+                ),
+            },
+            reducer: this.createReducerHandlebarModel(stateInfo),
             reducerActions: this.createReducerActionsHandlebarModel(stateInfo),
             actions: this.createActionsHandlebarModel(stateInfo),
             actionCreators: this.createActionCreatorsHandlebarModel(stateInfo),

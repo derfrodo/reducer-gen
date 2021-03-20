@@ -199,5 +199,77 @@ export default CREATOR_EXT;
 `);
             });
         });
+        describe("... and compilation will be for root files", () => {
+            it("... and indexMain template is passed and has state as default export, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                testModel.state.hasStateAsDefaultExport = true;
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.actionCreatorsTemplates &&
+                    (await clazz.compile(
+                        clazz.rootTemplates.indexMain,
+                        testModel
+                    ));
+                console.log(result);
+
+                // assert
+                expect(result)
+                    .toBe(`import { MAIN_REDUCERACTIONS as RAs } from "./reducerActions/reducerActions.main.generated;
+import TESTSTATE from "./state";
+
+export { mainTestReducer } from "./reducer/reducer.main.generated";
+export { MAIN_ACTIONS } from "./actions/actions.main.generated";
+export { EXT_ACTIONS } from "./actions/actions.extended";
+export { BASE_ACTIONS } from "./actions/actions.base.generated";
+export { CREATOR_MAIN } from "./actionCreators/actionCreators.main.generated";
+export * from "./ReducerContext.main.generated";
+
+export { ismainTestReducer  } from "./reducerActions/reducerActions.main.generated";
+export { isextendedTestReducer } from "./reducerActions/reducerActions.extended";
+export { isbaseTestReducer } from "./reducerActions/reducerActions.base.generated";
+
+export type MAIN_REDUCERACTIONS = RAs;
+export type TestFeatureState = TESTSTATE;
+`);
+            });
+            it("... and indexMain template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.actionCreatorsTemplates &&
+                    (await clazz.compile(
+                        clazz.rootTemplates.indexMain,
+                        testModel
+                    ));
+                console.log(result);
+                // assert
+                expect(result)
+                    .toBe(`import { MAIN_REDUCERACTIONS as RAs } from "./reducerActions/reducerActions.main.generated;
+import { TESTSTATE } from "./state";
+
+export { mainTestReducer } from "./reducer/reducer.main.generated";
+export { MAIN_ACTIONS } from "./actions/actions.main.generated";
+export { EXT_ACTIONS } from "./actions/actions.extended";
+export { BASE_ACTIONS } from "./actions/actions.base.generated";
+export { CREATOR_MAIN } from "./actionCreators/actionCreators.main.generated";
+export * from "./ReducerContext.main.generated";
+
+export { ismainTestReducer  } from "./reducerActions/reducerActions.main.generated";
+export { isextendedTestReducer } from "./reducerActions/reducerActions.extended";
+export { isbaseTestReducer } from "./reducerActions/reducerActions.base.generated";
+
+export type MAIN_REDUCERACTIONS = RAs;
+export type TestFeatureState = TESTSTATE;
+`);
+            });
+        });
     });
 });

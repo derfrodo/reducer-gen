@@ -1,0 +1,16 @@
+import { {{reducerActions.mainReducerActionsName}} as RAs } from "./reducerActions/{{moduleNames.main.reducerActions}};
+import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
+
+export { {{reducer.mainReducerName}} } from "./reducer/{{moduleNames.main.reducer}}";
+export { {{actions.mainActionsEnumName}} } from "./actions/{{moduleNames.main.actions}}";
+export { {{actions.extendedActionsEnumName}} } from "./actions/{{moduleNames.extended.actions}}";
+export { {{actions.baseActionsEnumName}} } from "./actions/{{moduleNames.base.actions}}";
+export { {{actionCreators.mainActionCreatorsName}} } from "./actionCreators/{{moduleNames.main.actionCreators}}";
+export * from "./ReducerContext.main.generated";
+
+export { is{{reducer.mainReducerName}}  } from "./reducerActions/{{moduleNames.main.reducerActions}}";
+export { is{{reducer.extendedReducerName}} } from "./reducerActions/{{moduleNames.extended.reducerActions}}";
+export { is{{reducer.baseReducerName}} } from "./reducerActions/{{moduleNames.base.reducerActions}}";
+
+export type {{reducerActions.mainReducerActionsName}} = RAs;
+export type {{featureName.pascalCase}}State = {{state.stateName}};

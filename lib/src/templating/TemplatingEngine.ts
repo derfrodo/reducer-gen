@@ -27,11 +27,28 @@ const readTemplate = (filePath: string): Promise<string> =>
         )
     );
 
+type RootTemplates = {
+    defaultState: string;
+    index: string;
+    indexMain: string;
+};
+
 export class TemplatingEngine {
+    private _rootTemplates: RootTemplates | undefined;
     private _actionsTemplates: FeatureTemplate | undefined;
     private _actionCreatorsTemplates: FeatureTemplate | undefined;
     constructor() {
         doBindPrototype(this, TemplatingEngine.prototype);
+    }
+
+    public get rootTemplates(): Readonly<RootTemplates> {
+        if (!this._rootTemplates) {
+            throw new Error(
+                "Root templates have not been initialized. Please call precompile method first."
+            );
+        } else {
+            return { ...this._rootTemplates };
+        }
     }
 
     public get actionsTemplates(): Readonly<FeatureTemplate> {
@@ -55,10 +72,24 @@ export class TemplatingEngine {
     }
 
     async initialize(): Promise<void> {
+        this._rootTemplates = await this.readRootTemplates();
         this._actionsTemplates = await this.readFolderTemplates("actions");
         this._actionCreatorsTemplates = await this.readFolderTemplates(
             "actionCreators"
         );
+    }
+    async readRootTemplates(): Promise<RootTemplates> {
+        return {
+            index: await readTemplate(
+                path.join(__dirname, "templates", "index.handlebars")
+            ),
+            indexMain: await readTemplate(
+                path.join(__dirname, "templates", "mainIndex.handlebars")
+            ),
+            defaultState: await readTemplate(
+                path.join(__dirname, "templates", "defaultState.handlebars")
+            ),
+        };
     }
 
     async readFolderTemplates(featureName: string): Promise<FeatureTemplate> {
