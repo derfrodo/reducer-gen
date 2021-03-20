@@ -1,5 +1,4 @@
-import { HandlebarModel } from "../util/models/HandlebarModel";
-import { createTestFactory } from "../util/services/ModelFactory";
+import { getTestModel } from "../util/models/test/getTestModel";
 import { TemplatingEngine } from "./TemplatingEngine";
 
 describe("Given TemplatingEngine", () => {
@@ -19,23 +18,15 @@ describe("Given TemplatingEngine", () => {
     describe("When TemplatingEngine.compile is called", () => {
         it("... and action base template is passed, Then result will match expected string", async () => {
             // arrange:
+            const testModel = getTestModel();
             const clazz = new TemplatingEngine();
 
             // act
             await clazz.initialize();
             const result =
                 clazz.actionsTemplates &&
-                (await clazz.compile(clazz.actionsTemplates.base, {
-                    actions: {
-                        baseActionsEnumName: "BASE_ACTIONS",
-                        extendedActionsEnumName: "EXT_ACTIONS",
-                        mainActionsEnumName: "MAIN_ACTIONS",
-                        baseActions: ["ACTION1", "ACTION2"],
-                    },
-                    moduleNames: createTestFactory().createModuleNamesHandlebarModel(),
-                } as HandlebarModel));
+                (await clazz.compile(clazz.actionsTemplates.base, testModel));
             // assert
-            console.log(typeof result);
             expect(result).toBe(`export enum BASE_ACTIONS {
     ACTION1 = "ACTION1",
     ACTION2 = "ACTION2"
@@ -46,23 +37,18 @@ export default BASE_ACTIONS;
         });
         it("... and action ext template is passed, Then result will match expected string", async () => {
             // arrange:
+            const testModel = getTestModel();
             const clazz = new TemplatingEngine();
 
             // act
             await clazz.initialize();
             const result =
                 clazz.actionsTemplates &&
-                (await clazz.compile(clazz.actionsTemplates.extended, {
-                    actions: {
-                        baseActionsEnumName: "BASE_ACTIONS",
-                        extendedActionsEnumName: "EXT_ACTIONS",
-                        mainActionsEnumName: "MAIN_ACTIONS",
-                        baseActions: ["ACTION1", "ACTION2"],
-                    },
-                    moduleNames: createTestFactory().createModuleNamesHandlebarModel(),
-                } as HandlebarModel));
+                (await clazz.compile(
+                    clazz.actionsTemplates.extended,
+                    testModel
+                ));
             // assert
-            console.log(typeof result);
             expect(result).toBe(`export enum EXT_ACTIONS {
     // e.g. SET_IS_LOGGED_IN_EXT = "SET_IS_LOGGED_IN_EXT",
 }
@@ -72,23 +58,15 @@ export default EXT_ACTIONS;
         });
         it("... and action main template is passed, Then result will match expected string", async () => {
             // arrange:
+            const testModel = getTestModel();
             const clazz = new TemplatingEngine();
 
             // act
             await clazz.initialize();
             const result =
                 clazz.actionsTemplates &&
-                (await clazz.compile(clazz.actionsTemplates.main, {
-                    actions: {
-                        baseActionsEnumName: "BASE_ACTIONS",
-                        extendedActionsEnumName: "EXT_ACTIONS",
-                        mainActionsEnumName: "MAIN_ACTIONS",
-                        baseActions: ["ACTION1", "ACTION2"],
-                    },
-                    moduleNames: createTestFactory().createModuleNamesHandlebarModel(),
-                } as HandlebarModel));
+                (await clazz.compile(clazz.actionsTemplates.main, testModel));
             // assert
-            console.log(typeof result);
             expect(result)
                 .toBe(`import BASE_ACTIONS from "./action.base.generated";
 import EXT_ACTIONS from "./action.extended";
@@ -101,28 +79,18 @@ export default MAIN_ACTIONS;
 
         it("... and actioncreators main template is passed, Then result will match expected string", async () => {
             // arrange:
+            const testModel = getTestModel();
             const clazz = new TemplatingEngine();
 
             // act
             await clazz.initialize();
             const result =
                 clazz.actionCreatorsTemplates &&
-                (await clazz.compile(clazz.actionCreatorsTemplates.main, {
-                    actions: {
-                        baseActionsEnumName: "BASE_ACTIONS",
-                        extendedActionsEnumName: "EXT_ACTIONS",
-                        mainActionsEnumName: "MAIN_ACTIONS",
-                        baseActions: ["ACTION1", "ACTION2"],
-                    },
-                    actionCreators: {
-                        baseActionCreatorsName: "CREATOR_BASE",
-                        mainActionCreatorsName: "CREATOR_MAIN",
-                        extendedActionCreatorsName: "CREATOR_EXT",
-                    },
-                    moduleNames: createTestFactory().createModuleNamesHandlebarModel(),
-                } as HandlebarModel));
+                (await clazz.compile(
+                    clazz.actionCreatorsTemplates.main,
+                    testModel
+                ));
             // assert
-            console.log(typeof result);
             expect(result)
                 .toBe(`import CREATOR_BASE from "./actionCreators.base.generated";
 import CREATOR_EXT from "./actionCreators.extended";
@@ -131,6 +99,44 @@ export const CREATOR_MAIN = { ...CREATOR_BASE, ...CREATOR_EXT };
 
 export default CREATOR_MAIN;
 `);
+        });
+
+        it("... and actioncreators base template is passed, Then result will match expected string", async () => {
+            // arrange:
+            const testModel = getTestModel();
+            const clazz = new TemplatingEngine();
+
+            // act
+            await clazz.initialize();
+            const result =
+                clazz.actionCreatorsTemplates &&
+                (await clazz.compile(
+                    clazz.actionCreatorsTemplates.base,
+                    testModel
+                ));
+
+            console.log(result);
+            // assert
+            expect(result).toBe(`import test from "with additional level"
+import test from "with additional level2"
+
+import MAIN_REDUCERACTIONS from "./../reducerActions/MAIN_REDUCERACTIONS";
+import { MAIN_ACTIONS as actions } from "./../actions/MAIN_ACTIONS";
+
+export const CREATOR_BASE = {
+    setProp1: (nextProp1: function | undefined):  => (
+        {
+            type: actions.SET_P1,
+            next: nextProp1,
+        }),
+    setProp2: (nextProp2: function | undefined):  => (
+        {
+            type: actions.SET_P2,
+            next: nextProp2,
+        }),
+}
+
+export default CREATOR_BASE;`);
         });
     });
 });

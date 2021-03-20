@@ -55,13 +55,13 @@ export class TemplatingEngine {
     }
 
     async initialize(): Promise<void> {
-        this._actionsTemplates = await this.readFeatureTemplates("actions");
-        this._actionCreatorsTemplates = await this.readFeatureTemplates(
+        this._actionsTemplates = await this.readFolderTemplates("actions");
+        this._actionCreatorsTemplates = await this.readFolderTemplates(
             "actionCreators"
         );
     }
 
-    async readFeatureTemplates(featureName: string): Promise<FeatureTemplate> {
+    async readFolderTemplates(featureName: string): Promise<FeatureTemplate> {
         const templates: FeatureTemplate = {
             base: await readTemplate(
                 path.join(
@@ -92,6 +92,9 @@ export class TemplatingEngine {
     }
 
     compile(template: TemplateSpecification, model: HandlebarModel): string {
-        return handlebars.compile(template)(model);
+        // const compiled = handlebars.precompile(template); //, { noEscape: true })(model);
+        // console.log(compiled);
+        // const t = handlebars.template(compiled);
+        return handlebars.compile(template, { noEscape: true })(model);
     }
 }
