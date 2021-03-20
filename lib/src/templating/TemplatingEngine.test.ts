@@ -132,17 +132,15 @@ import { BASE_REDUCERACTIONS as ReducerActions } from "./../reducerActions/reduc
 import { MAIN_ACTIONS as actions } from "./../actions/actions.main.generated";
 
 export const CREATOR_BASE = {
-    setProp1: (nextProp1: function | undefined): ReducerActions   => (
-        {
-            type: actions.SET_P1,
-            next: nextProp1,
-        }),
-    setProp2: (nextProp2: function | undefined): ReducerActions => (
-        {
-            type: actions.SET_P2,
-            next: nextProp2,
-        }),
-}
+    setProp1: (nextProp1: function | undefined): ReducerActions => ({
+        type: actions.SET_P1,
+        next: nextProp1,
+    }),
+    setProp2: (nextProp2: function | undefined): ReducerActions => ({
+        type: actions.SET_P2,
+        next: nextProp2,
+    }),
+};
 
 export default CREATOR_BASE;
 `);
