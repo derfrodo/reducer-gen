@@ -127,7 +127,6 @@ export default CREATOR_MAIN;
                 // assert
                 expect(result).toBe(`import test from "with additional level"
 import test from "with additional level2"
-
 import { BASE_REDUCERACTIONS as ReducerActions } from "./../reducerActions/reducerActions.base.generated";
 import { MAIN_ACTIONS as actions } from "./../actions/actions.main.generated";
 

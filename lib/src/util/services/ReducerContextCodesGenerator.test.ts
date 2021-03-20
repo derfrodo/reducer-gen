@@ -187,7 +187,7 @@ export const undefinedContextProvider = (props: {
     );
 
     return (
-        <DispatchundefinedContext.Provider value={dispatch}>
+        <DispatchundefinedContext.Provider value={dispatchCallback}>
             <StateundefinedContext.Provider value={state}>
                 <undefinedContext.Provider value={context}>
                     {children}
