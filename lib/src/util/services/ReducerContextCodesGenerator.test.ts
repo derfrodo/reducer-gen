@@ -234,7 +234,7 @@ export const useundefinedDispatchWillBeCalledEffect = (callback: OnundefinedCont
  * @param onStateChanged callback which will be called if undefinedState changes
  */
 export const useundefinedStateChangedEffect = <T extends IState>(
-    onStateChanged: (next: IState, old: IState | null) => Promise<void> | void
+    onStateChanged: (next: undefined, old: undefined | null) => Promise<void> | void
 ) => {
     const state = useundefinedContextState();
 
