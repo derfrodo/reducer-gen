@@ -233,13 +233,13 @@ export const useundefinedDispatchWillBeCalledEffect = (callback: OnundefinedCont
  * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
  * @param onStateChanged callback which will be called if undefinedState changes
  */
-export const useundefinedStateChangedEffect = <T extends IState>(
+export const useundefinedStateChangedEffect = <T extends undefined>(
     onStateChanged: (next: undefined, old: undefined | null) => Promise<void> | void
 ) => {
     const state = useundefinedContextState();
 
     const callbackRef = useRef<typeof onStateChanged>(onStateChanged);
-    const [, setOld] = useState<IState | null>(null);
+    const [, setOld] = useState<undefined | null>(null);
 
     useEffect(() => {
         callbackRef.current = onStateChanged;
@@ -261,14 +261,14 @@ export const useundefinedStateChangedEffect = <T extends IState>(
  * @param onStatePropertyChanged callback which will be called if property in state changes
  */
 export const useundefinedStatePropertyChangedEffect = <
-    TKey extends keyof IState
+    TKey extends keyof undefined
 >(
     property: TKey,
     onStatePropertyChanged: (
-        next: IState[TKey],
-        old: IState[TKey] | null,
-        state: IState,
-        oldState: IState | null
+        next: undefined[TKey],
+        old: undefined[TKey] | null,
+        state: undefined,
+        oldState: undefined | null
     ) => Promise<void> | void
 ) => {
     const callbackRef = useRef<typeof onStatePropertyChanged>(
@@ -280,7 +280,7 @@ export const useundefinedStatePropertyChangedEffect = <
     }, [onStatePropertyChanged]);
 
     const changedCallback = useCallback(
-        async (next: IState, old: IState | null) => {
+        async (next: undefined, old: undefined | null) => {
             const cb = callbackRef.current;
             if (cb && (!old || next[property] !== old[property])) {
                 await cb(
