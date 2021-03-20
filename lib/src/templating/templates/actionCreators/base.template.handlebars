@@ -6,7 +6,7 @@ import { {{actions.mainActionsEnumName}} as actions } from "./../actions/{{modul
 
 export const {{actionCreators.baseActionCreatorsName}} = {
 {{#each state.properties}}
-    set{{namePascalCase}}: (next{{namePascalCase}}:{{type}}): ReducerActions => ({
+    set{{namePascalCase}}: (next{{namePascalCase}}: {{type}}): ReducerActions => ({
         type: actions.{{baseActionEnumValue}},
         next: next{{namePascalCase}},
     }),

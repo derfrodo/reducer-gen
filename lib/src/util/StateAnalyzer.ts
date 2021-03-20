@@ -225,11 +225,12 @@ export class StateAnalyzer {
         srcFile?: ts.SourceFile
     ): StatePropertyInfo {
         const { name, type } = node;
+        const sh = this.strHelper;
 
         const result: StatePropertyInfo = {
             name: "",
             types: [],
-            typesText: type?.getFullText(srcFile) || "",
+            typesText: sh.trim(type?.getFullText(srcFile) || ""),
             nullable: false,
             undefineable: false,
         };

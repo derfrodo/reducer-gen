@@ -128,16 +128,16 @@ export default CREATOR_MAIN;
                 expect(result).toBe(`import test from "with additional level"
 import test from "with additional level2"
 
-import { BASE_REDUCERACTIONS } from "./../reducerActions/reducerActions.base.generated";
+import { BASE_REDUCERACTIONS as ReducerActions } from "./../reducerActions/reducerActions.base.generated";
 import { MAIN_ACTIONS as actions } from "./../actions/actions.main.generated";
 
 export const CREATOR_BASE = {
-    setProp1: (nextProp1: function | undefined):  => (
+    setProp1: (nextProp1: function | undefined): ReducerActions   => (
         {
             type: actions.SET_P1,
             next: nextProp1,
         }),
-    setProp2: (nextProp2: function | undefined):  => (
+    setProp2: (nextProp2: function | undefined): ReducerActions => (
         {
             type: actions.SET_P2,
             next: nextProp2,
