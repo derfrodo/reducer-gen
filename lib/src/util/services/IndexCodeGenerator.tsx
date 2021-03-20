@@ -67,19 +67,19 @@ export { ${reducerName} } from "./reducer/${
             this.fileService.getMainModulNames().reducer
         }";
 export { ${actionsEnumName} } from "./actions/${
-            this.fileService.getMainModulNames().action
+            this.fileService.getMainModulNames().actions
         }";
 export { ${this.reduxModuleNamingHelper.getActionEnumName(
             stateInfo,
             "ext"
         )} } from "./actions/${
-            this.fileService.getExtensionModulNames().action
+            this.fileService.getExtensionModulNames().actions
         }";
 export { ${this.reduxModuleNamingHelper.getActionEnumName(
             stateInfo,
             "base"
         )} } from "./actions/${
-            this.fileService.getGeneratedModulNames().action
+            this.fileService.getGeneratedModulNames().actions
         }";
 export { ${actionCreatorsName} } from "./actionCreators/${
             this.fileService.getMainModulNames().actionCreators

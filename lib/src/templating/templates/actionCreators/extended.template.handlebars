@@ -1,5 +1,35 @@
-export enum {{actions.extendedActionsEnumName}} {
-    // e.g. SET_IS_LOGGED_IN_EXT = "SET_IS_LOGGED_IN_EXT",
+{{#each state.importsWithAdditionalLevel}}
+// Uncomment imports if you need to ;)
+// {{this}}
+{{/each}}
+
+// import {{reducerActions.extendedReducerActionsName}} from "./../reducerActions/{{reducerActions.extendedReducerActionsName}}";
+import ExtenedReducerAction from "./../reducerActions/${reducerActions}";
+// import extendedActions from "./../actions/${action}";
+
+/**
+ * You may add here extending actionCreators for this features reducer
+ * actionCreator: ([params]): ExtenedReducerAction => (
+ * {
+ *   type: extendedActions["[actionName]"],
+ *   [payload]
+ * }),
+ * 
+ */
+export const extendedActionCreators = {
+    // Add functions like
+    // addLoadingHandle: (handleToAdd: boolean) => ({
+    //    type: ADD_LOADING_HANDLE = "ADD_LOADING_HANDLE"
+    //    
+    // 
 }
 
-export default {{actions.extendedActionsEnumName}};
+type ActionCreator = { [key in string]: (...params: any[]) => ExtenedReducerAction };
+
+const checkActionCreator: <T>(item: T & ActionCreator) => T = <T>(item: T & ActionCreator) => {
+    return item;
+};
+
+export const ${actionCreatorObjectName} = checkActionCreator(extendedActionCreators);
+
+export default ${actionCreatorObjectName};

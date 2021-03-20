@@ -192,10 +192,10 @@ export default ${actionCreatorObjectName}`;
         );
 
         return `import ${actionsEnumNameBase} from "./${
-            this.fileService.getGeneratedModulNames().action
+            this.fileService.getGeneratedModulNames().actions
         }";
 import ${actionsEnumNameExt} from "./${
-            this.fileService.getExtensionModulNames().action
+            this.fileService.getExtensionModulNames().actions
         }";
         
 export const ${actionsEnumName} = { ...${actionsEnumNameBase}, ...${actionsEnumNameExt} };
@@ -277,7 +277,7 @@ export default ${name};
     generateBaseActionsCreatorContent(stateInfo: StateInterfaceInfo): string {
         const {
             reducerActions,
-            action,
+            actions: action,
         } = this.fileService.getGeneratedModulNames();
 
         const actionCreatorObjectName = this.reduxModuleNamingHelper.getActionCreatorsName(
@@ -335,7 +335,7 @@ export default ${actionsEnumName};
         const {
             defaultState,
             reducerActions,
-            action,
+            actions: action,
         } = this.fileService.getGeneratedModulNames();
         const stateName = this.getStateInterfaceName(stateInfo);
         const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
@@ -410,7 +410,7 @@ export default ${defaultStateMethodName}`;
     generateExtActCreatorContent(stateInfo: StateInterfaceInfo): string {
         const {
             reducerActions,
-            action,
+            actions: action,
         } = this.fileService.getExtensionModulNames();
 
         /**
@@ -470,11 +470,11 @@ export default ${actionsEnumName}`;
     generateExtReducerContent(stateInfo: StateInterfaceInfo): string {
         const {
             defaultState,
-            action: baseActions,
+            actions: baseActions,
             reducerActions: baseReducerActions,
         } = this.fileService.getGeneratedModulNames();
         const {
-            action,
+            actions: action,
             reducerActions: raExt,
         } = this.fileService.getExtensionModulNames();
         const { reducerActions } = this.fileService.getMainModulNames();

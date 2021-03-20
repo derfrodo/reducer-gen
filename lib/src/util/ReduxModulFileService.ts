@@ -5,7 +5,7 @@ import {
 import ReduxModulFileServiceOptions from "../interfaces/ReduxModulFileServiceOptions";
 
 export interface ReduxFileNames {
-    action: string;
+    actions: string;
     actionCreators: string;
     reducer: string;
     reducerActions: string;
@@ -17,7 +17,7 @@ export type FullReduxFileNames = ReduxFileNames & {
 };
 
 export const REDUX_FILE_NAME: Readonly<FullReduxFileNames> = Object.freeze({
-    action: "action",
+    actions: "actions",
     actionCreators: "actionCreators",
     reducer: "reducer",
     reducerActions: "reducerActions",
@@ -178,7 +178,7 @@ export class ReduxModulFileService {
         }
 
         return ({
-            action: combine(prefix, REDUX_FILE_NAME.action, suffix),
+            action: combine(prefix, REDUX_FILE_NAME.actions, suffix),
             actionCreators: combine(
                 prefix,
                 REDUX_FILE_NAME.actionCreators,

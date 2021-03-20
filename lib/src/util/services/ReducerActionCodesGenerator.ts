@@ -75,7 +75,7 @@ export default ${name};
             stateInfo,
             "base"
         );
-        const { action } = this.fileService.getGeneratedModulNames();
+        const { actions: action } = this.fileService.getGeneratedModulNames();
 
         return `${this.getImportClauses(stateInfo)}
 import actions from "./../actions/${action}";
@@ -118,7 +118,7 @@ export default ${reducerActionsName}`;
             "ext"
         );
 
-        const { action } = this.fileService.getExtensionModulNames();
+        const { actions: action } = this.fileService.getExtensionModulNames();
 
         return `${this.getImportClauses(stateInfo, true, true)}
 import extenededActions from "./../actions/${action}";

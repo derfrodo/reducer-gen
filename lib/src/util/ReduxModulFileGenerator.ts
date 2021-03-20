@@ -31,7 +31,7 @@ export class ReduxModulFileGenerator {
         const { folderToFeatureReducer } = featureData;
 
         const {
-            action,
+            actions: action,
             actionCreators,
             defaultState,
             reducer,
@@ -90,7 +90,7 @@ export class ReduxModulFileGenerator {
             reducerActions: reducerActionsCode,
         } = generatedExtendedCodes;
         const {
-            action,
+            actions: action,
             actionCreators,
             reducer,
             reducerActions,
@@ -184,7 +184,7 @@ export class ReduxModulFileGenerator {
         } = generatedMainCodes;
 
         const {
-            action,
+            actions: action,
             actionCreators,
             reducer,
             reducerActions,

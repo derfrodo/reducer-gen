@@ -39,7 +39,7 @@ describe("ReducerContextCodesGenerator tests", () => {
             );
 
             fsHelper.mock.getExtensionModulNames.mockImplementation(() => ({
-                action: "actionModulName",
+                actions: "actionModulName",
                 actionCreators: "actionCreatorsModulName",
                 reducer: "reducerModulName",
                 reducerActions: "reducerActionsModulName",
@@ -47,7 +47,7 @@ describe("ReducerContextCodesGenerator tests", () => {
             }));
 
             fsHelper.mock.getGeneratedModulNames.mockImplementation(() => ({
-                action: "action",
+                actions: "action",
                 actionCreators: "actionCreators",
                 reducer: "reducer",
                 reducerActions: "reducerActions",
@@ -57,7 +57,7 @@ describe("ReducerContextCodesGenerator tests", () => {
             }));
 
             fsHelper.mock.getMainModulNames.mockImplementation(() => ({
-                action: "actionMain",
+                actions: "actionMain",
                 actionCreators: "actionCreatorsMain",
                 reducer: "reducerMain",
                 reducerActions: "reducerActionsMain",

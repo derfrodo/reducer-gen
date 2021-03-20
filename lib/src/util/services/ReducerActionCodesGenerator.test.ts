@@ -44,7 +44,7 @@ describe("ReducerActionCodesGenerator tests", () => {
             );
 
             fsHelper.mock.getExtensionModulNames.mockImplementation(() => ({
-                action: "actionModulName",
+                actions: "actionModulName",
                 actionCreators: "actionCreatorsModulName",
                 reducer: "reducerModulName",
                 reducerActions: "reducerActionsModulName",
@@ -52,7 +52,7 @@ describe("ReducerActionCodesGenerator tests", () => {
             }));
 
             fsHelper.mock.getGeneratedModulNames.mockImplementation(() => ({
-                action: "action",
+                actions: "action",
                 actionCreators: "actionCreators",
                 reducer: "reducer",
                 reducerActions: "reducerActions",
@@ -62,7 +62,7 @@ describe("ReducerActionCodesGenerator tests", () => {
             }));
 
             fsHelper.mock.getMainModulNames.mockImplementation(() => ({
-                action: "actionMain",
+                actions: "actionMain",
                 actionCreators: "actionCreatorsMain",
                 reducer: "reducerMain",
                 reducerActions: "reducerActionsMain",
@@ -127,7 +127,7 @@ export default ReducerTestAction.main;
             );
 
             fsHelper.mock.getExtensionModulNames.mockImplementation(() => ({
-                action: "actionModulName",
+                actions: "actionModulName",
                 actionCreators: "actionCreatorsModulName",
                 reducer: "reducerModulName",
                 reducerActions: "reducerActionsModulName",
@@ -135,7 +135,7 @@ export default ReducerTestAction.main;
             }));
 
             fsHelper.mock.getGeneratedModulNames.mockImplementation(() => ({
-                action: "action",
+                actions: "action",
                 actionCreators: "actionCreators",
                 reducer: "reducer",
                 reducerActions: "reducerActions",
@@ -145,7 +145,7 @@ export default ReducerTestAction.main;
             }));
 
             fsHelper.mock.getMainModulNames.mockImplementation(() => ({
-                action: "actionMain",
+                actions: "actionMain",
                 actionCreators: "actionCreatorsMain",
                 reducer: "reducerMain",
                 reducerActions: "reducerActionsMain",

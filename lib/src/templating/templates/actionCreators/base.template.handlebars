@@ -2,8 +2,8 @@
 {{this}}
 {{/each}}
 
-import {{reducerActions.mainReducerActionsName}} from "./../reducerActions/{{reducerActions.mainReducerActionsName}}";
-import { {{actions.mainActionsEnumName}} as actions } from "./../actions/{{actions.mainActionsEnumName}}";
+import {{reducerActions.baseReducerActionsName}} from "./../reducerActions/{{moduleNames.main.reducerActions}}";
+import { {{actions.mainActionsEnumName}} as actions } from "./../actions/{{moduleNames.main.actions}}";
 
 export const {{actionCreators.baseActionCreatorsName}} = {
 {{#each state.properties}}
