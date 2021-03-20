@@ -199,6 +199,136 @@ export default CREATOR_EXT;
 `);
             });
         });
+        describe("... and compilation will be for reducerActions", () => {
+            it("... and reducerActions base template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.reducerActionsTemplates &&
+                    (await clazz.compile(
+                        clazz.reducerActionsTemplates.base,
+                        testModel
+                    ));
+
+                // assert
+                expect(result).toBe(`import test from "with additional level"
+import test from "with additional level2"
+import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
+
+export type BASE_REDUCERACTIONS = { type: actions; isBubbled?: boolean } & (
+    | {
+        type: actions.SET_P1;
+        next: function | undefined;
+    }
+    | {
+        type: actions.SET_P2;
+        next: function | undefined;
+    }
+);
+
+export const isBaseTestReducer = (
+    item: any
+): item is BASE_REDUCERACTIONS => {
+    if (!item) {
+        return false;
+    }
+    if (typeof item === "object") {
+        const { type } = item;
+
+        return (
+            typeof type === "string" &&
+            Object.hasOwnProperty.call(actions, type)
+        );
+    }
+    return false;
+};
+
+export default BASE_REDUCERACTIONS;
+`);
+            });
+            it("... and reducerActions extended template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.reducerActionsTemplates &&
+                    (await clazz.compile(
+                        clazz.reducerActionsTemplates.extended,
+                        testModel
+                    ));
+                console.log(result);
+                // assert
+                expect(result).toBe(`import { EXT_ACTIONS as extendedActions } from "./../actions/actions.extended";
+
+/**
+ * You may add here extending reducer actions for this features reducer
+ */
+export type EXTENDED_REDUCERACTIONS = {
+    type: extendedActions;
+    isBubbled?: boolean;
+} & {
+    // replace by following template for every extendedActions
+    //    | {
+    //        type: extendedActions["[action name]"];
+    //        /* [additional payload like : next:  boolean;]*/
+    //    }
+};
+
+export const isExtendedTestReducer = (
+    item: any
+): item is EXTENDED_REDUCERACTIONS => {
+    if (!item) {
+        return false;
+    }
+    if (typeof item === "object") {
+        const { type } = item;
+
+        return (
+            typeof type === "string" &&
+            Object.hasOwnProperty.call(extendedActions, type)
+        );
+    }
+    return false;
+};
+
+export default EXTENDED_REDUCERACTIONS;
+`);
+            });
+            it("... and reducerActions main template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.reducerActionsTemplates &&
+                    (await clazz.compile(
+                        clazz.reducerActionsTemplates.main,
+                        testModel
+                    ));
+                console.log(result);
+                // assert
+                expect(result).toBe(`import { BASE_REDUCERACTIONS, isBaseTestReducer } from "./reducerActions.base.generated";
+import { EXTENDED_REDUCERACTIONS, isExtendedTestReducer } from "./reducerActions.extended";
+
+export type MAIN_REDUCERACTIONS = BASE_REDUCERACTIONS | EXTENDED_REDUCERACTIONS;
+
+export const isMainTestReducer = (item: any): item is MAIN_REDUCERACTIONS => {
+    return isBaseTestReducer(item) || isExtendedTestReducer(item);
+}
+
+export default PostsReducerActions;
+`);
+            });
+        });
         describe("... and compilation will be for root files", () => {
             it("... and indexMain template is passed and has state as default export, Then result will match expected string", async () => {
                 // arrange:

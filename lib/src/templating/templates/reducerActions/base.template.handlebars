@@ -1,0 +1,30 @@
+{{#each state.importsWithAdditionalLevel}}
+{{this}}
+{{/each}}
+import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
+
+export type {{reducerActions.baseReducerActionsName}} = { type: actions; isBubbled?: boolean } & ({{#each state.properties}}
+    | {
+        type: actions.{{baseActionEnumValue}};
+        next: {{type}};
+    }{{/each}}
+);
+
+export const {{reducerActions.baseReducerTypeguard}} = (
+    item: any
+): item is {{reducerActions.baseReducerActionsName}} => {
+    if (!item) {
+        return false;
+    }
+    if (typeof item === "object") {
+        const { type } = item;
+
+        return (
+            typeof type === "string" &&
+            Object.hasOwnProperty.call(actions, type)
+        );
+    }
+    return false;
+};
+
+export default {{reducerActions.baseReducerActionsName}};

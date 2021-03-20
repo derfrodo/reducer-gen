@@ -88,6 +88,18 @@ export class ModelFactory {
                 stateInfo,
                 "ext"
             ),
+            baseReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
+                stateInfo,
+                "base"
+            ),
+            mainReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
+                stateInfo,
+                "main"
+            ),
+            extendedReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
+                stateInfo,
+                "ext"
+            ),
         };
         return result;
     }
@@ -105,18 +117,6 @@ export class ModelFactory {
                 "main"
             ),
             extendedReducerName: this.reduxModuleNamingHelper.getReducerMethodName(
-                stateInfo,
-                "ext"
-            ),
-            baseReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
-                stateInfo,
-                "base"
-            ),
-            mainReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
-                stateInfo,
-                "main"
-            ),
-            extendedReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
                 stateInfo,
                 "ext"
             ),

@@ -12,14 +12,14 @@ export const getTestModel: () => HandlebarModel = () => {
             baseReducerName: "baseTestReducer",
             mainReducerName: "mainTestReducer",
             extendedReducerName: "extendedTestReducer",
-            mainReducerTypeguard: "isMainTestReducer",
-            baseReducerTypeguard: "isBaseTestReducer",
-            extendedReducerTypeguard: "isExtendedTestReducer",
         },
         reducerActions: {
             baseReducerActionsName: "BASE_REDUCERACTIONS",
             mainReducerActionsName: "MAIN_REDUCERACTIONS",
             extendedReducerActionsName: "EXTENDED_REDUCERACTIONS",
+            mainReducerTypeguard: "isMainTestReducer",
+            baseReducerTypeguard: "isBaseTestReducer",
+            extendedReducerTypeguard: "isExtendedTestReducer",
         },
         actions: {
             baseActionsEnumName: "BASE_ACTIONS",

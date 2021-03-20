@@ -37,6 +37,7 @@ export class TemplatingEngine {
     private _rootTemplates: RootTemplates | undefined;
     private _actionsTemplates: FeatureTemplate | undefined;
     private _actionCreatorsTemplates: FeatureTemplate | undefined;
+    private _reducerActionsTemplates: FeatureTemplate | undefined;
     constructor() {
         doBindPrototype(this, TemplatingEngine.prototype);
     }
@@ -71,8 +72,21 @@ export class TemplatingEngine {
         }
     }
 
+    public get reducerActionsTemplates(): Readonly<FeatureTemplate> {
+        if (!this._reducerActionsTemplates) {
+            throw new Error(
+                "Templates have not been initialized. Please call precompile method first."
+            );
+        } else {
+            return { ...this._reducerActionsTemplates };
+        }
+    }
+
     async initialize(): Promise<void> {
         this._rootTemplates = await this.readRootTemplates();
+        this._reducerActionsTemplates = await this.readFolderTemplates(
+            "reducerActions"
+        );
         this._actionsTemplates = await this.readFolderTemplates("actions");
         this._actionCreatorsTemplates = await this.readFolderTemplates(
             "actionCreators"

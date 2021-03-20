@@ -31,8 +31,8 @@ export class ReduxCodeGenerator {
         private stateService: StateService = new StateService(),
         private reducerActionCodesGenerator: ReducerActionCodesGenerator = new ReducerActionCodesGenerator(
             options,
-            reduxModuleNamingHelper,
-            fileService
+            modelFactory,
+            templatingEngine
         ),
         private reducerContextCodesGenerator: ReducerContextCodesGenerator = new ReducerContextCodesGenerator(
             options,
@@ -191,12 +191,12 @@ export class ReduxCodeGenerator {
             { pathToState: "./../state" }
         );
 
-        const methodBase = this.reducerActionCodesGenerator.getReducerActionTypeGuardMethodName(
+        const methodBase = this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
             stateInfo,
             "base"
         );
 
-        const reducerActionsName = this.reducerActionCodesGenerator.getReducerActionName(
+        const reducerActionsName = this.reduxModuleNamingHelper.getReducerActionName(
             stateInfo,
             "main"
         );
@@ -364,16 +364,16 @@ export default ${defaultStateMethodName}`;
         } = this.fileService.getExtensionModulNames();
         const { reducerActions } = this.fileService.getMainModulNames();
 
-        const reducerActionsExtTestMethodName = this.reducerActionCodesGenerator.getReducerActionTypeGuardMethodName(
+        const reducerActionsExtTestMethodName = this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
             stateInfo,
             "ext"
         );
 
-        const reducerActionsTestMethodName = this.reducerActionCodesGenerator.getReducerActionTypeGuardMethodName(
+        const reducerActionsTestMethodName = this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
             stateInfo,
             "base"
         );
-        const reducerActionsName = this.reducerActionCodesGenerator.getReducerActionName(
+        const reducerActionsName = this.reduxModuleNamingHelper.getReducerActionName(
             stateInfo,
             "main"
         );

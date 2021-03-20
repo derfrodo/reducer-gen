@@ -8,6 +8,8 @@ import StateInterfaceInfo from "../../interfaces/StateInterfaceInfo";
 import getDefaultTestStateInfo from "../../__mocks__/getDefaultTestStateInfo";
 import getReduxModulFileServiceMock from "../../__mocks__/getReduxModulFileServiceMock";
 import getReduxModuleNamingHelperMock from "../../__mocks__/getReduxModuleNamingHelperMock";
+import getModelFactoryMock from "../../__mocks__/getModelFactoryMock";
+import getTemplatingEngineMock from "../../__mocks__/getTemplatingEngineMock";
 
 jest.mock("./../ReduxModuleNamingHelper");
 
@@ -25,79 +27,38 @@ describe("ReducerActionCodesGenerator tests", () => {
         it("ReduxCodeGenerator.generateMainReducerActionContent returns something", async () => {
             // arrange:
             const options = { ...getDefaultTestGeneratorOptions() };
-            const moduleNamingHelper = getReduxModuleNamingHelperMock();
-            const fsHelper = getReduxModulFileServiceMock();
+            const {
+                mock: templateServiceMock,
+                service: templateService,
+            } = getTemplatingEngineMock();
 
+            const {
+                mock: mfacMock,
+                service: modelFactoryService,
+            } = getModelFactoryMock();
+            const templateContent = "TESTTEMPLATE";
+            (templateServiceMock.reducerActionsTemplates as unknown) = {
+                main: templateContent,
+            };
+            mfacMock.createHandlebarModel.mockImplementation(
+                () => "TESTINFO" as any
+            );
             const state: StateInterfaceInfo = getDefaultTestStateInfo();
 
-            moduleNamingHelper.mock.getActionStrings.mockImplementation(() => [
-                "action1",
-                "action2",
-            ]);
-
-            moduleNamingHelper.mock.getActionEnumName.mockImplementation(
-                () => "ActionsEnum"
-            );
-
-            fsHelper.mock.addLevelToImportClause.mockImplementation(
-                (input) => input
-            );
-
-            fsHelper.mock.getExtensionModulNames.mockImplementation(() => ({
-                actions: "actionModulName",
-                actionCreators: "actionCreatorsModulName",
-                reducer: "reducerModulName",
-                reducerActions: "reducerActionsModulName",
-                defaultState: "defaultStateModulName",
-            }));
-
-            fsHelper.mock.getGeneratedModulNames.mockImplementation(() => ({
-                actions: "action",
-                actionCreators: "actionCreators",
-                reducer: "reducer",
-                reducerActions: "reducerActions",
-                defaultState: "defaultState",
-                index: "index",
-                reducerContext: "ReducerContext",
-            }));
-
-            fsHelper.mock.getMainModulNames.mockImplementation(() => ({
-                actions: "actionMain",
-                actionCreators: "actionCreatorsMain",
-                reducer: "reducerMain",
-                reducerActions: "reducerActionsMain",
-                defaultState: "defaultStateMain",
-                index: "indexMain",
-                reducerContext: "ReducerContextMain",
-            }));
-
-            moduleNamingHelper.mock.getReducerActionName.mockImplementation(
-                (_, type) => `ReducerTestAction.${type}`
-            );
-
-            moduleNamingHelper.mock.getReducerActionTypeGuardMethodName.mockImplementation(
-                (_, type) => `ReducerTestActionTypeGuard.${type}`
-            );
             const clazz = new ReducerActionCodesGenerator(
                 options,
-                moduleNamingHelper.service,
-                fsHelper.service
+                modelFactoryService,
+                templateService
             );
+
             // act
             const result = clazz.generateMainReducerActionContent(state);
             // assert
-            expect(result)
-                .toEqual(`import ReducerTestAction.base, { ReducerTestActionTypeGuard.base } from "./reducerActions";
-import ReducerTestAction.ext, { ReducerTestActionTypeGuard.ext } from "./reducerActionsModulName";
-
-export type ReducerTestAction.main = ReducerTestAction.base | ReducerTestAction.ext;
-
-export const ReducerTestActionTypeGuard.main = (item: any): item is ReducerTestAction.main => {
-    return ReducerTestActionTypeGuard.base(item) || ReducerTestActionTypeGuard.ext(item);
-}
-
-export default ReducerTestAction.main;
-`);
+            expect(mfacMock.createHandlebarModel).toBeCalled();
+            expect(templateServiceMock.compile).toBeCalledWith(
+                templateContent,
+                "TESTINFO"
+            );
         });
     });
 
@@ -105,97 +66,38 @@ export default ReducerTestAction.main;
         it("ReduxCodeGenerator.generateExtReducerActionContent returns something", async () => {
             // arrange:
             const options = { ...getDefaultTestGeneratorOptions() };
-            const moduleNamingHelper = getReduxModuleNamingHelperMock();
-            const fsHelper = getReduxModulFileServiceMock();
+            const {
+                mock: templateServiceMock,
+                service: templateService,
+            } = getTemplatingEngineMock();
 
+            const {
+                mock: mfacMock,
+                service: modelFactoryService,
+            } = getModelFactoryMock();
+            const templateContent = "TESTTEMPLATE";
+            (templateServiceMock.reducerActionsTemplates as unknown) = {
+                extended: templateContent,
+            };
+            mfacMock.createHandlebarModel.mockImplementation(
+                () => "TESTINFO" as any
+            );
             const state: StateInterfaceInfo = getDefaultTestStateInfo();
 
-            moduleNamingHelper.mock.getActionStrings.mockImplementation(() => [
-                "action1",
-                "action2",
-            ]);
-
-            moduleNamingHelper.mock.getActionEnumName.mockImplementation(
-                () => "ActionsEnum"
-            );
-
-            fsHelper.mock.addLevelToImportClause.mockImplementation(
-                (input) => input
-            );
-            fsHelper.mock.addCommentToImportClause.mockImplementation(
-                (input) => `// ${input}`
-            );
-
-            fsHelper.mock.getExtensionModulNames.mockImplementation(() => ({
-                actions: "actionModulName",
-                actionCreators: "actionCreatorsModulName",
-                reducer: "reducerModulName",
-                reducerActions: "reducerActionsModulName",
-                defaultState: "defaultStateModulName",
-            }));
-
-            fsHelper.mock.getGeneratedModulNames.mockImplementation(() => ({
-                actions: "action",
-                actionCreators: "actionCreators",
-                reducer: "reducer",
-                reducerActions: "reducerActions",
-                defaultState: "defaultState",
-                index: "index",
-                reducerContext: "ReducerContext",
-            }));
-
-            fsHelper.mock.getMainModulNames.mockImplementation(() => ({
-                actions: "actionMain",
-                actionCreators: "actionCreatorsMain",
-                reducer: "reducerMain",
-                reducerActions: "reducerActionsMain",
-                defaultState: "defaultStateMain",
-                index: "indexMain",
-                reducerContext: "ReducerContextMain",
-            }));
-
-            moduleNamingHelper.mock.getReducerActionName.mockImplementation(
-                (_, type) => `ReducerTestAction.${type}`
-            );
-
-            moduleNamingHelper.mock.getReducerActionTypeGuardMethodName.mockImplementation(
-                (_, type) => `ReducerTestActionTypeGuard.${type}`
-            );
             const clazz = new ReducerActionCodesGenerator(
                 options,
-                moduleNamingHelper.service,
-                fsHelper.service
+                modelFactoryService,
+                templateService
             );
+
             // act
             const result = clazz.generateExtReducerActionContent(state);
             // assert
-            expect(result).toEqual(`// import1
-// import2
-import extenededActions from "./../actions/actionModulName";
-        
-/**
- * You may add here extending reducer actions for this features reducer
- */        
-export type ReducerTestAction.ext = { type: extenededActions; isBubbled?: boolean } & (
-    | {} // replace by following template for every extenededActions
-//    | {
-//        type: extenededActions["[action name]"];
-//        /* [additional payload like : next:  boolean;]*/
-//    }
-);
-
-export const ReducerTestActionTypeGuard.ext = (item: any): item is ReducerTestAction.ext => {
-    if (!item) { return false; }
-    if (typeof item === "object") {
-        const { type } = item;
-
-        return typeof type === "string" && extenededActions.hasOwnProperty(type);
-    }
-    return false;
-}
-
-export default ReducerTestAction.ext;
-`);
+            expect(mfacMock.createHandlebarModel).toBeCalled();
+            expect(templateServiceMock.compile).toBeCalledWith(
+                templateContent,
+                "TESTINFO"
+            );
         });
     });
 });

@@ -8,9 +8,9 @@ export { {{actions.baseActionsEnumName}} } from "./actions/{{moduleNames.base.ac
 export { {{actionCreators.mainActionCreatorsName}} } from "./actionCreators/{{moduleNames.main.actionCreators}}";
 export * from "./ReducerContext.main.generated";
 
-export { {{reducer.mainReducerTypeguard}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
-export { {{reducer.extendedReducerTypeguard}} } from "./reducerActions/{{moduleNames.extended.reducerActions}}";
-export { {{reducer.baseReducerTypeguard}} } from "./reducerActions/{{moduleNames.base.reducerActions}}";
+export { {{reducerActions.mainReducerTypeguard}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
+export { {{reducerActions.extendedReducerTypeguard}} } from "./reducerActions/{{moduleNames.extended.reducerActions}}";
+export { {{reducerActions.baseReducerTypeguard}} } from "./reducerActions/{{moduleNames.base.reducerActions}}";
 
 export type {{reducerActions.mainReducerActionsName}} = RAs;
 export type {{featureName.pascalCase}}State = {{state.stateName}};
