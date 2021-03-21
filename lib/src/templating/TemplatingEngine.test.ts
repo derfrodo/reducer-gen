@@ -582,7 +582,7 @@ export default getTestStateDefault;
                 expect(result)
                     .toBe(`import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TESTSTATE } from "./state";
-export { mainTestReducer } from "./reducer/reducer.main.generated";
+import { mainTestReducer } from "./reducer/reducer.main.generated";
 import { getTestStateDefault } from "./defaultState.base.generated";
 import { MAIN_REDUCERACTIONS } from "./reducerActions/reducerActions.main.generated";
 

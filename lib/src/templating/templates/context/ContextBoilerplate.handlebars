@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
-export { {{reducer.mainReducerName}} } from "./reducer/{{moduleNames.main.reducer}}";
+import { {{reducer.mainReducerName}} } from "./reducer/{{moduleNames.main.reducer}}";
 import { {{state.getDefaultStateMethodName}} } from "./{{moduleNames.base.defaultState}}";
 import { {{reducerActions.mainReducerActionsName}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
 
