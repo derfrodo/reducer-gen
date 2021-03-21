@@ -1,39 +1,49 @@
     // cases for manipulating property arrays
-    // {{>currentContext}}
+    {{>currentContext}}
 {{#each state.properties}}
     {{#if isArray}}
         case actions.{{arrayActionEnumValues.add}}:
-            {{#propertyCanBeNullOrUndefined}}
-            {{!-- const next = {{name}} || [action.item]; --}}
             const { {{name}} } = state;
-            if({{#if nullable}}{{name}} !== undefined{{/if}}{{#if undefineable}}{{#if nullable}} && {{/if}}{{name}} !== null{{/if}}){
-                next.push(action.item)
-            } --}}
+            {{#propertyCanBeNullOrUndefined this}}
             return {
                 ...state,
-                {{name}}: [...({{name}} || []), action.item],
+                {{name}}: [...({{name}} || []), action.next],
             };
             {{else}}
             return {
                 ...state,
-                {{name}}: [...{{name}}, action.item],
+                {{name}}: [...{{name}}, action.next],
             };
             {{/propertyCanBeNullOrUndefined}}
-
+        case actions.{{arrayActionEnumValues.update}}:
+            const { {{name}} } = state;
+            {{#propertyCanBeNullOrUndefined this}}
             return {
                 ...state,
-                {{name}}: ({{name}} || [])
-                {{!-- {{name}}: action.item, --}}
+                {{name}}: {{name}} && {{name}}.length > 0 ? {{name}}.map(item => item === action.next.oldItem ? action.next.nextItem : item) : {{name}},
             };
-        case actions.{{arrayActionEnumValues.update}}:
+            {{else}}
+            return {
+                ...state,
+                {{name}}: {{name}}.map(item => item === action.next.oldItem ? action.next.nextItem : item),
+            };
+            {{/propertyCanBeNullOrUndefined}}
             return {
                 ...state,
                 {{!-- {{name}}: action.next, --}}
             };
         case actions.{{arrayActionEnumValues.remove}}:
+            const { {{name}} } = state;
+            {{#propertyCanBeNullOrUndefined this}}
             return {
                 ...state,
-                {{!-- {{name}}: action.next, --}}
+                {{name}}: {{name}} && {{name}}.length > 0 ? {{name}}.filter(item => item !== action.next) : {{name}},
             };
+            {{else}}
+            return {
+                ...state,
+                {{name}}: {{name}}.filter(item => item !== action.next),
+            };
+            {{/propertyCanBeNullOrUndefined}}
     {{/if}}
 {{/each}}

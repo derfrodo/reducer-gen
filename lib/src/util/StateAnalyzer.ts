@@ -256,11 +256,9 @@ export class StateAnalyzer {
             case ts.SyntaxKind.ArrayType:
                 if (result.arrayElementType === undefined) {
                     const elementType = (type as ts.ArrayTypeNode).elementType;
-                    // this.printNode(elementType);
-                    result.arrayElementType =
-                        elementType.getFullText(srcFile) ?? "object";
-                } else {
-                    result.arrayElementType = null;
+                    result.arrayElementType = sh.trim(
+                        elementType.getFullText(srcFile) ?? "object"
+                    );
                 }
                 result.types.push(STATE_PROPERT_TYPES.ARRAY);
                 break;
@@ -271,6 +269,23 @@ export class StateAnalyzer {
                 if (type && ts.isUnionTypeNode(type)) {
                     const unionTypeTypes = this.resolveTypesOfUnionTypes(type);
                     result.types.push(...unionTypeTypes.types);
+
+                    if (
+                        unionTypeTypes.types.length === 1 &&
+                        unionTypeTypes.types[0] === STATE_PROPERT_TYPES.ARRAY
+                    ) {
+                        const arrayTypes = type.types.filter(
+                            (t) => t.kind === ts.SyntaxKind.ArrayType
+                        );
+                        if (arrayTypes.length === 1) {
+                            const elementType = (arrayTypes[0] as ts.ArrayTypeNode)
+                                .elementType;
+                            result.arrayElementType = sh.trim(
+                                elementType.getFullText(srcFile) ?? "object"
+                            );
+                        }
+                    }
+
                     result.nullable =
                         unionTypeTypes.nullable || result.nullable;
                     result.undefineable =
