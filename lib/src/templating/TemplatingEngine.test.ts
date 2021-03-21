@@ -325,7 +325,7 @@ export const isMainTestReducer = (item: any): item is MAIN_REDUCERACTIONS => {
     return isBaseTestReducer(item) || isExtendedTestReducer(item);
 }
 
-export default PostsReducerActions;
+export default MAIN_REDUCERACTIONS;
 `);
             });
         });
