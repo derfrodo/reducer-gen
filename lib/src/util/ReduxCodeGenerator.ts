@@ -2,9 +2,7 @@ import { BindToClass, StringHelper } from "@derfrodo/frodo-s-little-helpers";
 import log from "loglevel";
 import GeneratedReduxStateData from "../interfaces/GeneratedReduxStateData";
 import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
-import StateInterfaceInfo, {
-    StatePropertyInfo,
-} from "../interfaces/StateInterfaceInfo";
+import StateInterfaceInfo from "../interfaces/StateInterfaceInfo";
 import { TemplatingEngine } from "../templating/TemplatingEngine";
 import ReduxModuleNamingHelper from "./ReduxModuleNamingHelper";
 import ReduxModulFileService from "./ReduxModulFileService";
@@ -37,9 +35,8 @@ export class ReduxCodeGenerator {
         ),
         private reducerContextCodesGenerator: ReducerContextCodesGenerator = new ReducerContextCodesGenerator(
             options,
-            reduxModuleNamingHelper,
-            fileService,
-            stringHelper
+            modelFactory,
+            templatingEngine
         ),
         private indexCodeGenerator = new IndexCodeGenerator(
             options,

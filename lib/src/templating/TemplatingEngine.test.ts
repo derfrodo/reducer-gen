@@ -624,7 +624,8 @@ export const StateTestFeatureReducerContext = React.createContext<IStateTestFeat
                 );
 
                 // assert
-                expect(result).toBe(`export const TestFeatureReducerContextProvider = (props: {
+                expect(result)
+                    .toBe(`export const TestFeatureReducerContextProvider = (props: {
     children: React.ReactNode;
 }) => {
     const { children } = props;
@@ -719,7 +720,8 @@ export const StateTestFeatureReducerContext = React.createContext<IStateTestFeat
                 );
 
                 // assert
-                expect(result).toBe(`export const useTestFeatureReducerContext: () => ITestFeatureReducerContext = () => {
+                expect(result)
+                    .toBe(`export const useTestFeatureReducerContext: () => ITestFeatureReducerContext = () => {
     return React.useContext<ITestFeatureReducerContext>(TestFeatureReducerContext);
 };
 
