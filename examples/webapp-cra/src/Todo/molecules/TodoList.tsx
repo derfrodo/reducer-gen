@@ -2,7 +2,7 @@ import { Divider, List, useTheme } from "@material-ui/core";
 import React from "react";
 import { AddTodoListItem } from "../atoms/AddTodoListItem";
 import { EmptyTodoListItem } from "../atoms/EmptyTodoListItem";
-import { TodoListItem } from "../atoms/TodoListItem";
+import { TodoListItem } from "./TodoListItem";
 import { useTodoReducerContextState } from "../reducer";
 import { TodoData } from "../types/TodoData";
 

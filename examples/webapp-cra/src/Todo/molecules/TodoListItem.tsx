@@ -2,31 +2,36 @@ import {
   Box,
   Collapse,
   createStyles,
-  Fade,
   IconButton,
   ListItem,
   ListItemIcon,
-  ListItemSecondaryAction,
   ListItemText,
   makeStyles,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 import RadioButtonUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import React, { useCallback, useEffect, useState } from "react";
-import { TodoData } from "../types/TodoData";
-import Edit from "@material-ui/icons/Edit";
-import Check from "@material-ui/icons/Check";
-import Clear from "@material-ui/icons/Clear";
 import { todoActionCreators, useTodoReducerContextDispatch } from "../reducer";
-import { TodoTaskInput } from "./TodoTaskInput";
+import { TodoData } from "../types/TodoData";
+import { EditTodoButtons } from "../atoms/EditTodoButtons";
+import { EditTodoDescription } from "../atoms/EditTodoDescription";
+import { TodoListItemActions } from "../atoms/TodoListItemActions";
+import { TodoTaskInput } from "../atoms/TodoTaskInput";
 
 const useTodoListItemStyles = makeStyles((t) =>
   createStyles({
     itemWithEvenMoreSecondaryActionSpace: {
       paddingRight: t.spacing(9),
+      transition: t.transitions.create("all", {
+        duration: t.transitions.duration.short,
+        easing: t.transitions.easing.easeInOut,
+      }),
+      "&$editMode": {
+        paddingRight: t.spacing(2),
+      },
     },
+    editMode: {},
     itemWithAdditionalInfos: {
       paddingLeft: t.spacing(9),
       paddingRight: t.spacing(2),
@@ -61,7 +66,7 @@ export const TodoListItem: React.FC<{ data: TodoData }> = ({ data }) => {
     setCurrentDescription(description);
   }, [description]);
 
-  const updateTask = () => {
+  const updateTodo = () => {
     if (currentTask) {
       dispatch(
         todoActionCreators.todosUpdateItem(data, {
@@ -82,15 +87,24 @@ export const TodoListItem: React.FC<{ data: TodoData }> = ({ data }) => {
       })
     );
   }, [data, dispatch]);
+  const onReset = () => {
+    setCurrentTask(task);
+    setCurrentDescription(description);
+    setInEditMode(false);
+  };
 
   return (
     <>
       <ListItem
         dense
-        classes={{ root: classes.itemWithEvenMoreSecondaryActionSpace }}
+        classes={{
+          root: `${classes.itemWithEvenMoreSecondaryActionSpace} ${
+            inEditMode ? classes.editMode : ""
+          }`,
+        }}
       >
-        <ListItemIcon onClick={onToggle}>
-          <IconButton>
+        <ListItemIcon>
+          <IconButton disabled={inEditMode} onClick={onToggle}>
             {done ? <CheckCircleOutline /> : <RadioButtonUnchecked />}
           </IconButton>
         </ListItemIcon>
@@ -103,7 +117,7 @@ export const TodoListItem: React.FC<{ data: TodoData }> = ({ data }) => {
                   {...{
                     currentTask,
                     onSetCurrentTask: setCurrentTask,
-                    onUpdateTask: updateTask,
+                    onUpdateTask: updateTodo,
                     originalTask: task,
                   }}
                 />
@@ -118,61 +132,34 @@ export const TodoListItem: React.FC<{ data: TodoData }> = ({ data }) => {
             <Collapse in={!inEditMode} unmountOnExit timeout={20}>
               <Box position="relative" height={"1rem"}>
                 <Typography variant="caption" className={classes.entryContent}>
-                  {description ?? "-- no description --"}
+                  {(description?.length ?? 0) > 0
+                    ? description
+                    : "-- no description --"}
                 </Typography>
               </Box>
             </Collapse>
           }
         />
-        <ListItemSecondaryAction>
-          {inEditMode ? (
-            <IconButton
-              onClick={() => {
-                updateTask();
-              }}
-            >
-              <Check />
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => setInEditMode(true)}
-              disabled={inEditMode}
-            >
-              <Edit />
-            </IconButton>
-          )}
-        </ListItemSecondaryAction>
+        <TodoListItemActions
+          {...{
+            todo: data,
+            inEditMode,
+            setInEditMode,
+            onUpdateTodo: updateTodo,
+          }}
+        />
       </ListItem>
       <Collapse in={inEditMode} unmountOnExit timeout={20}>
-        <ListItem classes={{ root: classes.itemWithAdditionalInfos }}>
-          <TextField
-            fullWidth
-            placeholder="Enter description"
-            label="Description"
-            variant="standard"
-            InputLabelProps={{ shrink: true }}
-            value={currentDescription ?? ""}
-            onChange={(e) => setCurrentDescription(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                updateTask();
-              }
-            }}
-            InputProps={{
-              endAdornment: (
-                <>
-                  <IconButton
-                    onClick={() => {
-                      setCurrentDescription(description);
-                    }}
-                  >
-                    <Clear />
-                  </IconButton>
-                </>
-              ),
-            }}
-          ></TextField>
-        </ListItem>
+        <EditTodoDescription
+          {...{
+            classes,
+            currentDescription,
+            setCurrentDescription,
+            onUpdateTodo: updateTodo,
+            originalDescription: description,
+          }}
+        />
+        <EditTodoButtons onUpdateTodo={updateTodo} onReset={onReset} />
       </Collapse>
     </>
   );
