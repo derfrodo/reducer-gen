@@ -5,12 +5,19 @@ import { {{reducerActions.baseReducerActionsName}} } from "./../reducerActions/{
 
 export const {{reducer.baseReducerName}} = (state: {{state.stateName}} = {{state.getDefaultStateMethodName}}(), action: {{reducerActions.baseReducerActionsName}}): {{state.stateName}} => {
     switch (action.type) {
-{{#each state.properties}}        case actions.{{baseActionEnumValue}}:
+{{#each state.properties}}
+        case actions.{{baseActionEnumValue}}:
             return {
                 ...state,
                 {{name}}: action.next,
             };
-{{/each}}        
+{{/each}}
+{{#if options.addArrayFunctions}}
+{{#hasArrayProperties this}}
+
+{{>additionalArrayReducerCases}}
+{{/hasArrayProperties}}
+{{/if}}
         default:
             return state;
     }

@@ -13,6 +13,12 @@ export type {{reducerActions.baseReducerActionsName}} = {
         type: actions.{{baseActionEnumValue}};
         next: {{type}};
     }{{/each}}
+{{#if options.addArrayFunctions}}
+{{#hasArrayProperties this}}
+
+{{>additionalArrayReducerActions}}
+{{/hasArrayProperties}}
+{{/if}}
 );
 
 export const {{reducerActions.baseReducerTypeguard}} = (

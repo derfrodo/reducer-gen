@@ -1,0 +1,20 @@
+    // cases for manipulating property arrays
+{{#each state.properties}}
+    {{#if isArray}}
+        case actions.{{arrayActionEnumValues.add}}:
+            return {
+                ...state,
+                {{!-- {{name}}: action.item, --}}
+            };
+        case actions.{{arrayActionEnumValues.update}}:
+            return {
+                ...state,
+                {{!-- {{name}}: action.next, --}}
+            };
+        case actions.{{arrayActionEnumValues.remove}}:
+            return {
+                ...state,
+                {{!-- {{name}}: action.next, --}}
+            };
+    {{/if}}
+{{/each}}

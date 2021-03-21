@@ -1,0 +1,21 @@
+    // reducer actions for manipulating arrays inside state
+{{#each state.properties}}
+    {{#if isArray}}
+    | {
+        type: actions.{{arrayActionEnumValues.add}};
+        next: {{arrayElementType}};
+    }
+    | {
+        type: actions.{{arrayActionEnumValues.update}};
+        // we will stick with "next" here, to make things easier, when not talking to duck-typing based languages/apps in the future
+        next: {
+            oldItem: {{arrayElementType}};
+            nextItem: {{arrayElementType}};
+        }
+    }
+    | {
+        type: actions.{{arrayActionEnumValues.remove}};
+        next: {{arrayElementType}};
+    }
+    {{/if}}
+{{/each}}

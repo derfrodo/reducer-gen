@@ -1,12 +1,20 @@
-{{>currentContext}}
-
-{{#if options.addArrayFunctions}}
-    {{#each state.properties}}
-        {{#if isArray}}
-    add{{namePascalCase}}: (next{{namePascalCase}}: {{type}}): ReducerActions => ({
-        type: actions.{{baseActionEnumValue}},
-        next: next{{namePascalCase}},
+    // Action Creators for manipulating arrays inside state
+{{#each state.properties}}
+    {{#if isArray}}
+    {{name}}AddItem: (item: {{arrayElementType}}): ReducerActions => ({
+        type: actions.{{arrayActionEnumValues.add}},
+        next: item,
     }),
-        {{/if}}
-    {{/each}}
-{{/if}}
+    {{name}}UpdateItem: (oldItem: {{arrayElementType}}, nextItem: {{arrayElementType}}): ReducerActions => ({
+        type: actions.{{arrayActionEnumValues.update}},
+        next: {
+            oldItem,
+            nextItem,
+        }
+    }),
+    {{name}}RemoveItem: (item: {{arrayElementType}}): ReducerActions => ({
+        type: actions.{{arrayActionEnumValues.remove}},
+        next: item,
+    }),
+    {{/if}}
+{{/each}}

@@ -254,6 +254,14 @@ export class StateAnalyzer {
                 result.nullable = true;
                 break;
             case ts.SyntaxKind.ArrayType:
+                if (result.arrayElementType === undefined) {
+                    const elementType = (type as ts.ArrayTypeNode).elementType;
+                    // this.printNode(elementType);
+                    result.arrayElementType =
+                        elementType.getFullText(srcFile) ?? "object";
+                } else {
+                    result.arrayElementType = null;
+                }
                 result.types.push(STATE_PROPERT_TYPES.ARRAY);
                 break;
             case ts.SyntaxKind.TypeReference:

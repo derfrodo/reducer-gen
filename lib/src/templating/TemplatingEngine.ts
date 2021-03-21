@@ -4,6 +4,7 @@ import { readFile } from "fs";
 import path from "path";
 import { doBindPrototype } from "@derfrodo/frodo-s-little-helpers/dist";
 import { TemplateHandlebarModel } from "../util/models/TemplateHandlebarModel";
+import { StateHandlebarModel } from "../util/models/StateHandlebarModel";
 
 type FeatureTemplate = {
     main: string;
@@ -123,6 +124,17 @@ export class TemplatingEngine {
         handlebars.registerHelper("json", function (context) {
             return JSON.stringify(context);
         });
+        handlebars.registerHelper("hasArrayProperties", function (
+            context: {
+                state: StateHandlebarModel;
+            },
+            options
+        ) {
+            return (context?.state?.properties || []).filter((p) => p.isArray)
+                .length > 0
+                ? options.fn(context)
+                : "";
+        });
     }
 
     async initializePartials(): Promise<void> {
@@ -149,6 +161,48 @@ export class TemplatingEngine {
                     "actionCreators",
                     "partials",
                     "additionalArrayCreators.handlebars"
+                )
+            )
+        );
+
+        // Initialize actions Partials
+        handlebars.registerPartial(
+            "additionalArrayActions",
+            await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "actions",
+                    "partials",
+                    "additionalArrayActions.handlebars"
+                )
+            )
+        );
+
+        // Initialize reducer actions Partials
+        handlebars.registerPartial(
+            "additionalArrayReducerActions",
+            await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "reducerActions",
+                    "partials",
+                    "additionalArrayReducerActions.handlebars"
+                )
+            )
+        );
+
+        // Initialize reducer Partials
+        handlebars.registerPartial(
+            "additionalArrayReducerCases",
+            await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "reducer",
+                    "partials",
+                    "additionalArrayReducerCases.handlebars"
                 )
             )
         );

@@ -11,8 +11,12 @@ export const {{actionCreators.baseActionCreatorsName}} = {
         next: next{{namePascalCase}},
     }),
 {{/each}}
-};
+{{#if options.addArrayFunctions}}
+{{#hasArrayProperties this}}
 
 {{>additionalArrayCreators}}
+{{/hasArrayProperties}}
+{{/if}}
+};
 
 export default {{actionCreators.baseActionCreatorsName}};

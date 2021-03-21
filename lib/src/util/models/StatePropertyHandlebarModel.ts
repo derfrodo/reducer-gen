@@ -14,4 +14,5 @@ export type StatePropertyHandlebarModel = {
     nullable: boolean;
     undefineable: boolean;
     isArray: boolean;
+    arrayElementType?: string | undefined | null;
 };

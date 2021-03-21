@@ -174,8 +174,10 @@ export class TemplateModelFactory {
             nullable: propertyInfo.nullable,
             undefineable: propertyInfo.undefineable,
             isArray:
+                typeof propertyInfo.arrayElementType === "string" &&
                 propertyInfo.types.length === 1 &&
                 propertyInfo.types[0] === STATE_PROPERT_TYPES.ARRAY,
+            arrayElementType: propertyInfo.arrayElementType,
         };
         return result;
     }

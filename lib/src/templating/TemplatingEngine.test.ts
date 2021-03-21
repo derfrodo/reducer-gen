@@ -34,7 +34,7 @@ describe("Given TemplatingEngine", () => {
                 expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`export enum BASE_ACTIONS {
     ACTION1 = "ACTION1",
-    ACTION2 = "ACTION2"
+    ACTION2 = "ACTION2",
 }
 
 export default BASE_ACTIONS;

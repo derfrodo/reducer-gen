@@ -1,0 +1,8 @@
+    // Actions for manipulating arrays inside state
+{{#each state.properties}}
+    {{#if isArray}}
+    {{arrayActionEnumValues.add}} = "{{arrayActionEnumValues.add}}",
+    {{arrayActionEnumValues.update}} = "{{arrayActionEnumValues.update}}",
+    {{arrayActionEnumValues.remove}} = "{{arrayActionEnumValues.remove}}",
+    {{/if}}
+{{/each}}
