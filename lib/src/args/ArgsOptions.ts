@@ -28,6 +28,8 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
         choices: logLevelChoices,
         default: "info",
     },
+    srcFolder: { demandOption: false, default: "./src" },
+
     filesSuffix: { demandOption: false, default: ".base.generated" },
     filesPrefix: { demandOption: false, default: "" },
     mainFilesSuffix: { demandOption: false, default: ".main.generated" },

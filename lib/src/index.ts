@@ -11,7 +11,10 @@ import ReduxModulFileService from "./util/ReduxModulFileService";
 import ReduxModulFileServiceOptions from "./interfaces/ReduxModulFileServiceOptions";
 import ReduxModuleNamingHelper from "./util/ReduxModuleNamingHelper";
 import ReduxModuleNamingHelperOptions from "./interfaces/ReduxModuleNamingHelperOptions";
-import { FileSystemHelper, StringHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
+import {
+    FileSystemHelper,
+    StringHelper,
+} from "@derfrodo/frodo-s-little-helpers/dist/node";
 import ArgsOptions from "./args/ArgsOptions";
 import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
 import { WebAppHooksCodesGeneratorGenerator } from "./util/services/WebAppHooksCodesGenerator";
@@ -32,8 +35,10 @@ const getGeneratorOptionsFromArgs = (
 };
 const getAnalyzerOptionsFromArgs = (argv: CliArgs): StateAnalyzerOptions => {
     // eslint-disable-next-line prettier/prettier
-    const {} = argv;
-    const result: StateAnalyzerOptions = {};
+    const { srcFolder } = argv;
+    const result: StateAnalyzerOptions = {
+        srcFolder,
+    };
     return result;
 };
 const getFileGeneratorOptionsFromArgs = (
@@ -98,13 +103,12 @@ export const generate = async (argv: CliArgs): Promise<void> => {
     );
     await codeGenerator.initialize();
     const stateFilePaths = [
-        ...(await new FileSystemHelper().findFiles("./src", "/redux/state.ts", {
-            includeNested: true,
-        })),
         ...(await new FileSystemHelper().findFiles(
-            "./src",
-            "/reducer/state.ts",
-            { includeNested: true }
+            argv.srcFolder,
+            "/redux/state.ts",
+            {
+                includeNested: true,
+            }
         )),
     ];
     const featureFSData: FeatureStateDataObject[] = await stateAnalyzer.createFeatureStateDataObjects(

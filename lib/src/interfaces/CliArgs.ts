@@ -2,6 +2,7 @@ import { LogLevelDesc } from "loglevel";
 
 export interface CliArgs {
     loglevel: LogLevelDesc;
+    srcFolder: string;
     filesPrefix: string;
     filesSuffix: string;
     mainFilesSuffix: string;
