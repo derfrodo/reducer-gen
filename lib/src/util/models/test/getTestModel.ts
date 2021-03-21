@@ -1,3 +1,4 @@
+import { STATE_PROPERT_TYPES } from "../../../interfaces/StateInterfaceInfo";
 import { createTestFactory } from "../../services/TemplateModelFactory";
 import { TemplateHandlebarModel } from "../TemplateHandlebarModel";
 
@@ -54,15 +55,23 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
                     baseActionEnumValue: "SET_P1",
                     name: "prop1",
                     namePascalCase: "Prop1",
-                    type: "function | undefined",
+                    type: "object | undefined",
                     initialValue: '""',
+                    types: [STATE_PROPERT_TYPES.OBJECT],
+                    isArray: false,
+                    nullable: false,
+                    undefineable: true,
                 },
                 {
                     baseActionEnumValue: "SET_P2",
                     name: "prop2",
                     namePascalCase: "Prop2",
-                    type: "function | undefined",
-                    initialValue: "undefined",
+                    type: "string",
+                    initialValue: '""',
+                    types: [STATE_PROPERT_TYPES.STRING],
+                    isArray: false,
+                    nullable: false,
+                    undefineable: true,
                 },
             ],
             getDefaultStateMethodName: "getTestStateDefault",

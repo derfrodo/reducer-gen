@@ -5,6 +5,7 @@ import {
 import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo, {
     StatePropertyInfo,
+    STATE_PROPERT_TYPES,
 } from "../../interfaces/StateInterfaceInfo";
 import { ActionCreatorsHandlebarModel } from "../models/ActionCreatorsHandlebarModel";
 import { ActionsHandlebarModel } from "../models/ActionsHandlebarModel";
@@ -165,6 +166,12 @@ export class TemplateModelFactory {
             initialValue: this.stateService.getInitialPropertyValue(
                 propertyInfo
             ),
+            types: propertyInfo.types,
+            nullable: propertyInfo.nullable,
+            undefineable: propertyInfo.undefineable,
+            isArray:
+                propertyInfo.types.length === 1 &&
+                propertyInfo.types[0] === STATE_PROPERT_TYPES.ARRAY,
         };
         return result;
     }
