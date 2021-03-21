@@ -219,7 +219,10 @@ export default CREATOR_EXT;
 import test from "with additional level2"
 import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
 
-export type BASE_REDUCERACTIONS = { type: actions; isBubbled?: boolean } & (
+export type BASE_REDUCERACTIONS = {
+    type: actions;
+    isBubbled?: boolean;
+    } & (
     | {
         type: actions.SET_P1;
         next: function | undefined;

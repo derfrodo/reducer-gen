@@ -4,8 +4,8 @@ import { TemplateHandlebarModel } from "../TemplateHandlebarModel";
 export const getTestModel: () => TemplateHandlebarModel = () => {
     const result: TemplateHandlebarModel = {
         options: {
-            createReducerContext: false,
-            addBubbleFlagForActions: false,
+            createReducerContext: true,
+            addBubbleFlagForActions: true,
         },
         featureName: {
             asIs: "test_feature",

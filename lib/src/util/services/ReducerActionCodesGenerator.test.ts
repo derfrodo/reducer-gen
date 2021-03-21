@@ -1,7 +1,7 @@
 import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo from "../../interfaces/StateInterfaceInfo";
 import getDefaultTestStateInfo from "../../__mocks__/getDefaultTestStateInfo";
-import getModelFactoryMock from "../../__mocks__/getModelFactoryMock";
+import getTemplateModelFactory from "../../__mocks__/getTemplateModelFactoryMock";
 import getTemplatingEngineMock from "../../__mocks__/getTemplatingEngineMock";
 import { ReducerActionCodesGenerator } from "./ReducerActionCodesGenerator";
 
@@ -29,7 +29,7 @@ describe("ReducerActionCodesGenerator tests", () => {
             const {
                 mock: mfacMock,
                 service: modelFactoryService,
-            } = getModelFactoryMock();
+            } = getTemplateModelFactory();
             const templateContent = "TESTTEMPLATE";
             (templateServiceMock.reducerActionsTemplates as unknown) = {
                 main: templateContent,
@@ -68,7 +68,7 @@ describe("ReducerActionCodesGenerator tests", () => {
             const {
                 mock: mfacMock,
                 service: modelFactoryService,
-            } = getModelFactoryMock();
+            } = getTemplateModelFactory();
             const templateContent = "TESTTEMPLATE";
             (templateServiceMock.reducerActionsTemplates as unknown) = {
                 extended: templateContent,

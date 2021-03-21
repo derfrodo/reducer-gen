@@ -1,7 +1,7 @@
 import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo from "../interfaces/StateInterfaceInfo";
 import getDefaultTestStateInfo from "../__mocks__/getDefaultTestStateInfo";
-import { getModelFactoryMock } from "../__mocks__/getModelFactoryMock";
+import { getTemplateModelFactory } from "../__mocks__/getTemplateModelFactoryMock";
 import getReducerContextCodesGeneratorMock from "../__mocks__/getReducerContextCodesGeneratorMock";
 import getReduxModuleNamingHelperMock from "../__mocks__/getReduxModuleNamingHelperMock";
 import getReduxModulFileServiceMock from "../__mocks__/getReduxModulFileServiceMock";
@@ -10,7 +10,7 @@ import { ReduxCodeGenerator } from "./ReduxCodeGenerator";
 
 jest.mock("./ReduxModuleNamingHelper");
 jest.mock("./../templating/TemplatingEngine");
-jest.mock("./../util/services/ModelFactory");
+jest.mock("./../util/services/TemplateModelFactory");
 
 const getDefaultTestGeneratorOptions = (): ReduxCodeGeneratorOptions => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -32,7 +32,7 @@ describe("ReduxCodeGenerator tests", () => {
             const {
                 mock: mfacMock,
                 service: modelFactoryService,
-            } = getModelFactoryMock();
+            } = getTemplateModelFactory();
             const templateContent = "TESTTEMPLATE";
             (templateServiceMock.actionsTemplates as unknown) = {
                 base: templateContent,
@@ -78,7 +78,7 @@ describe("ReduxCodeGenerator tests", () => {
             const {
                 mock: mfacMock,
                 service: modelFactoryService,
-            } = getModelFactoryMock();
+            } = getTemplateModelFactory();
             const templateContent = "TESTTEMPLATE";
             (templateServiceMock.actionCreatorsTemplates as unknown) = {
                 base: templateContent,
