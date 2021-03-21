@@ -1,9 +1,28 @@
     // cases for manipulating property arrays
+    // {{>currentContext}}
 {{#each state.properties}}
     {{#if isArray}}
         case actions.{{arrayActionEnumValues.add}}:
+            {{#propertyCanBeNullOrUndefined}}
+            {{!-- const next = {{name}} || [action.item]; --}}
+            const { {{name}} } = state;
+            if({{#if nullable}}{{name}} !== undefined{{/if}}{{#if undefineable}}{{#if nullable}} && {{/if}}{{name}} !== null{{/if}}){
+                next.push(action.item)
+            } --}}
             return {
                 ...state,
+                {{name}}: [...({{name}} || []), action.item],
+            };
+            {{else}}
+            return {
+                ...state,
+                {{name}}: [...{{name}}, action.item],
+            };
+            {{/propertyCanBeNullOrUndefined}}
+
+            return {
+                ...state,
+                {{name}}: ({{name}} || [])
                 {{!-- {{name}}: action.item, --}}
             };
         case actions.{{arrayActionEnumValues.update}}:

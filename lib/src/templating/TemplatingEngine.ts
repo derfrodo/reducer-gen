@@ -5,6 +5,7 @@ import path from "path";
 import { doBindPrototype } from "@derfrodo/frodo-s-little-helpers/dist";
 import { TemplateHandlebarModel } from "../util/models/TemplateHandlebarModel";
 import { StateHandlebarModel } from "../util/models/StateHandlebarModel";
+import { StatePropertyHandlebarModel } from "../util/models/StatePropertyHandlebarModel";
 
 type FeatureTemplate = {
     main: string;
@@ -133,7 +134,15 @@ export class TemplatingEngine {
             return (context?.state?.properties || []).filter((p) => p.isArray)
                 .length > 0
                 ? options.fn(context)
-                : "";
+                : options.inverse(context);
+        });
+        handlebars.registerHelper("propertyCanBeNullOrUndefined", function (
+            context: StatePropertyHandlebarModel,
+            options
+        ) {
+            return context.nullable || context.undefineable
+                ? options.fn(context)
+                : options.inverse(context);
         });
     }
 
