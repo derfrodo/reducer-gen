@@ -22,7 +22,7 @@ export const use{{featureName.pascalCase}}DispatchWillBeCalledEffect = (callback
  * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
  * @param onStateChanged callback which will be called if {{featureName.pascalCase}}State changes
  */
-export const use{{featureName.pascalCase}}StateChangedEffect = <T extends {{state.stateName}}>(
+export const use{{featureName.pascalCase}}StateChangedEffect = (
     onStateChanged: (next: {{state.stateName}}, old: {{state.stateName}} | null) => Promise<void> | void
 ) => {
     const state = use{{featureName.pascalCase}}ReducerContextState();
