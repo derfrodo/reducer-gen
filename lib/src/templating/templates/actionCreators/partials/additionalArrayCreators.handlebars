@@ -1,4 +1,12 @@
-{{#if options.addArrayFunctions}}
-
 {{>currentContext}}
+
+{{#if options.addArrayFunctions}}
+    {{#each state.properties}}
+        {{#if isArray}}
+    add{{namePascalCase}}: (next{{namePascalCase}}: {{type}}): ReducerActions => ({
+        type: actions.{{baseActionEnumValue}},
+        next: next{{namePascalCase}},
+    }),
+        {{/if}}
+    {{/each}}
 {{/if}}

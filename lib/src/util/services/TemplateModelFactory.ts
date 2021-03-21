@@ -163,6 +163,10 @@ export class TemplateModelFactory {
                 propertyInfo,
                 stateInfo
             ),
+            arrayActionEnumValues: this.reduxModuleNamingHelper.getArrayActionStrings(
+                propertyInfo,
+                stateInfo
+            ),
             initialValue: this.stateService.getInitialPropertyValue(
                 propertyInfo
             ),

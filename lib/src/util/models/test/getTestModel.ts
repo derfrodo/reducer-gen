@@ -61,6 +61,11 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
                     isArray: false,
                     nullable: false,
                     undefineable: true,
+                    arrayActionEnumValues: {
+                        add: "TEST1ADD",
+                        update: "TEST1UPDATE",
+                        remove: "TEST1REMOVE",
+                    },
                 },
                 {
                     baseActionEnumValue: "SET_P2",
@@ -72,6 +77,11 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
                     isArray: false,
                     nullable: false,
                     undefineable: true,
+                    arrayActionEnumValues: {
+                        add: "TEST2ADD",
+                        update: "TEST2UPDATE",
+                        remove: "TEST2REMOVE",
+                    },
                 },
             ],
             getDefaultStateMethodName: "getTestStateDefault",

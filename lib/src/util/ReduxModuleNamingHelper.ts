@@ -3,6 +3,7 @@ import StateInterfaceInfo, {
 } from "../interfaces/StateInterfaceInfo";
 import ReduxModuleNamingHelperOptions from "../interfaces/ReduxModuleNamingHelperOptions";
 import { StringHelper } from "@derfrodo/frodo-s-little-helpers";
+import { ArrayActionEnumValues } from "../interfaces/ArrayActionEnumValues";
 
 export class ReduxModuleNamingHelper {
     private options: ReduxModuleNamingHelperOptions;
@@ -81,6 +82,22 @@ export class ReduxModuleNamingHelper {
             "SET_",
             toUpperCasedWithUnderscore(property.name)
         );
+    }
+
+    getArrayActionStrings(
+        property: StatePropertyInfo,
+        stateInfo: StateInterfaceInfo
+    ): ArrayActionEnumValues {
+        const { combine, toUpperCasedWithUnderscore } = this.stringHelper;
+        const featurePrefix = this.options.addFeatureAsActionPrefix
+            ? `${toUpperCasedWithUnderscore(this.getFeatureName(stateInfo))}_`
+            : undefined;
+        const propertySuffix = toUpperCasedWithUnderscore(property.name);
+        return {
+            add: combine(featurePrefix, propertySuffix, "_ADD"),
+            remove: combine(featurePrefix, propertySuffix, "_REMOVE"),
+            update: combine(featurePrefix, propertySuffix, "_UPDATE"),
+        };
     }
 
     getGetDefaultStateMethodName(
