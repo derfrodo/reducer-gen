@@ -437,7 +437,7 @@ export default extendedTestReducer;
                 // assert
                 expect(result).toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
-import { MAIN_REDUCERACTIONS } from "./reducerActions/reducerActions.main.generated";
+import { MAIN_REDUCERACTIONS } from "./../reducerActions/reducerActions.main.generated";
 import { baseTestReducer } from "./reducer.base.generated";
 import { extendedTestReducer } from "./reducer.extended";
 import { isBaseTestReducer } from "./../reducerActions/reducerActions.base.generated";
