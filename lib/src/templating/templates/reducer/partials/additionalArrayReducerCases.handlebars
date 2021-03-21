@@ -3,46 +3,49 @@
 {{#each state.properties}}
     {{#if isArray}}
         case actions.{{arrayActionEnumValues.add}}:
-            const { {{name}} } = state;
             {{#propertyCanBeNullOrUndefined this}}
             return {
                 ...state,
-                {{name}}: [...({{name}} || []), action.next],
+                {{name}}: [...(state.{{name}} || []), action.next],
             };
             {{else}}
             return {
                 ...state,
-                {{name}}: [...{{name}}, action.next],
+                {{name}}: [...state.{{name}}, action.next],
             };
             {{/propertyCanBeNullOrUndefined}}
         case actions.{{arrayActionEnumValues.update}}:
-            const { {{name}} } = state;
+            const { {{name}} : {{name}}ToBeUpdated } = state;
             {{#propertyCanBeNullOrUndefined this}}
             return {
                 ...state,
-                {{name}}: {{name}} && {{name}}.length > 0 ? {{name}}.map(item => item === action.next.oldItem ? action.next.nextItem : item) : {{name}},
+                {{name}}:
+                    {{name}}ToBeUpdated && {{name}}ToBeUpdated.length > 0 ?
+                        {{name}}ToBeUpdated.map(item => item === action.next.oldItem ? action.next.nextItem : item) :
+                        {{name}}ToBeUpdated,
             };
             {{else}}
             return {
                 ...state,
-                {{name}}: {{name}}.map(item => item === action.next.oldItem ? action.next.nextItem : item),
+                {{name}}:
+                    {{name}}ToBeUpdated.map(item => item === action.next.oldItem ? action.next.nextItem : item),
             };
             {{/propertyCanBeNullOrUndefined}}
-            return {
-                ...state,
-                {{!-- {{name}}: action.next, --}}
-            };
         case actions.{{arrayActionEnumValues.remove}}:
-            const { {{name}} } = state;
+            const { {{name}} : {{name}}Old } = state;
             {{#propertyCanBeNullOrUndefined this}}
             return {
                 ...state,
-                {{name}}: {{name}} && {{name}}.length > 0 ? {{name}}.filter(item => item !== action.next) : {{name}},
+                {{name}}: 
+                    {{name}}Old && {{name}}Old.length > 0 ?
+                        {{name}}Old.filter(item => item !== action.next) :
+                        {{name}}Old,
             };
             {{else}}
             return {
                 ...state,
-                {{name}}: {{name}}.filter(item => item !== action.next),
+                {{name}}:
+                    {{name}}Old.filter(item => item !== action.next),
             };
             {{/propertyCanBeNullOrUndefined}}
     {{/if}}
