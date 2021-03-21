@@ -6,7 +6,9 @@ export { {{actions.mainActionsEnumName}} } from "./actions/{{moduleNames.main.ac
 export { {{actions.extendedActionsEnumName}} } from "./actions/{{moduleNames.extended.actions}}";
 export { {{actions.baseActionsEnumName}} } from "./actions/{{moduleNames.base.actions}}";
 export { {{actionCreators.mainActionCreatorsName}} } from "./actionCreators/{{moduleNames.main.actionCreators}}";
+{{#if options.createReducerContext}}
 export * from "./ReducerContext.main.generated";
+{{/if}}
 
 export { {{reducerActions.mainReducerTypeguard}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
 export { {{reducerActions.extendedReducerTypeguard}} } from "./reducerActions/{{moduleNames.extended.reducerActions}}";
