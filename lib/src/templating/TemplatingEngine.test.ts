@@ -537,9 +537,7 @@ export type TestFeatureState = TESTSTATE;
                     ));
 
                 // assert
-                expect(result).toBe(`import test from "same as in info level"
-import test from "same as in info level2"
-import { TESTSTATE } from "./state";
+                expect(result).toBe(`import { TESTSTATE } from "./state";
 
 export const getTestStateDefault = (): TESTSTATE => ({
     prop1: "",

@@ -1,6 +1,3 @@
-{{#each state.imports}}
-{{this}}
-{{/each}}
 import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
 
 export const {{state.getDefaultStateMethodName}} = (): {{state.stateName}} => ({
