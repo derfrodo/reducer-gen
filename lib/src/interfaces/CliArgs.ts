@@ -7,13 +7,14 @@ export interface CliArgs {
     filesSuffix: string;
     mainFilesSuffix: string;
     mainFilesPrefix: string;
+
     createReducerContext: boolean;
     addBubbleFlagForActions: boolean;
+    addArrayFunctions: boolean;
 
     generateSyncStateActions: boolean;
     generateWebAppHybridHooks: boolean;
     generateReactNativeHybridHooks: boolean;
-
 }
 
 export default CliArgs;

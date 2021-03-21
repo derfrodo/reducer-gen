@@ -1,36 +1,39 @@
-import { StateAnalyzer } from "./util/StateAnalyzer";
-import { ReduxCodeGenerator } from "./util/ReduxCodeGenerator";
-import CliArgs from "./interfaces/CliArgs";
-import FeatureStateDataObject from "./interfaces/FeatureStateDataObject";
-import log from "loglevel";
-import ReduxCodeGeneratorOptions from "./interfaces/ReduxCodeGeneratorOptions";
-import StateAnalyzerOptions from "./interfaces/StateAnalyzerOptions";
-import ReduxModulFileGenerator from "./util/ReduxModulFileGenerator";
-import ReduxModulFileGeneratorOptions from "./interfaces/ReduxModulFileGeneratorOptions";
-import ReduxModulFileService from "./util/ReduxModulFileService";
-import ReduxModulFileServiceOptions from "./interfaces/ReduxModulFileServiceOptions";
-import ReduxModuleNamingHelper from "./util/ReduxModuleNamingHelper";
-import ReduxModuleNamingHelperOptions from "./interfaces/ReduxModuleNamingHelperOptions";
 import {
     FileSystemHelper,
     StringHelper,
 } from "@derfrodo/frodo-s-little-helpers/dist/node";
-import ArgsOptions from "./args/ArgsOptions";
+import log from "loglevel";
+import CliArgs from "./interfaces/CliArgs";
+import FeatureStateDataObject from "./interfaces/FeatureStateDataObject";
+import ReduxCodeGeneratorOptions from "./interfaces/ReduxCodeGeneratorOptions";
+import ReduxModuleNamingHelperOptions from "./interfaces/ReduxModuleNamingHelperOptions";
+import ReduxModulFileGeneratorOptions from "./interfaces/ReduxModulFileGeneratorOptions";
+import ReduxModulFileServiceOptions from "./interfaces/ReduxModulFileServiceOptions";
+import StateAnalyzerOptions from "./interfaces/StateAnalyzerOptions";
+import { ReduxCodeGenerator } from "./util/ReduxCodeGenerator";
+import ReduxModuleNamingHelper from "./util/ReduxModuleNamingHelper";
+import ReduxModulFileGenerator from "./util/ReduxModulFileGenerator";
+import ReduxModulFileService from "./util/ReduxModulFileService";
+import { ReactNativeAppHooksCodesGenerator } from "./util/services/ReactNativeAppHooksCodesGenerator";
 import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
 import { WebAppHooksCodesGeneratorGenerator } from "./util/services/WebAppHooksCodesGenerator";
-import { ReactNativeAppHooksCodesGenerator } from "./util/services/ReactNativeAppHooksCodesGenerator";
-import { logger } from "handlebars";
+import { StateAnalyzer } from "./util/StateAnalyzer";
 
 const getGeneratorOptionsFromArgs = (
     argv: CliArgs
 ): ReduxCodeGeneratorOptions => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { createReducerContext, addBubbleFlagForActions } = argv;
+    const {
+        createReducerContext,
+        addBubbleFlagForActions,
+        addArrayFunctions,
+    } = argv;
     const result: ReduxCodeGeneratorOptions = {
         createReducerContext: createReducerContext,
         addBubbleFlagForActions:
             addBubbleFlagForActions === undefined ||
             addBubbleFlagForActions === true,
+        addArrayFunctions,
     };
     return result;
 };

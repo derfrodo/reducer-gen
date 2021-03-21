@@ -6,6 +6,7 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
         options: {
             createReducerContext: true,
             addBubbleFlagForActions: true,
+            addArrayFunctions: true,
         },
         featureName: {
             asIs: "test_feature",

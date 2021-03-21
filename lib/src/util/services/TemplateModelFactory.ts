@@ -2,19 +2,18 @@ import {
     doBindPrototype,
     StringHelper,
 } from "@derfrodo/frodo-s-little-helpers/dist";
-import { info } from "loglevel";
 import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo, {
     StatePropertyInfo,
 } from "../../interfaces/StateInterfaceInfo";
 import { ActionCreatorsHandlebarModel } from "../models/ActionCreatorsHandlebarModel";
 import { ActionsHandlebarModel } from "../models/ActionsHandlebarModel";
-import { TemplateHandlebarModel } from "../models/TemplateHandlebarModel";
 import { ModuleNamesHandlebarModel } from "../models/ModuleNamesHandlebarModel";
 import { ReducerActionsHandlebarModel } from "../models/ReducerActionsHandlebarModel";
 import { ReducerHandlebarModel } from "../models/ReducerHandlebarModel";
 import { StateHandlebarModel } from "../models/StateHandlebarModel";
 import { StatePropertyHandlebarModel } from "../models/StatePropertyHandlebarModel";
+import { TemplateHandlebarModel } from "../models/TemplateHandlebarModel";
 import ReduxModuleNamingHelper from "../ReduxModuleNamingHelper";
 import ReduxModulFileService from "../ReduxModulFileService";
 import { StateService } from "./StateService";
@@ -220,6 +219,10 @@ export const createTestFactory = (): TemplateModelFactory => {
     return new TemplateModelFactory(
         new ReduxModuleNamingHelper({ addFeatureAsActionPrefix: true }),
         new ReduxModulFileService({}),
-        { addBubbleFlagForActions: true, createReducerContext: true }
+        {
+            addBubbleFlagForActions: true,
+            createReducerContext: true,
+            addArrayFunctions: true,
+        }
     );
 };

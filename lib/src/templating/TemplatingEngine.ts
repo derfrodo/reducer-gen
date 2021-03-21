@@ -68,7 +68,6 @@ export class TemplatingEngine {
             return { ...this._rootTemplates };
         }
     }
-
     public get actionsTemplates(): Readonly<FeatureTemplate> {
         if (!this._actionsTemplates) {
             throw new Error(
@@ -78,7 +77,6 @@ export class TemplatingEngine {
             return { ...this._actionsTemplates };
         }
     }
-
     public get actionCreatorsTemplates(): Readonly<FeatureTemplate> {
         if (!this._actionCreatorsTemplates) {
             throw new Error(
@@ -88,7 +86,6 @@ export class TemplatingEngine {
             return { ...this._actionCreatorsTemplates };
         }
     }
-
     public get reducerTemplates(): Readonly<FeatureTemplate> {
         if (!this._reducerTemplates) {
             throw new Error(
@@ -98,7 +95,6 @@ export class TemplatingEngine {
             return { ...this._reducerTemplates };
         }
     }
-
     public get reducerActionsTemplates(): Readonly<FeatureTemplate> {
         if (!this._reducerActionsTemplates) {
             throw new Error(
@@ -110,6 +106,8 @@ export class TemplatingEngine {
     }
 
     async initialize(): Promise<void> {
+        await this.initializeHelpers();
+        await this.initializePartials();
         this._contextTemplates = await this.readContextTemplates();
         this._rootTemplates = await this.readRootTemplates();
         this._reducerTemplates = await this.readFolderTemplates("reducer");
@@ -121,6 +119,41 @@ export class TemplatingEngine {
             "actionCreators"
         );
     }
+    async initializeHelpers(): Promise<void> {
+        handlebars.registerHelper("json", function (context) {
+            return JSON.stringify(context);
+        });
+    }
+
+    async initializePartials(): Promise<void> {
+        // Initialize general partials
+        handlebars.registerPartial(
+            "currentContext",
+            await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "partials",
+                    "currentContext.handlebars"
+                )
+            )
+        );
+
+        // Initialize actionCreator Partials
+        handlebars.registerPartial(
+            "additionalArrayCreators",
+            await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "actionCreators",
+                    "partials",
+                    "additionalArrayCreators.handlebars"
+                )
+            )
+        );
+    }
+
     async readContextTemplates(): Promise<ContextTemplates> {
         return {
             boilerplate: await readTemplate(
@@ -157,6 +190,7 @@ export class TemplatingEngine {
             ),
         };
     }
+
     async readRootTemplates(): Promise<RootTemplates> {
         return {
             index: await readTemplate(
@@ -201,7 +235,10 @@ export class TemplatingEngine {
         return templates;
     }
 
-    compile(template: TemplateSpecification, model: TemplateHandlebarModel): string {
+    compile(
+        template: TemplateSpecification,
+        model: TemplateHandlebarModel
+    ): string {
         // const compiled = handlebars.precompile(template); //, { noEscape: true })(model);
         // console.log(compiled);
         // const t = handlebars.template(compiled);
