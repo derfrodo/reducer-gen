@@ -9,7 +9,7 @@ import StateInterfaceInfo, {
 } from "../../interfaces/StateInterfaceInfo";
 import { ActionCreatorsHandlebarModel } from "../models/ActionCreatorsHandlebarModel";
 import { ActionsHandlebarModel } from "../models/ActionsHandlebarModel";
-import { HandlebarModel } from "../models/HandlebarModel";
+import { TemplateHandlebarModel } from "../models/TemplateHandlebarModel";
 import { ModuleNamesHandlebarModel } from "../models/ModuleNamesHandlebarModel";
 import { ReducerActionsHandlebarModel } from "../models/ReducerActionsHandlebarModel";
 import { ReducerHandlebarModel } from "../models/ReducerHandlebarModel";
@@ -19,7 +19,7 @@ import ReduxModuleNamingHelper from "../ReduxModuleNamingHelper";
 import ReduxModulFileService from "../ReduxModulFileService";
 import { StateService } from "./StateService";
 
-export class ModelFactory {
+export class TemplateModelFactory {
     constructor(
         private reduxModuleNamingHelper: ReduxModuleNamingHelper,
         private reduxModulFileService: ReduxModulFileService,
@@ -27,10 +27,7 @@ export class ModelFactory {
         private stateService: StateService = new StateService(),
         private stringHelper: StringHelper = new StringHelper()
     ) {
-        doBindPrototype(this, ModelFactory.prototype);
-        if (!stringHelper) {
-            this.stringHelper = new StringHelper();
-        }
+        doBindPrototype(this, TemplateModelFactory.prototype);
     }
 
     createActionCreatorsHandlebarModel(
@@ -52,6 +49,7 @@ export class ModelFactory {
         };
         return result;
     }
+
     createActionsHandlebarModel(
         stateInfo: StateInterfaceInfo
     ): ActionsHandlebarModel {
@@ -194,8 +192,11 @@ export class ModelFactory {
         };
     }
 
-    createHandlebarModel(stateInfo: StateInterfaceInfo): HandlebarModel {
+    createHandlebarModel(
+        stateInfo: StateInterfaceInfo
+    ): TemplateHandlebarModel {
         return {
+            options: this.options,
             featureName: {
                 asIs: stateInfo.featureData.featureName,
                 pascalCase: this.stringHelper.toPascalCased(
@@ -215,8 +216,8 @@ export class ModelFactory {
     }
 }
 
-export const createTestFactory = (): ModelFactory => {
-    return new ModelFactory(
+export const createTestFactory = (): TemplateModelFactory => {
+    return new TemplateModelFactory(
         new ReduxModuleNamingHelper({ addFeatureAsActionPrefix: true }),
         new ReduxModulFileService({}),
         { addBubbleFlagForActions: true, createReducerContext: true }

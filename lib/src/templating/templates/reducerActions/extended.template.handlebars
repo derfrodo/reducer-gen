@@ -5,7 +5,7 @@ import { {{actions.extendedActionsEnumName}} as extendedActions } from "./../act
  */
 export type {{reducerActions.extendedReducerActionsName}} = {
     type: extendedActions;
-    isBubbled?: boolean;
+    {{#if options.addBubbleFlagForActions}}isBubbled?: boolean;{{/if}}
 } & {
     // replace by following template for every extendedActions
     //    | {

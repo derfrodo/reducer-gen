@@ -2,12 +2,12 @@ import { doBindPrototype } from "@derfrodo/frodo-s-little-helpers";
 import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo from "../../interfaces/StateInterfaceInfo";
 import { TemplatingEngine } from "../../templating/TemplatingEngine";
-import { ModelFactory } from "./ModelFactory";
+import { TemplateModelFactory } from "./TemplateModelFactory";
 
 export class ReducerContextCodesGenerator {
     constructor(
         private options: ReduxCodeGeneratorOptions,
-        private modelFactory: ModelFactory,
+        private modelFactory: TemplateModelFactory,
         private templatingEngine: TemplatingEngine
     ) {
         doBindPrototype(this, ReducerContextCodesGenerator.prototype);

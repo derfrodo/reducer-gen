@@ -1,14 +1,12 @@
-import { StringHelper } from "@derfrodo/frodo-s-little-helpers/dist";
 import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
 import StateInterfaceInfo from "../interfaces/StateInterfaceInfo";
 import getDefaultTestStateInfo from "../__mocks__/getDefaultTestStateInfo";
+import { getModelFactoryMock } from "../__mocks__/getModelFactoryMock";
+import getReducerContextCodesGeneratorMock from "../__mocks__/getReducerContextCodesGeneratorMock";
 import getReduxModuleNamingHelperMock from "../__mocks__/getReduxModuleNamingHelperMock";
 import getReduxModulFileServiceMock from "../__mocks__/getReduxModulFileServiceMock";
-import getReducerContextCodesGeneratorMock from "../__mocks__/getReducerContextCodesGeneratorMock";
 import { getTemplatingEngineMock } from "../__mocks__/getTemplatingEngineMock";
-import { getModelFactoryMock } from "../__mocks__/getModelFactoryMock";
 import { ReduxCodeGenerator } from "./ReduxCodeGenerator";
-import ReduxModulFileService from "./ReduxModulFileService";
 
 jest.mock("./ReduxModuleNamingHelper");
 jest.mock("./../templating/TemplatingEngine");

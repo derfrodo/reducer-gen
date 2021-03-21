@@ -3,7 +3,10 @@
 {{/each}}
 import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
 
-export type {{reducerActions.baseReducerActionsName}} = { type: actions; isBubbled?: boolean } & ({{#each state.properties}}
+export type {{reducerActions.baseReducerActionsName}} = { 
+    type: actions;
+    {{#if options.addBubbleFlagForActions}} isBubbled?: boolean;{{/if}}
+    } & ({{#each state.properties}}
     | {
         type: actions.{{baseActionEnumValue}};
         next: {{type}};

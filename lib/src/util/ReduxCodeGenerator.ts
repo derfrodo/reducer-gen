@@ -7,7 +7,7 @@ import { TemplatingEngine } from "../templating/TemplatingEngine";
 import ReduxModuleNamingHelper from "./ReduxModuleNamingHelper";
 import ReduxModulFileService from "./ReduxModulFileService";
 import { IndexCodeGenerator } from "./services/IndexCodeGenerator";
-import { ModelFactory } from "./services/ModelFactory";
+import { TemplateModelFactory } from "./services/TemplateModelFactory";
 import { ReducerActionCodesGenerator } from "./services/ReducerActionCodesGenerator";
 import { ReducerContextCodesGenerator } from "./services/ReducerContextCodesGenerator";
 import { StateService } from "./services/StateService";
@@ -19,7 +19,7 @@ export class ReduxCodeGenerator {
         private stringHelper: StringHelper = new StringHelper(),
         private reduxModuleNamingHelper: ReduxModuleNamingHelper,
         private fileService: ReduxModulFileService,
-        private modelFactory: ModelFactory = new ModelFactory(
+        private modelFactory: TemplateModelFactory = new TemplateModelFactory(
             reduxModuleNamingHelper,
             fileService,
             options,

@@ -3,7 +3,7 @@ import handlebars from "handlebars";
 import { readFile } from "fs";
 import path from "path";
 import { doBindPrototype } from "@derfrodo/frodo-s-little-helpers/dist";
-import { HandlebarModel } from "../util/models/HandlebarModel";
+import { TemplateHandlebarModel } from "../util/models/TemplateHandlebarModel";
 
 type FeatureTemplate = {
     main: string;
@@ -201,7 +201,7 @@ export class TemplatingEngine {
         return templates;
     }
 
-    compile(template: TemplateSpecification, model: HandlebarModel): string {
+    compile(template: TemplateSpecification, model: TemplateHandlebarModel): string {
         // const compiled = handlebars.precompile(template); //, { noEscape: true })(model);
         // console.log(compiled);
         // const t = handlebars.template(compiled);

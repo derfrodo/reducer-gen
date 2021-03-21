@@ -1,8 +1,12 @@
-import { createTestFactory } from "../../services/ModelFactory";
-import { HandlebarModel } from "../HandlebarModel";
+import { createTestFactory } from "../../services/TemplateModelFactory";
+import { TemplateHandlebarModel } from "../TemplateHandlebarModel";
 
-export const getTestModel: () => HandlebarModel = () => {
-    const result: HandlebarModel = {
+export const getTestModel: () => TemplateHandlebarModel = () => {
+    const result: TemplateHandlebarModel = {
+        options: {
+            createReducerContext: false,
+            addBubbleFlagForActions: false,
+        },
         featureName: {
             asIs: "test_feature",
             pascalCase: "TestFeature",

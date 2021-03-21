@@ -1,3 +1,4 @@
+import { ReduxCodeGeneratorOptions } from "../../interfaces/ReduxCodeGeneratorOptions";
 import { ActionCreatorsHandlebarModel } from "./ActionCreatorsHandlebarModel";
 import { ActionsHandlebarModel } from "./ActionsHandlebarModel";
 import { ModuleNamesHandlebarModel } from "./ModuleNamesHandlebarModel";
@@ -5,7 +6,7 @@ import { ReducerActionsHandlebarModel } from "./ReducerActionsHandlebarModel";
 import { ReducerHandlebarModel } from "./ReducerHandlebarModel";
 import { StateHandlebarModel } from "./StateHandlebarModel";
 
-export interface HandlebarModel {
+export interface TemplateHandlebarModel {
     featureName: {
         asIs: string;
         pascalCase: string;
@@ -17,4 +18,5 @@ export interface HandlebarModel {
     actionCreators: ActionCreatorsHandlebarModel;
     moduleNames: ModuleNamesHandlebarModel;
     state: StateHandlebarModel;
+    options: ReduxCodeGeneratorOptions;
 }
