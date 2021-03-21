@@ -29,7 +29,7 @@
         "prepublish:public": "npm run prepareForPublish",
         "publish:beta": "npm publish --access public --tag beta",
         "publish:public": "npm publish --access public",
-        "generateReducer": "reducer-gen --loglevel debug --createReducerContext"
+        "generateReducer": "npm run copyTemplates && reducer-gen --loglevel debug --createReducerContext"
     },
     "author": "Stefan Pauka",
     "license": "MIT",
