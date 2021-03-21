@@ -2,22 +2,19 @@ import {
   Box,
   Collapse,
   createStyles,
-  IconButton,
   ListItem,
-  ListItemIcon,
   ListItemText,
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
-import RadioButtonUnchecked from "@material-ui/icons/RadioButtonUnchecked";
-import React, { useCallback, useEffect, useState } from "react";
-import { todoActionCreators, useTodoReducerContextDispatch } from "../reducer";
-import { TodoData } from "../types/TodoData";
+import React, { useEffect, useState } from "react";
 import { EditTodoButtons } from "../atoms/EditTodoButtons";
 import { EditTodoDescription } from "../atoms/EditTodoDescription";
 import { TodoListItemActions } from "../atoms/TodoListItemActions";
+import { TodoListItemIcon } from "../atoms/TodoListItemIcon";
 import { TodoTaskInput } from "../atoms/TodoTaskInput";
+import { todoActionCreators, useTodoReducerContextDispatch } from "../reducer";
+import { TodoData } from "../types/TodoData";
 
 const useTodoListItemStyles = makeStyles((t) =>
   createStyles({
@@ -47,7 +44,7 @@ const useTodoListItemStyles = makeStyles((t) =>
 );
 
 export const TodoListItem: React.FC<{ data: TodoData }> = ({ data }) => {
-  const { done, task, description } = data;
+  const { task, description } = data;
   const classes = useTodoListItemStyles();
   const dispatch = useTodoReducerContextDispatch();
 
@@ -78,15 +75,6 @@ export const TodoListItem: React.FC<{ data: TodoData }> = ({ data }) => {
       setInEditMode(false);
     }
   };
-
-  const onToggle = useCallback(() => {
-    dispatch(
-      todoActionCreators.todosUpdateItem(data, {
-        ...data,
-        done: !data.done,
-      })
-    );
-  }, [data, dispatch]);
   const onReset = () => {
     setCurrentTask(task);
     setCurrentDescription(description);
@@ -103,11 +91,7 @@ export const TodoListItem: React.FC<{ data: TodoData }> = ({ data }) => {
           }`,
         }}
       >
-        <ListItemIcon>
-          <IconButton disabled={inEditMode} onClick={onToggle}>
-            {done ? <CheckCircleOutline /> : <RadioButtonUnchecked />}
-          </IconButton>
-        </ListItemIcon>
+        <TodoListItemIcon todo={data} />
         <ListItemText
           color="primary"
           primary={
