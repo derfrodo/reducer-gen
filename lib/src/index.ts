@@ -19,6 +19,7 @@ import ArgsOptions from "./args/ArgsOptions";
 import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
 import { WebAppHooksCodesGeneratorGenerator } from "./util/services/WebAppHooksCodesGenerator";
 import { ReactNativeAppHooksCodesGenerator } from "./util/services/ReactNativeAppHooksCodesGenerator";
+import { logger } from "handlebars";
 
 const getGeneratorOptionsFromArgs = (
     argv: CliArgs
@@ -102,7 +103,9 @@ export const generate = async (argv: CliArgs): Promise<void> => {
         fileService
     );
     await codeGenerator.initialize();
+    log.debug(`Seraching for state files in "${argv.srcFolder}"`);
     const stateFilePaths = [
+        // redux, but not reducers
         ...(await new FileSystemHelper().findFiles(
             argv.srcFolder,
             "/redux/state.ts",
@@ -110,7 +113,17 @@ export const generate = async (argv: CliArgs): Promise<void> => {
                 includeNested: true,
             }
         )),
+        // non redux, but reducers
+        ...(await new FileSystemHelper().findFiles(
+            argv.srcFolder,
+            "/reducer/state.ts",
+            {
+                includeNested: true,
+            }
+        )),
     ];
+    log.debug("State files resolved: ", JSON.stringify(stateFilePaths));
+
     const featureFSData: FeatureStateDataObject[] = await stateAnalyzer.createFeatureStateDataObjects(
         stateFilePaths
     );
