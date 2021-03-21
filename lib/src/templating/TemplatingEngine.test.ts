@@ -345,9 +345,7 @@ export default PostsReducerActions;
                     ));
 
                 // assert
-                expect(result).toBe(`import test from "with additional level"
-import test from "with additional level2"
-import { TESTSTATE } from "./../state";
+                expect(result).toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
 import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
 import { BASE_REDUCERACTIONS } from "./../reducerActions/reducerActions.base.generated";

@@ -1,6 +1,3 @@
-{{#each state.importsWithAdditionalLevel}}
-{{this}}
-{{/each}}
 import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
 import { {{state.getDefaultStateMethodName}} } from "./../{{moduleNames.base.defaultState}}";
 import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
