@@ -1,34 +1,33 @@
-import { {{actions.extendedActionsEnumName}} as extendedActions } from "./../actions/{{moduleNames.extended.actions}}";
+import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
+import { {{state.getDefaultStateMethodName}} } from "./../{{moduleNames.base.defaultState}}";
+import { {{reducerActions.mainReducerActionsName}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
 
-/**
- * You may add here extending reducer actions for this features reducer
- */
-export type {{reducerActions.extendedReducerActionsName}} = {
-    type: extendedActions;
-    isBubbled?: boolean;
-} & {
-    // replace by following template for every extendedActions
-    //    | {
-    //        type: extendedActions["[action name]"];
-    //        /* [additional payload like : next:  boolean;]*/
-    //    }
+{{#each state.importsWithAdditionalLevel}}
+// {{this}}
+{{/each}}
+
+// import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
+// import { {{actions.extendedActionsEnumName}} as actions } from "./../actions/{{moduleNames.extended.actions}}";
+
+// Uncomment for some typechecking:
+// import { {{reducerActions.extendedReducerTypeguard}} } from "./../reducerActions/{{moduleNames.extended.reducerActions}}";
+// import { {{reducerActions.baseReducerTypeguard}} } from "./../reducerActions/{{moduleNames.base.reducerActions}}";
+
+export const {{reducer.extendedReducerName}} = (state: {{state.stateName}} = {{state.getDefaultStateMethodName}}(), action: {{reducerActions.mainReducerActionsName}}): {{state.stateName}} => {
+    switch (action.type) {
+        //         case actions["[actionName]"]:
+        //             return {
+        //                 ...state,
+        //                 // [action payload]
+        //            };
+        //         case extendedActions["[actionName]"]:
+        //             return {
+        //                 ...state,
+        //                 // [action payload]
+        //              };
+        default:
+            return state;
+    }
 };
 
-export const {{reducerActions.extendedReducerTypeguard}} = (
-    item: any
-): item is {{reducerActions.extendedReducerActionsName}} => {
-    if (!item) {
-        return false;
-    }
-    if (typeof item === "object") {
-        const { type } = item;
-
-        return (
-            typeof type === "string" &&
-            Object.hasOwnProperty.call(extendedActions, type)
-        );
-    }
-    return false;
-};
-
-export default {{reducerActions.extendedReducerActionsName}};
+export default {{reducer.extendedReducerName}};

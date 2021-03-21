@@ -69,7 +69,6 @@ describe("ReduxCodeGenerator tests", () => {
             );
         });
     });
-
     describe("ReduxCodeGenerator.generateBaseActionsCreatorContent tests", () => {
         it("ReduxCodeGenerator.generateBaseActionsCreatorContent returns something", async () => {
             // arrange:

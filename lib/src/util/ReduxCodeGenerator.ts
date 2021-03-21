@@ -153,8 +153,10 @@ export class ReduxCodeGenerator {
     // Central Index
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     generateIndexContent(stateInfo: StateInterfaceInfo): string {
-        return `export * from "./${this.fileService.getMainModulNames().index}";
-`;
+        return this.templatingEngine.compile(
+            this.templatingEngine.rootTemplates.index,
+            this.modelFactory.createHandlebarModel(stateInfo)
+        );
     }
 
     // Main Elements
@@ -173,57 +175,10 @@ export class ReduxCodeGenerator {
     }
 
     generateMainReducerContent(stateInfo: StateInterfaceInfo): string {
-        const nameBase = this.reduxModuleNamingHelper.getReducerMethodName(
-            stateInfo,
-            "base"
+        return this.templatingEngine.compile(
+            this.templatingEngine.reducerTemplates.main,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-        const nameExt = this.reduxModuleNamingHelper.getReducerMethodName(
-            stateInfo,
-            "ext"
-        );
-        const name = this.reduxModuleNamingHelper.getReducerMethodName(
-            stateInfo,
-            "main"
-        );
-
-        const stateName = this.getStateInterfaceName(stateInfo);
-        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
-            stateInfo,
-            { pathToState: "./../state" }
-        );
-
-        const methodBase = this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
-            stateInfo,
-            "base"
-        );
-
-        const reducerActionsName = this.reduxModuleNamingHelper.getReducerActionName(
-            stateInfo,
-            "main"
-        );
-        const { defaultState } = this.fileService.getGeneratedModulNames();
-        const { reducerActions } = this.fileService.getMainModulNames();
-
-        return `import ${nameBase} from "./${
-            this.fileService.getGeneratedModulNames().reducer
-        }";
-import ${nameExt} from "./${this.fileService.getExtensionModulNames().reducer}";
-import { ${methodBase} } from "./../reducerActions/${
-            this.fileService.getGeneratedModulNames().reducerActions
-        }";
-${stateImport}
-import getDefaultState from "./../${defaultState}";
-import ${reducerActionsName} from "./../reducerActions/${reducerActions}";
-        
-export const ${name} = (state: ${stateName} = getDefaultState(), action:  ${reducerActionsName}): ${stateName} => {
-    // Note: Generator may be extended to inversify this order => Just talk to me ;)
-    // return ${nameExt}((${methodBase}(action) ? ${nameBase}(state, action) : state), action);
-    
-    return (${methodBase}(action) ? ${nameBase}(${nameExt}(state, action), action) : ${nameExt}(state, action));
-}
-
-export default ${name};
-`;
     }
 
     generateMainReducerActionContent(stateInfo: StateInterfaceInfo): string {
@@ -258,48 +213,10 @@ export default ${name};
     }
 
     generateBaseReducerContent(stateInfo: StateInterfaceInfo): string {
-        const {
-            defaultState,
-            reducerActions,
-            actions: action,
-        } = this.fileService.getGeneratedModulNames();
-        const stateName = this.getStateInterfaceName(stateInfo);
-        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
-            stateInfo,
-            { pathToState: "./../state" }
+        return this.templatingEngine.compile(
+            this.templatingEngine.reducerTemplates.base,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-
-        const reducerMethod = this.reduxModuleNamingHelper.getReducerMethodName(
-            stateInfo,
-            "base"
-        );
-        return `${stateImport}
-import getDefaultState from "./../${defaultState}";
-import ReducerAction from "./../reducerActions/${reducerActions}";
-import actions from "./../actions/${action}";
-            
-const ${reducerMethod} = (state: ${stateName} = getDefaultState(), action: ReducerAction): ${stateName} => {
-    switch (action.type) {
-${stateInfo.stateProperties
-    .map(
-        (p) =>
-            `       case actions.${this.reduxModuleNamingHelper.getActionString(
-                p,
-                stateInfo
-            )}:
-            return {
-                ...state, 
-                ${p.name}: action.next,
-            };`
-    )
-    .join("\n")}        
-        default:
-            return state; 
-    }
-}
-
-
-export default ${reducerMethod}`;
     }
 
     generateBaseReducerActionContent(stateInfo: StateInterfaceInfo): string {
@@ -337,76 +254,9 @@ export default ${reducerMethod}`;
     }
 
     generateExtReducerContent(stateInfo: StateInterfaceInfo): string {
-        const {
-            defaultState,
-            actions: baseActions,
-            reducerActions: baseReducerActions,
-        } = this.fileService.getGeneratedModulNames();
-        const {
-            actions: action,
-            reducerActions: raExt,
-        } = this.fileService.getExtensionModulNames();
-        const { reducerActions } = this.fileService.getMainModulNames();
-
-        const reducerActionsExtTestMethodName = this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
-            stateInfo,
-            "ext"
+        return this.templatingEngine.compile(
+            this.templatingEngine.reducerTemplates.extended,
+            this.modelFactory.createHandlebarModel(stateInfo)
         );
-
-        const reducerActionsTestMethodName = this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
-            stateInfo,
-            "base"
-        );
-        const reducerActionsName = this.reduxModuleNamingHelper.getReducerActionName(
-            stateInfo,
-            "main"
-        );
-
-        const reducerMethod = this.reduxModuleNamingHelper.getReducerMethodName(
-            stateInfo,
-            "ext"
-        );
-        const stateName = this.getStateInterfaceName(stateInfo);
-        const stateImport = this.reduxModuleNamingHelper.getStateInterfaceImportLine(
-            stateInfo,
-            { pathToState: "./../state" }
-        );
-        return `${stateImport}
-import getDefaultState from "./../${defaultState}";
-// import extendedActions from "./../actions/${action}";
-// import actions from "./../actions/${baseActions}";
-import ${reducerActionsName} from "./../reducerActions/${reducerActions}";
-    
-// Uncomment for some typechecking:
-// import { ${reducerActionsTestMethodName} } from "./../reducerActions/${baseReducerActions}";
-// import { ${reducerActionsExtTestMethodName} } from "./../reducerActions/${raExt}";
-
-/**
- * You may add here extending reducer behaviors for this features reducer
- */        
-const ${reducerMethod} = (state: ${stateName} = getDefaultState(), action: ${reducerActionsName} ): ${stateName} => {
-    switch (action.type) {
-//         case actions["[actionName]"]:
-//             return {
-//                 ...state, 
-//                 // [action payload]
-//            };  
-//         case extendedActions["[actionName]"]:
-//             return {
-//                 ...state, 
-//                 // [action payload]
-//              };  
-        default:
-            return state; 
-    }
-};
-
-export default ${reducerMethod};
-`;
-    }
-
-    // Cool methods
-    getInitialPropertyValue(info: StatePropertyInfo): string {
-        return this.stateService.getInitialPropertyValue(info);
     }
 }

@@ -2,51 +2,21 @@
 {{this}}
 {{/each}}
 import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
-import getDefaultState from "./../{{moduleNames.base.defaultState}}";
+import { {{state.getDefaultStateMethodName}} } from "./../{{moduleNames.base.defaultState}}";
 import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
+import { {{reducerActions.baseReducerActionsName}} } from "./reducerActions/{{moduleNames.base.reducerActions}}";
 
-import { IState } from "./../state";
-import getDefaultState from "./../defaultState.base.generated";
-import ReducerAction from "./../reducerActions/reducerActions.base.generated";
-import actions from "./../actions/actions.base.generated";
-            
-const postsReducerBase = (state: IState = getDefaultState(), action: ReducerAction): IState => {
+export const {{reducer.baseReducerName}} = (state: {{state.stateName}} = {{state.getDefaultStateMethodName}}(), action: {{reducerActions.baseReducerActionsName}}): {{state.stateName}} => {
     switch (action.type) {
-       case actions.POSTS_SET_POSTMAN:
+{{#each state.properties}}        case actions.{{baseActionEnumValue}}:
             return {
-                ...state, 
-                postman: action.next,
-            };        
+                ...state,
+                {{name}}: action.next,
+            };
+{{/each}}        
         default:
-            return state; 
+            return state;
     }
-}
-
-
-export default postsReducerBase
-
-export type {{reducerActions.baseReducerActionsName}} = { type: actions; isBubbled?: boolean } & ({{#each state.properties}}
-    | {
-        type: actions.{{baseActionEnumValue}};
-        next: {{type}};
-    }{{/each}}
-);
-
-export const {{reducerActions.baseReducerTypeguard}} = (
-    item: any
-): item is {{reducerActions.baseReducerActionsName}} => {
-    if (!item) {
-        return false;
-    }
-    if (typeof item === "object") {
-        const { type } = item;
-
-        return (
-            typeof type === "string" &&
-            Object.hasOwnProperty.call(actions, type)
-        );
-    }
-    return false;
 };
 
-export default {{reducerActions.baseReducerActionsName}};
+export default {{reducer.baseReducerName}};

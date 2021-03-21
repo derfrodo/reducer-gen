@@ -331,6 +331,129 @@ export default PostsReducerActions;
 `);
             });
         });
+        describe("... and compilation will be for reducer", () => {
+            it("... and reducer base template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.reducerTemplates &&
+                    (await clazz.compile(
+                        clazz.reducerTemplates.base,
+                        testModel
+                    ));
+
+                // assert
+                expect(result).toBe(`import test from "with additional level"
+import test from "with additional level2"
+import { TESTSTATE } from "./../state";
+import { getTestStateDefault } from "./../defaultState.base.generated";
+import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
+import { BASE_REDUCERACTIONS } from "./reducerActions/reducerActions.base.generated";
+
+export const baseTestReducer = (state: TESTSTATE = getTestStateDefault(), action: BASE_REDUCERACTIONS): TESTSTATE => {
+    switch (action.type) {
+        case actions.SET_P1:
+            return {
+                ...state,
+                prop1: action.next,
+            };
+        case actions.SET_P2:
+            return {
+                ...state,
+                prop2: action.next,
+            };
+        default:
+            return state;
+    }
+};
+
+export default baseTestReducer;
+`);
+            });
+            it("... and reducer extended template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.reducerTemplates &&
+                    (await clazz.compile(
+                        clazz.reducerTemplates.extended,
+                        testModel
+                    ));
+                // assert
+                expect(result).toBe(`import { TESTSTATE } from "./../state";
+import { getTestStateDefault } from "./../defaultState.base.generated";
+import { MAIN_REDUCERACTIONS } from "./reducerActions/reducerActions.main.generated";
+
+// import test from "with additional level"
+// import test from "with additional level2"
+
+// import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
+// import { EXT_ACTIONS as actions } from "./../actions/actions.extended";
+
+// Uncomment for some typechecking:
+// import { isExtendedTestReducer } from "./../reducerActions/reducerActions.extended";
+// import { isBaseTestReducer } from "./../reducerActions/reducerActions.base.generated";
+
+export const extendedTestReducer = (state: TESTSTATE = getTestStateDefault(), action: MAIN_REDUCERACTIONS): TESTSTATE => {
+    switch (action.type) {
+        //         case actions["[actionName]"]:
+        //             return {
+        //                 ...state,
+        //                 // [action payload]
+        //            };
+        //         case extendedActions["[actionName]"]:
+        //             return {
+        //                 ...state,
+        //                 // [action payload]
+        //              };
+        default:
+            return state;
+    }
+};
+
+export default extendedTestReducer;
+`);
+            });
+            it("... and reducer main template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.reducerTemplates &&
+                    (await clazz.compile(
+                        clazz.reducerTemplates.main,
+                        testModel
+                    ));
+                // assert
+                expect(result).toBe(`import { TESTSTATE } from "./../state";
+import { getTestStateDefault } from "./../defaultState.base.generated";
+import { MAIN_REDUCERACTIONS } from "./reducerActions/reducerActions.main.generated";
+import { baseTestReducer } from "./reducer.base.generated";
+import { extendedTestReducer } from "./reducer.extended";
+import { isBaseTestReducer } from "./../reducerActions/reducerActions.base.generated";
+
+export const mainTestReducer = (state: TESTSTATE = getTestStateDefault(), action:  MAIN_REDUCERACTIONS): TESTSTATE => {
+    // Note: Generator may be extended to inversify this order => Just talk to me ;)
+    // return extendedTestReducer((isBaseTestReducer(action) ? baseTestReducer(state, action) : state), action);
+
+    return (isBaseTestReducer(action) ? baseTestReducer(extendedTestReducer(state, action), action) : extendedTestReducer(state, action));
+};
+
+export default mainTestReducer;
+`);
+            });
+        });
         describe("... and compilation will be for root files", () => {
             it("... and indexMain template is passed and has state as default export, Then result will match expected string", async () => {
                 // arrange:
@@ -414,7 +537,6 @@ export type TestFeatureState = TESTSTATE;
                         clazz.rootTemplates.defaultState,
                         testModel
                     ));
-                console.log(result);
 
                 // assert
                 expect(result).toBe(`import test from "same as in info level"
@@ -427,6 +549,22 @@ export const getTestStateDefault = (): TESTSTATE => ({
 });
 
 export default getTestStateDefault;
+`);
+            });
+            it("... and index template is passed, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result =
+                    clazz.actionCreatorsTemplates &&
+                    (await clazz.compile(clazz.rootTemplates.index, testModel));
+                console.log(result);
+
+                // assert
+                expect(result).toBe(`export * from "./index.main.generated";
 `);
             });
         });
