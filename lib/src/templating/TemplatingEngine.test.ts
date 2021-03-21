@@ -263,7 +263,6 @@ export default BASE_REDUCERACTIONS;
                         clazz.reducerActionsTemplates.extended,
                         testModel
                     ));
-                console.log(result);
                 // assert
                 expect(result)
                     .toBe(`import { EXT_ACTIONS as extendedActions } from "./../actions/actions.extended";
