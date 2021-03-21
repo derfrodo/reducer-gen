@@ -13,6 +13,7 @@
     "scripts": {
         "prepareForPublish": "npm run build && npm install --production && npm run cleanForPublish",
         "copyTemplates": "node copyTemplates",
+        "initializeTestState": "node initializeTestState.js",
         "cleanForPublish": "node cleanForPublish.js",
         "test": "jest",
         "test:watch": "jest --watch",
