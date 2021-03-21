@@ -1,4 +1,4 @@
-import { Divider, List } from "@material-ui/core";
+import { Divider, List, useTheme } from "@material-ui/core";
 import React from "react";
 import { AddTodoListItem } from "../atoms/AddTodoListItem";
 import { EmptyTodoListItem } from "../atoms/EmptyTodoListItem";
@@ -11,6 +11,7 @@ export const TodoList: React.FC<{ todos?: TodoData[] }> = ({
 }) => {
   const state = useTodoReducerContextState();
   const todos = propertyTodos ?? state.todos;
+  const theme = useTheme();
   return (
     <List>
       {todos.length > 0 ? (
@@ -21,7 +22,7 @@ export const TodoList: React.FC<{ todos?: TodoData[] }> = ({
         <EmptyTodoListItem />
       )}
 
-      <Divider />
+      <Divider style={{ marginBottom: theme.spacing(2) }} />
       <AddTodoListItem />
     </List>
   );

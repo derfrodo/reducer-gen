@@ -1,22 +1,34 @@
 import {
   Container,
-  Typography
+  createStyles,
+  makeStyles,
+  CssBaseline,
 } from "@material-ui/core";
 import React from "react";
+import { ApplicationHeader } from "./molecules/ApplicationHeader";
 import { TodoPage } from "./pages/TodoPage";
 
+const useAppStyles = makeStyles((t) =>
+  createStyles({
+    mainContainer: {
+      paddingTop: t.spacing(4),
+    },
+  })
+);
 function App() {
+  const classes = useAppStyles();
   return (
-    <div className="App" data-testid="app-container">
-      <header className="App-header">
-        <Typography variant="h1">Todo Reducer Demo</Typography>
-      </header>
-      <main>
-        <Container maxWidth="md">
-          <TodoPage />
-        </Container>
-      </main>
-    </div>
+    <>
+      <CssBaseline />
+      <div className="App" data-testid="app-container">
+        <ApplicationHeader />
+        <main>
+          <Container maxWidth="md" className={classes.mainContainer}>
+            <TodoPage />
+          </Container>
+        </main>
+      </div>
+    </>
   );
 }
 

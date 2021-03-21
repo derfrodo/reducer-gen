@@ -2,7 +2,7 @@ import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import QuestionAnswerRounded from "@material-ui/icons/QuestionAnswerRounded";
 import React from "react";
 
-export const EmptyTodoListItem: React.FC<{}> = ({}) => {
+export const EmptyTodoListItem: React.FC<{}> = () => {
   return (
     <ListItem>
       <ListItemIcon>

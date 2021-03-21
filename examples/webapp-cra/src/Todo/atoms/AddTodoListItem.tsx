@@ -4,36 +4,62 @@ import {
   ListItem,
   ListItemSecondaryAction,
   makeStyles,
-  TextField,
 } from "@material-ui/core";
 import Add from "@material-ui/icons/Add";
-import React from "react";
-import { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import { todoActionCreators, useTodoReducerContextDispatch } from "../reducer";
+import { TodoTaskInput } from "./TodoTaskInput";
 
 const useAddTodoListItemStyles = makeStyles((t) =>
   createStyles({
     itemWithEvenMoreSecondaryActionSpace: {
-      paddingRight: 64,
+      paddingRight: t.spacing(9),
     },
   })
 );
 
-export const AddTodoListItem: React.FC<{}> = ({}) => {
+export const AddTodoListItem: React.FC<{}> = () => {
   const classes = useAddTodoListItemStyles();
-  const [task, setTask] = useState<string | undefined>(undefined);
+  const dispatch = useTodoReducerContextDispatch();
+  const [task, setTask] = useState<string | null | undefined>(undefined);
+
+  const hasInput = useMemo(() => (task?.length ?? 0) > 0, [task]);
+  const onAddTodo = useCallback(
+    (task: string) => {
+      dispatch(
+        todoActionCreators.todosAddItem({
+          done: false,
+          task,
+        })
+      );
+    },
+    [dispatch]
+  );
+
   return (
     <ListItem classes={{ root: classes.itemWithEvenMoreSecondaryActionSpace }}>
-      <TextField
-        fullWidth
-        placeholder="Enter task here"
-        label="Add todo"
-        variant="outlined"
-        InputLabelProps={{ shrink: true }}
-        value={task ?? ""}
-        onChange={(e) => setTask(e.target.value)}
-      ></TextField>
+      <TodoTaskInput
+        currentTask={task}
+        onSetCurrentTask={setTask}
+        onUpdateTask={() => {
+          if (task) {
+            onAddTodo(task);
+            setTask(undefined);
+          }
+        }}
+        originalTask={""}
+      />
       <ListItemSecondaryAction>
-        <IconButton disabled={(task?.length ?? 0) === 0} color="primary">
+        <IconButton
+          disabled={!hasInput}
+          color="primary"
+          onClick={() => {
+            if (task) {
+              onAddTodo(task);
+              setTask(undefined);
+            }
+          }}
+        >
           <Add />
         </IconButton>
       </ListItemSecondaryAction>
