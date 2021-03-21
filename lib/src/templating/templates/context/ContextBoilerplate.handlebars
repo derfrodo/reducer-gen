@@ -1,0 +1,29 @@
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
+export { {{reducer.mainReducerName}} } from "./reducer/{{moduleNames.main.reducer}}";
+import { {{state.getDefaultStateMethodName}} } from "./{{moduleNames.base.defaultState}}";
+import { {{reducerActions.mainReducerActionsName}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
+
+export type On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled = (action: {{reducerActions.mainReducerActionsName}}) => void;
+
+export interface I{{featureName.pascalCase}}ReducerContext {
+    state: {{state.stateName}};
+    dispatch: React.Dispatch<{{reducerActions.mainReducerActionsName}}>;
+    listenOnDispatchWillBeCalled: (callback: On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled) => void;
+    removeOnDispatchWillBeCalled: (callback: On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled) => void;
+}
+
+export type IDispatch{{featureName.pascalCase}}ReducerContext = React.Dispatch<{{reducerActions.mainReducerActionsName}}>;
+
+export type IState{{featureName.pascalCase}}ReducerContext = {{state.stateName}};
+
+export const {{featureName.pascalCase}}ReducerContext = React.createContext<I{{featureName.pascalCase}}ReducerContext>({
+    state: {{state.getDefaultStateMethodName}}(),
+    dispatch: () => undefined,
+    listenOnDispatchWillBeCalled: () => undefined,
+    removeOnDispatchWillBeCalled: () => undefined,
+});
+
+export const Dispatch{{featureName.pascalCase}}ReducerContext = React.createContext<IDispatch{{featureName.pascalCase}}ReducerContext>(() => undefined);
+
+export const State{{featureName.pascalCase}}ReducerContext = React.createContext<IState{{featureName.pascalCase}}ReducerContext>({{state.getDefaultStateMethodName}}());

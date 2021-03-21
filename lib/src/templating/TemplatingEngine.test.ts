@@ -314,7 +314,6 @@ export default EXTENDED_REDUCERACTIONS;
                         clazz.reducerActionsTemplates.main,
                         testModel
                     ));
-                console.log(result);
                 // assert
                 expect(result)
                     .toBe(`import { BASE_REDUCERACTIONS, isBaseTestReducer } from "./reducerActions.base.generated";
@@ -560,10 +559,279 @@ export default getTestStateDefault;
                 const result =
                     clazz.actionCreatorsTemplates &&
                     (await clazz.compile(clazz.rootTemplates.index, testModel));
-                console.log(result);
 
                 // assert
                 expect(result).toBe(`export * from "./index.main.generated";
+`);
+            });
+        });
+        describe("... and compilation will be for context files", () => {
+            it("... and boilerplate template is passed and has state as default export, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result = await clazz.compile(
+                    clazz.contextTemplates.boilerplate,
+                    testModel
+                );
+
+                // assert
+                expect(result)
+                    .toBe(`import React, { useCallback, useEffect, useRef, useState } from "react";
+import { TESTSTATE } from "./state";
+export { mainTestReducer } from "./reducer/reducer.main.generated";
+import { getTestStateDefault } from "./defaultState.base.generated";
+import { MAIN_REDUCERACTIONS } from "./reducerActions/reducerActions.main.generated";
+
+export type OnTestFeatureReducerContextDispatchWillBeCalled = (action: MAIN_REDUCERACTIONS) => void;
+
+export interface ITestFeatureReducerContext {
+    state: TESTSTATE;
+    dispatch: React.Dispatch<MAIN_REDUCERACTIONS>;
+    listenOnDispatchWillBeCalled: (callback: OnTestFeatureReducerContextDispatchWillBeCalled) => void;
+    removeOnDispatchWillBeCalled: (callback: OnTestFeatureReducerContextDispatchWillBeCalled) => void;
+}
+
+export type IDispatchTestFeatureReducerContext = React.Dispatch<MAIN_REDUCERACTIONS>;
+
+export type IStateTestFeatureReducerContext = TESTSTATE;
+
+export const TestFeatureReducerContext = React.createContext<ITestFeatureReducerContext>({
+    state: getTestStateDefault(),
+    dispatch: () => undefined,
+    listenOnDispatchWillBeCalled: () => undefined,
+    removeOnDispatchWillBeCalled: () => undefined,
+});
+
+export const DispatchTestFeatureReducerContext = React.createContext<IDispatchTestFeatureReducerContext>(() => undefined);
+
+export const StateTestFeatureReducerContext = React.createContext<IStateTestFeatureReducerContext>(getTestStateDefault());
+`);
+            });
+            it("... and context template is passed and has state as default export, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result = await clazz.compile(
+                    clazz.contextTemplates.context,
+                    testModel
+                );
+
+                // assert
+                expect(result).toBe(`export const TestFeatureReducerContextProvider = (props: {
+    children: React.ReactNode;
+}) => {
+    const { children } = props;
+
+    const [state, dispatch] = React.useReducer(
+        mainTestReducer,
+        undefined,
+        getTestStateDefault
+    );
+
+    const dispatchWillBeCalledCallbacks = useRef<
+        OnTestFeatureReducerContextDispatchWillBeCalled[]
+    >([]);
+
+    const listenOnDispatchWillBeCalled = useCallback(
+        (callback: OnTestFeatureReducerContextDispatchWillBeCalled) => {
+            if (!dispatchWillBeCalledCallbacks.current) {
+                dispatchWillBeCalledCallbacks.current = [callback];
+            } else if (
+                dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item === callback
+                ).length === 0
+            ) {
+                dispatchWillBeCalledCallbacks.current.push(callback);
+            }
+        },
+        []
+    );
+
+    const removeOnDispatchWillBeCalled = useCallback(
+        (callback: OnTestFeatureReducerContextDispatchWillBeCalled) => {
+            if (!dispatchWillBeCalledCallbacks.current) {
+                dispatchWillBeCalledCallbacks.current = [callback];
+            } else if (
+                dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item === callback
+                ).length !== 0
+            ) {
+                dispatchWillBeCalledCallbacks.current = dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item !== callback
+                );
+            }
+        },
+        []
+    );
+
+    const dispatchCallback = useCallback<typeof dispatch>((...args) => {
+        const callbacks = dispatchWillBeCalledCallbacks.current;
+        for (const cb of callbacks || []) {
+            cb(args[0]);
+        }
+        dispatch(...args);
+    }, []);
+
+    const context: ITestFeatureReducerContext = React.useMemo(
+        () => ({
+            state,
+            dispatch: dispatchCallback,
+            listenOnDispatchWillBeCalled,
+            removeOnDispatchWillBeCalled,
+        }),
+        [
+            state,
+            dispatchCallback,
+            listenOnDispatchWillBeCalled,
+            removeOnDispatchWillBeCalled,
+        ]
+    );
+
+    return (
+        <DispatchTestFeatureReducerContext.Provider value={dispatchCallback}>
+            <StateTestFeatureReducerContext.Provider value={state}>
+                <TestFeatureReducerContext.Provider value={context}>
+                    {children}
+                </TestFeatureReducerContext.Provider>
+            </StateTestFeatureReducerContext.Provider>
+        </DispatchTestFeatureReducerContext.Provider>
+    );
+};
+`);
+            });
+            it("... and context hooks template is passed and has state as default export, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result = await clazz.compile(
+                    clazz.contextTemplates.contextHooks,
+                    testModel
+                );
+
+                // assert
+                expect(result).toBe(`export const useTestFeatureReducerContext: () => ITestFeatureReducerContext = () => {
+    return React.useContext<ITestFeatureReducerContext>(TestFeatureReducerContext);
+};
+
+export const useTestFeatureReducerContextState: () => IStateTestFeatureReducerContext = () => {
+    return React.useContext<IStateTestFeatureReducerContext>(StateTestFeatureReducerContext);
+};
+
+export const useTestFeatureReducerContextDispatch: () => IDispatchTestFeatureReducerContext = () => {
+    return React.useContext<IDispatchTestFeatureReducerContext>(DispatchTestFeatureReducerContext);
+};
+`);
+            });
+            it("... and context changed hooks template is passed and has state as default export, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result = await clazz.compile(
+                    clazz.contextTemplates.contextChangedHooks,
+                    testModel
+                );
+
+                // assert
+                expect(result).toBe(`/**
+ * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
+ * @param callback callback which will be called dispatch gets called
+ */
+export const useTestFeatureDispatchWillBeCalledEffect = (callback: OnTestFeatureReducerContextDispatchWillBeCalled) => {
+    const {
+        listenOnDispatchWillBeCalled,
+        removeOnDispatchWillBeCalled,
+    } = useTestFeatureReducerContext();
+
+    useEffect(() => {
+        if(callback){
+            listenOnDispatchWillBeCalled(callback)
+            return () => {
+                removeOnDispatchWillBeCalled(callback)
+            }
+        }
+    }, [callback, listenOnDispatchWillBeCalled, removeOnDispatchWillBeCalled]);
+};
+
+/**
+ * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
+ * @param onStateChanged callback which will be called if TestFeatureState changes
+ */
+export const useTestFeatureStateChangedEffect = <T extends TESTSTATE>(
+    onStateChanged: (next: TESTSTATE, old: TESTSTATE | null) => Promise<void> | void
+) => {
+    const state = useTestFeatureReducerContextState();
+
+    const callbackRef = useRef<typeof onStateChanged>(onStateChanged);
+    const [, setOld] = useState<TESTSTATE | null>(null);
+
+    useEffect(() => {
+        callbackRef.current = onStateChanged;
+    }, [onStateChanged]);
+
+    useEffect(() => {
+        setOld((prev) => {
+            if (callbackRef.current && state !== prev) {
+                callbackRef.current(state, prev);
+            }
+            return state;
+        });
+    }, [state]);
+};
+
+/**
+ * Use this method if you want to react on state changes concerning a specific property
+ * @param property property which is to be watched
+ * @param onStatePropertyChanged callback which will be called if property in state changes
+ */
+export const useTestFeatureStatePropertyChangedEffect = <
+    TKey extends keyof TESTSTATE
+>(
+    property: TKey,
+    onStatePropertyChanged: (
+        next: TESTSTATE[TKey],
+        old: TESTSTATE[TKey] | null,
+        state: TESTSTATE,
+        oldState: TESTSTATE | null
+    ) => Promise<void> | void
+) => {
+    const callbackRef = useRef<typeof onStatePropertyChanged>(
+        onStatePropertyChanged
+    );
+
+    useEffect(() => {
+        callbackRef.current = onStatePropertyChanged;
+    }, [onStatePropertyChanged]);
+
+    const changedCallback = useCallback(
+        async (next: TESTSTATE, old: TESTSTATE | null) => {
+            const cb = callbackRef.current;
+            if (cb && (!old || next[property] !== old[property])) {
+                await cb(
+                    next[property],
+                    old !== null ? old[property] : null,
+                    next,
+                    old
+                );
+            }
+        },
+        [property]
+    );
+
+    useTestFeatureStateChangedEffect(changedCallback);
+};
 `);
             });
         });

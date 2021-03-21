@@ -1,0 +1,87 @@
+/**
+ * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
+ * @param callback callback which will be called dispatch gets called
+ */
+export const use{{featureName.pascalCase}}DispatchWillBeCalledEffect = (callback: On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled) => {
+    const {
+        listenOnDispatchWillBeCalled,
+        removeOnDispatchWillBeCalled,
+    } = use{{featureName.pascalCase}}ReducerContext();
+
+    useEffect(() => {
+        if(callback){
+            listenOnDispatchWillBeCalled(callback)
+            return () => {
+                removeOnDispatchWillBeCalled(callback)
+            }
+        }
+    }, [callback, listenOnDispatchWillBeCalled, removeOnDispatchWillBeCalled]);
+};
+
+/**
+ * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
+ * @param onStateChanged callback which will be called if {{featureName.pascalCase}}State changes
+ */
+export const use{{featureName.pascalCase}}StateChangedEffect = <T extends {{state.stateName}}>(
+    onStateChanged: (next: {{state.stateName}}, old: {{state.stateName}} | null) => Promise<void> | void
+) => {
+    const state = use{{featureName.pascalCase}}ReducerContextState();
+
+    const callbackRef = useRef<typeof onStateChanged>(onStateChanged);
+    const [, setOld] = useState<{{state.stateName}} | null>(null);
+
+    useEffect(() => {
+        callbackRef.current = onStateChanged;
+    }, [onStateChanged]);
+
+    useEffect(() => {
+        setOld((prev) => {
+            if (callbackRef.current && state !== prev) {
+                callbackRef.current(state, prev);
+            }
+            return state;
+        });
+    }, [state]);
+};
+
+/**
+ * Use this method if you want to react on state changes concerning a specific property
+ * @param property property which is to be watched
+ * @param onStatePropertyChanged callback which will be called if property in state changes
+ */
+export const use{{featureName.pascalCase}}StatePropertyChangedEffect = <
+    TKey extends keyof {{state.stateName}}
+>(
+    property: TKey,
+    onStatePropertyChanged: (
+        next: {{state.stateName}}[TKey],
+        old: {{state.stateName}}[TKey] | null,
+        state: {{state.stateName}},
+        oldState: {{state.stateName}} | null
+    ) => Promise<void> | void
+) => {
+    const callbackRef = useRef<typeof onStatePropertyChanged>(
+        onStatePropertyChanged
+    );
+
+    useEffect(() => {
+        callbackRef.current = onStatePropertyChanged;
+    }, [onStatePropertyChanged]);
+
+    const changedCallback = useCallback(
+        async (next: {{state.stateName}}, old: {{state.stateName}} | null) => {
+            const cb = callbackRef.current;
+            if (cb && (!old || next[property] !== old[property])) {
+                await cb(
+                    next[property],
+                    old !== null ? old[property] : null,
+                    next,
+                    old
+                );
+            }
+        },
+        [property]
+    );
+
+    use{{featureName.pascalCase}}StateChangedEffect(changedCallback);
+};

@@ -1,0 +1,80 @@
+export const {{featureName.pascalCase}}ReducerContextProvider = (props: {
+    children: React.ReactNode;
+}) => {
+    const { children } = props;
+
+    const [state, dispatch] = React.useReducer(
+        {{reducer.mainReducerName}},
+        undefined,
+        {{state.getDefaultStateMethodName}}
+    );
+
+    const dispatchWillBeCalledCallbacks = useRef<
+        On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled[]
+    >([]);
+
+    const listenOnDispatchWillBeCalled = useCallback(
+        (callback: On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled) => {
+            if (!dispatchWillBeCalledCallbacks.current) {
+                dispatchWillBeCalledCallbacks.current = [callback];
+            } else if (
+                dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item === callback
+                ).length === 0
+            ) {
+                dispatchWillBeCalledCallbacks.current.push(callback);
+            }
+        },
+        []
+    );
+
+    const removeOnDispatchWillBeCalled = useCallback(
+        (callback: On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled) => {
+            if (!dispatchWillBeCalledCallbacks.current) {
+                dispatchWillBeCalledCallbacks.current = [callback];
+            } else if (
+                dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item === callback
+                ).length !== 0
+            ) {
+                dispatchWillBeCalledCallbacks.current = dispatchWillBeCalledCallbacks.current.filter(
+                    (item) => item !== callback
+                );
+            }
+        },
+        []
+    );
+
+    const dispatchCallback = useCallback<typeof dispatch>((...args) => {
+        const callbacks = dispatchWillBeCalledCallbacks.current;
+        for (const cb of callbacks || []) {
+            cb(args[0]);
+        }
+        dispatch(...args);
+    }, []);
+
+    const context: I{{featureName.pascalCase}}ReducerContext = React.useMemo(
+        () => ({
+            state,
+            dispatch: dispatchCallback,
+            listenOnDispatchWillBeCalled,
+            removeOnDispatchWillBeCalled,
+        }),
+        [
+            state,
+            dispatchCallback,
+            listenOnDispatchWillBeCalled,
+            removeOnDispatchWillBeCalled,
+        ]
+    );
+
+    return (
+        <Dispatch{{featureName.pascalCase}}ReducerContext.Provider value={dispatchCallback}>
+            <State{{featureName.pascalCase}}ReducerContext.Provider value={state}>
+                <{{featureName.pascalCase}}ReducerContext.Provider value={context}>
+                    {children}
+                </{{featureName.pascalCase}}ReducerContext.Provider>
+            </State{{featureName.pascalCase}}ReducerContext.Provider>
+        </Dispatch{{featureName.pascalCase}}ReducerContext.Provider>
+    );
+};

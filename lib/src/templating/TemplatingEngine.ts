@@ -33,7 +33,14 @@ type RootTemplates = {
     indexMain: string;
 };
 
+type ContextTemplates = {
+    boilerplate: string;
+    context: string;
+    contextHooks: string;
+    contextChangedHooks: string;
+};
 export class TemplatingEngine {
+    private _contextTemplates: ContextTemplates | undefined;
     private _rootTemplates: RootTemplates | undefined;
     private _actionsTemplates: FeatureTemplate | undefined;
     private _actionCreatorsTemplates: FeatureTemplate | undefined;
@@ -43,6 +50,15 @@ export class TemplatingEngine {
         doBindPrototype(this, TemplatingEngine.prototype);
     }
 
+    public get contextTemplates(): Readonly<ContextTemplates> {
+        if (!this._contextTemplates) {
+            throw new Error(
+                "Templates have not been initialized. Please call precompile method first."
+            );
+        } else {
+            return { ...this._contextTemplates };
+        }
+    }
     public get rootTemplates(): Readonly<RootTemplates> {
         if (!this._rootTemplates) {
             throw new Error(
@@ -94,6 +110,7 @@ export class TemplatingEngine {
     }
 
     async initialize(): Promise<void> {
+        this._contextTemplates = await this.readContextTemplates();
         this._rootTemplates = await this.readRootTemplates();
         this._reducerTemplates = await this.readFolderTemplates("reducer");
         this._reducerActionsTemplates = await this.readFolderTemplates(
@@ -103,6 +120,42 @@ export class TemplatingEngine {
         this._actionCreatorsTemplates = await this.readFolderTemplates(
             "actionCreators"
         );
+    }
+    async readContextTemplates(): Promise<ContextTemplates> {
+        return {
+            boilerplate: await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "context",
+                    "ContextBoilerplate.handlebars"
+                )
+            ),
+            context: await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "context",
+                    "ReducerContextProvider.handlebars"
+                )
+            ),
+            contextHooks: await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "context",
+                    "useReducerContextHooks.handlebars"
+                )
+            ),
+            contextChangedHooks: await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "context",
+                    "useStateChangedEffectHooks.handlebars"
+                )
+            ),
+        };
     }
     async readRootTemplates(): Promise<RootTemplates> {
         return {

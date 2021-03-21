@@ -128,28 +128,6 @@ export class ReduxCodeGenerator {
         return result;
     }
 
-    getImportClauses(
-        stateInfo: StateInterfaceInfo,
-        asNested = true,
-        asComment = false
-    ): string {
-        const { importClauses } = stateInfo;
-        return asNested
-            ? `${importClauses
-                  .map(this.fileService.addLevelToImportClause)
-                  .map((clause) =>
-                      asComment
-                          ? this.fileService.addCommentToImportClause(clause)
-                          : clause
-                  )
-                  .join("\n")}`
-            : `${importClauses.join("\n")}`;
-    }
-
-    getStateInterfaceName(stateInfo: StateInterfaceInfo): string {
-        return this.reduxModuleNamingHelper.getStateInterfaceName(stateInfo);
-    }
-
     // Central Index
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     generateIndexContent(stateInfo: StateInterfaceInfo): string {
