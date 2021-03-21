@@ -31,7 +31,8 @@ describe("Given TemplatingEngine", () => {
                         testModel
                     ));
                 // assert
-                expect(result).toBe(`export enum BASE_ACTIONS {
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`export enum BASE_ACTIONS {
     ACTION1 = "ACTION1",
     ACTION2 = "ACTION2"
 }
@@ -53,7 +54,7 @@ export default BASE_ACTIONS;
                         testModel
                     ));
                 // assert
-                expect(result).toBe(`export enum EXT_ACTIONS {
+                expect(result.replace(/\r\n/g, "\n")).toBe(`export enum EXT_ACTIONS {
     // e.g. ADD_LOADING_HANDLE = "ADD_LOADING_HANDLE",
 }
 
@@ -74,7 +75,7 @@ export default EXT_ACTIONS;
                         testModel
                     ));
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import { BASE_ACTIONS } from "./actions.base.generated";
 import { EXT_ACTIONS } from "./actions.extended";
 
@@ -99,7 +100,7 @@ export default MAIN_ACTIONS;
                         testModel
                     ));
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import { CREATOR_BASE } from "./actionCreators.base.generated";
 import { CREATOR_EXT } from "./actionCreators.extended";
 
@@ -123,19 +124,18 @@ export default CREATOR_MAIN;
                         testModel
                     ));
 
-                // console.log(result);
                 // assert
-                expect(result).toBe(`import test from "with additional level"
+                expect(result.replace(/\r\n/g, "\n")).toBe(`import test from "with additional level"
 import test from "with additional level2"
 import { BASE_REDUCERACTIONS as ReducerActions } from "./../reducerActions/reducerActions.base.generated";
 import { MAIN_ACTIONS as actions } from "./../actions/actions.main.generated";
 
 export const CREATOR_BASE = {
-    setProp1: (nextProp1: function | undefined): ReducerActions => ({
+    setProp1: (nextProp1: object): ReducerActions => ({
         type: actions.SET_P1,
         next: nextProp1,
     }),
-    setProp2: (nextProp2: function | undefined): ReducerActions => ({
+    setProp2: (nextProp2: string | undefined): ReducerActions => ({
         type: actions.SET_P2,
         next: nextProp2,
     }),
@@ -160,7 +160,7 @@ export default CREATOR_BASE;
                     ));
 
                 // assert
-                expect(result).toBe(`// Uncomment imports if you need to ;)
+                expect(result.replace(/\r\n/g, "\n")).toBe(`// Uncomment imports if you need to ;)
 // import test from "with additional level"
 // import test from "with additional level2"
 
@@ -215,7 +215,7 @@ export default CREATOR_EXT;
                     ));
 
                 // assert
-                expect(result).toBe(`import test from "with additional level"
+                expect(result.replace(/\r\n/g, "\n")).toBe(`import test from "with additional level"
 import test from "with additional level2"
 import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
 
@@ -225,11 +225,11 @@ export type BASE_REDUCERACTIONS = {
     } & (
     | {
         type: actions.SET_P1;
-        next: function | undefined;
+        next: object;
     }
     | {
         type: actions.SET_P2;
-        next: function | undefined;
+        next: string | undefined;
     }
 );
 
@@ -267,7 +267,7 @@ export default BASE_REDUCERACTIONS;
                         testModel
                     ));
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import { EXT_ACTIONS as extendedActions } from "./../actions/actions.extended";
 
 /**
@@ -318,7 +318,7 @@ export default EXTENDED_REDUCERACTIONS;
                         testModel
                     ));
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import { BASE_REDUCERACTIONS, isBaseTestReducer } from "./reducerActions.base.generated";
 import { EXTENDED_REDUCERACTIONS, isExtendedTestReducer } from "./reducerActions.extended";
 
@@ -348,7 +348,7 @@ export default MAIN_REDUCERACTIONS;
                     ));
 
                 // assert
-                expect(result).toBe(`import { TESTSTATE } from "./../state";
+                expect(result.replace(/\r\n/g, "\n")).toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
 import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
 import { BASE_REDUCERACTIONS } from "./../reducerActions/reducerActions.base.generated";
@@ -387,7 +387,7 @@ export default baseTestReducer;
                         testModel
                     ));
                 // assert
-                expect(result).toBe(`import { TESTSTATE } from "./../state";
+                expect(result.replace(/\r\n/g, "\n")).toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
 import { MAIN_REDUCERACTIONS } from "./../reducerActions/reducerActions.main.generated";
 
@@ -435,7 +435,7 @@ export default extendedTestReducer;
                         testModel
                     ));
                 // assert
-                expect(result).toBe(`import { TESTSTATE } from "./../state";
+                expect(result.replace(/\r\n/g, "\n")).toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
 import { MAIN_REDUCERACTIONS } from "./../reducerActions/reducerActions.main.generated";
 import { baseTestReducer } from "./reducer.base.generated";
@@ -470,7 +470,7 @@ export default mainTestReducer;
                     ));
 
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import { MAIN_REDUCERACTIONS as RAs } from "./reducerActions/reducerActions.main.generated";
 import TESTSTATE from "./state";
 
@@ -504,7 +504,7 @@ export type TestFeatureState = TESTSTATE;
                     ));
 
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import { MAIN_REDUCERACTIONS as RAs } from "./reducerActions/reducerActions.main.generated";
 import { TESTSTATE } from "./state";
 
@@ -538,7 +538,8 @@ export type TestFeatureState = TESTSTATE;
                     ));
 
                 // assert
-                expect(result).toBe(`import { TESTSTATE } from "./state";
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`import { TESTSTATE } from "./state";
 
 export const getTestStateDefault = (): TESTSTATE => ({
     prop1: "",
@@ -560,7 +561,8 @@ export default getTestStateDefault;
                     (await clazz.compile(clazz.rootTemplates.index, testModel));
 
                 // assert
-                expect(result).toBe(`export * from "./index.main.generated";
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`export * from "./index.main.generated";
 `);
             });
         });
@@ -578,7 +580,7 @@ export default getTestStateDefault;
                 );
 
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TESTSTATE } from "./state";
 import { mainTestReducer } from "./reducer/reducer.main.generated";
@@ -623,7 +625,7 @@ export const StateTestFeatureReducerContext = React.createContext<IStateTestFeat
                 );
 
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`export const TestFeatureReducerContextProvider = (props: {
     children: React.ReactNode;
 }) => {
@@ -719,7 +721,7 @@ export const StateTestFeatureReducerContext = React.createContext<IStateTestFeat
                 );
 
                 // assert
-                expect(result)
+                expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`export const useTestFeatureReducerContext: () => ITestFeatureReducerContext = () => {
     return React.useContext<ITestFeatureReducerContext>(TestFeatureReducerContext);
 };
@@ -746,7 +748,7 @@ export const useTestFeatureReducerContextDispatch: () => IDispatchTestFeatureRed
                 );
 
                 // assert
-                expect(result).toBe(`/**
+                expect(result.replace(/\r\n/g, "\n")).toBe(`/**
  * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
  * @param callback callback which will be called dispatch gets called
  */
@@ -770,7 +772,7 @@ export const useTestFeatureDispatchWillBeCalledEffect = (callback: OnTestFeature
  * Use this method if you want to react on state changes (e.g. call additional methods or talk to a... frame?)
  * @param onStateChanged callback which will be called if TestFeatureState changes
  */
-export const useTestFeatureStateChangedEffect = <T extends TESTSTATE>(
+export const useTestFeatureStateChangedEffect = (
     onStateChanged: (next: TESTSTATE, old: TESTSTATE | null) => Promise<void> | void
 ) => {
     const state = useTestFeatureReducerContextState();
