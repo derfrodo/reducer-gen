@@ -4,7 +4,7 @@
 import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
 import { {{state.getDefaultStateMethodName}} } from "./../{{moduleNames.base.defaultState}}";
 import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
-import { {{reducerActions.baseReducerActionsName}} } from "./reducerActions/{{moduleNames.base.reducerActions}}";
+import { {{reducerActions.baseReducerActionsName}} } from "./../reducerActions/{{moduleNames.base.reducerActions}}";
 
 export const {{reducer.baseReducerName}} = (state: {{state.stateName}} = {{state.getDefaultStateMethodName}}(), action: {{reducerActions.baseReducerActionsName}}): {{state.stateName}} => {
     switch (action.type) {

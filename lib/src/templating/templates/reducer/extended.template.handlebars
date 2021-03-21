@@ -1,6 +1,6 @@
 import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
 import { {{state.getDefaultStateMethodName}} } from "./../{{moduleNames.base.defaultState}}";
-import { {{reducerActions.mainReducerActionsName}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
+import { {{reducerActions.mainReducerActionsName}} } from "./../reducerActions/{{moduleNames.main.reducerActions}}";
 
 {{#each state.importsWithAdditionalLevel}}
 // {{this}}

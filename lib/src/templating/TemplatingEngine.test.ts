@@ -351,7 +351,7 @@ import test from "with additional level2"
 import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
 import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
-import { BASE_REDUCERACTIONS } from "./reducerActions/reducerActions.base.generated";
+import { BASE_REDUCERACTIONS } from "./../reducerActions/reducerActions.base.generated";
 
 export const baseTestReducer = (state: TESTSTATE = getTestStateDefault(), action: BASE_REDUCERACTIONS): TESTSTATE => {
     switch (action.type) {
@@ -389,7 +389,7 @@ export default baseTestReducer;
                 // assert
                 expect(result).toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
-import { MAIN_REDUCERACTIONS } from "./reducerActions/reducerActions.main.generated";
+import { MAIN_REDUCERACTIONS } from "./../reducerActions/reducerActions.main.generated";
 
 // import test from "with additional level"
 // import test from "with additional level2"
