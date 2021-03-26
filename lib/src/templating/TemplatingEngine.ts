@@ -150,7 +150,7 @@ export class TemplatingEngine {
     async initializePartials(): Promise<void> {
         // Initialize general partials
         await this.addPartialsFromFolder(
-            path.join(__dirname, "templates", "partials")
+            path.join(__dirname, "templates", "general", "partials")
         );
 
         // Initialize actionCreator partials
@@ -177,75 +177,6 @@ export class TemplatingEngine {
         await this.addPartialsFromFolder(
             path.join(__dirname, "templates", "context", "partials")
         );
-
-        // // Initialize general partials
-        // handlebars.registerPartial(
-        //     "currentContext",
-        //     await readTemplate(
-        //         path.join(
-        //             __dirname,
-        //             "templates",
-        //             "partials",
-        //             "currentContext.handlebars"
-        //         )
-        //     )
-        // );
-
-        // // Initialize actionCreator Partials
-        // handlebars.registerPartial(
-        //     "additionalArrayCreators",
-        //     await readTemplate(
-        //         path.join(
-        //             __dirname,
-        //             "templates",
-        //             "actionCreators",
-        //             "partials",
-        //             "additionalArrayCreators.handlebars"
-        //         )
-        //     )
-        // );
-
-        // // Initialize actions Partials
-        // handlebars.registerPartial(
-        //     "additionalArrayActions",
-        //     await readTemplate(
-        //         path.join(
-        //             __dirname,
-        //             "templates",
-        //             "actions",
-        //             "partials",
-        //             "additionalArrayActions.handlebars"
-        //         )
-        //     )
-        // );
-
-        // // Initialize reducer actions Partials
-        // handlebars.registerPartial(
-        //     "additionalArrayReducerActions",
-        //     await readTemplate(
-        //         path.join(
-        //             __dirname,
-        //             "templates",
-        //             "reducerActions",
-        //             "partials",
-        //             "additionalArrayReducerActions.handlebars"
-        //         )
-        //     )
-        // );
-
-        // // Initialize reducer Partials
-        // handlebars.registerPartial(
-        //     "additionalArrayReducerCases",
-        //     await readTemplate(
-        //         path.join(
-        //             __dirname,
-        //             "templates",
-        //             "reducer",
-        //             "partials",
-        //             "additionalArrayReducerCases.handlebars"
-        //         )
-        //     )
-        // );
     }
 
     async addPartialsFromFolder(basefolder: string): Promise<void> {
@@ -294,14 +225,6 @@ export class TemplatingEngine {
 
     async readContextTemplates(): Promise<ContextTemplates> {
         return {
-            // boilerplate: await readTemplate(
-            //     path.join(
-            //         __dirname,
-            //         "templates",
-            //         "context",
-            //         "ContextBoilerplate.handlebars"
-            //     )
-            // ),
             context: await readTemplate(
                 path.join(
                     __dirname,
@@ -310,35 +233,29 @@ export class TemplatingEngine {
                     "context.handlebars"
                 )
             ),
-            // contextHooks: await readTemplate(
-            //     path.join(
-            //         __dirname,
-            //         "templates",
-            //         "context",
-            //         "useReducerContextHooks.handlebars"
-            //     )
-            // ),
-            // contextChangedHooks: await readTemplate(
-            //     path.join(
-            //         __dirname,
-            //         "templates",
-            //         "context",
-            //         "useStateChangedEffectHooks.handlebars"
-            //     )
-            // ),
         };
     }
 
     async readRootTemplates(): Promise<RootTemplates> {
         return {
             index: await readTemplate(
-                path.join(__dirname, "templates", "index.handlebars")
+                path.join(__dirname, "templates", "general", "index.handlebars")
             ),
             indexMain: await readTemplate(
-                path.join(__dirname, "templates", "mainIndex.handlebars")
+                path.join(
+                    __dirname,
+                    "templates",
+                    "general",
+                    "mainIndex.handlebars"
+                )
             ),
             defaultState: await readTemplate(
-                path.join(__dirname, "templates", "defaultState.handlebars")
+                path.join(
+                    __dirname,
+                    "templates",
+                    "general",
+                    "defaultState.handlebars"
+                )
             ),
         };
     }
