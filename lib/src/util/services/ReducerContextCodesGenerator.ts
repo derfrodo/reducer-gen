@@ -14,19 +14,24 @@ export class ReducerContextCodesGenerator {
     }
 
     generateReducerContextContent(stateInfo: StateInterfaceInfo): string {
-        return `${this.templatingEngine.compile(
-            this.templatingEngine.contextTemplates.boilerplate,
-            this.modelFactory.createHandlebarModel(stateInfo)
-        )}${this.templatingEngine.compile(
+        return this.templatingEngine.compile(
             this.templatingEngine.contextTemplates.context,
             this.modelFactory.createHandlebarModel(stateInfo)
-        )}${this.templatingEngine.compile(
-            this.templatingEngine.contextTemplates.contextHooks,
-            this.modelFactory.createHandlebarModel(stateInfo)
-        )}${this.templatingEngine.compile(
-            this.templatingEngine.contextTemplates.contextChangedHooks,
-            this.modelFactory.createHandlebarModel(stateInfo)
-        )}
-        `;
+        );
+
+        // return `${this.templatingEngine.compile(
+        //     this.templatingEngine.contextTemplates.boilerplate,
+        //     this.modelFactory.createHandlebarModel(stateInfo)
+        // )}${this.templatingEngine.compile(
+        //     this.templatingEngine.contextTemplates.context,
+        //     this.modelFactory.createHandlebarModel(stateInfo)
+        // )}${this.templatingEngine.compile(
+        //     this.templatingEngine.contextTemplates.contextHooks,
+        //     this.modelFactory.createHandlebarModel(stateInfo)
+        // )}${this.templatingEngine.compile(
+        //     this.templatingEngine.contextTemplates.contextChangedHooks,
+        //     this.modelFactory.createHandlebarModel(stateInfo)
+        // )}
+        // `;
     }
 }

@@ -54,7 +54,8 @@ export default BASE_ACTIONS;
                         testModel
                     ));
                 // assert
-                expect(result.replace(/\r\n/g, "\n")).toBe(`export enum EXT_ACTIONS {
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`export enum EXT_ACTIONS {
     // e.g. ADD_LOADING_HANDLE = "ADD_LOADING_HANDLE",
 }
 
@@ -125,7 +126,8 @@ export default CREATOR_MAIN;
                     ));
 
                 // assert
-                expect(result.replace(/\r\n/g, "\n")).toBe(`import test from "with additional level"
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`import test from "with additional level"
 import test from "with additional level2"
 import { BASE_REDUCERACTIONS as ReducerActions } from "./../reducerActions/reducerActions.base.generated";
 import { MAIN_ACTIONS as actions } from "./../actions/actions.main.generated";
@@ -160,7 +162,8 @@ export default CREATOR_BASE;
                     ));
 
                 // assert
-                expect(result.replace(/\r\n/g, "\n")).toBe(`// Uncomment imports if you need to ;)
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`// Uncomment imports if you need to ;)
 // import test from "with additional level"
 // import test from "with additional level2"
 
@@ -215,7 +218,8 @@ export default CREATOR_EXT;
                     ));
 
                 // assert
-                expect(result.replace(/\r\n/g, "\n")).toBe(`import test from "with additional level"
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`import test from "with additional level"
 import test from "with additional level2"
 import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
 
@@ -348,7 +352,8 @@ export default MAIN_REDUCERACTIONS;
                     ));
 
                 // assert
-                expect(result.replace(/\r\n/g, "\n")).toBe(`import { TESTSTATE } from "./../state";
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
 import { BASE_ACTIONS as actions } from "./../actions/actions.base.generated";
 import { BASE_REDUCERACTIONS } from "./../reducerActions/reducerActions.base.generated";
@@ -387,7 +392,8 @@ export default baseTestReducer;
                         testModel
                     ));
                 // assert
-                expect(result.replace(/\r\n/g, "\n")).toBe(`import { TESTSTATE } from "./../state";
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
 import { MAIN_REDUCERACTIONS } from "./../reducerActions/reducerActions.main.generated";
 
@@ -435,7 +441,8 @@ export default extendedTestReducer;
                         testModel
                     ));
                 // assert
-                expect(result.replace(/\r\n/g, "\n")).toBe(`import { TESTSTATE } from "./../state";
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
 import { MAIN_REDUCERACTIONS } from "./../reducerActions/reducerActions.main.generated";
 import { baseTestReducer } from "./reducer.base.generated";
@@ -575,10 +582,11 @@ export default getTestStateDefault;
                 // act
                 await clazz.initialize();
                 const result = await clazz.compile(
-                    clazz.contextTemplates.boilerplate,
+                    clazz.contextTemplates.context,
                     testModel
                 );
 
+                console.log(result);
                 // assert
                 expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -610,23 +618,8 @@ export const TestFeatureReducerContext = React.createContext<ITestFeatureReducer
 export const DispatchTestFeatureReducerContext = React.createContext<IDispatchTestFeatureReducerContext>(() => undefined);
 
 export const StateTestFeatureReducerContext = React.createContext<IStateTestFeatureReducerContext>(getTestStateDefault());
-`);
-            });
-            it("... and context template is passed and has state as default export, Then result will match expected string", async () => {
-                // arrange:
-                const testModel = getTestModel();
-                const clazz = new TemplatingEngine();
 
-                // act
-                await clazz.initialize();
-                const result = await clazz.compile(
-                    clazz.contextTemplates.context,
-                    testModel
-                );
-
-                // assert
-                expect(result.replace(/\r\n/g, "\n"))
-                    .toBe(`export const TestFeatureReducerContextProvider = (props: {
+export const TestFeatureReducerContextProvider = (props: {
     children: React.ReactNode;
 }) => {
     const { children } = props;
@@ -706,23 +699,7 @@ export const StateTestFeatureReducerContext = React.createContext<IStateTestFeat
         </DispatchTestFeatureReducerContext.Provider>
     );
 };
-`);
-            });
-            it("... and context hooks template is passed and has state as default export, Then result will match expected string", async () => {
-                // arrange:
-                const testModel = getTestModel();
-                const clazz = new TemplatingEngine();
-
-                // act
-                await clazz.initialize();
-                const result = await clazz.compile(
-                    clazz.contextTemplates.contextHooks,
-                    testModel
-                );
-
-                // assert
-                expect(result.replace(/\r\n/g, "\n"))
-                    .toBe(`export const useTestFeatureReducerContext: () => ITestFeatureReducerContext = () => {
+export const useTestFeatureReducerContext: () => ITestFeatureReducerContext = () => {
     return React.useContext<ITestFeatureReducerContext>(TestFeatureReducerContext);
 };
 
@@ -733,22 +710,7 @@ export const useTestFeatureReducerContextState: () => IStateTestFeatureReducerCo
 export const useTestFeatureReducerContextDispatch: () => IDispatchTestFeatureReducerContext = () => {
     return React.useContext<IDispatchTestFeatureReducerContext>(DispatchTestFeatureReducerContext);
 };
-`);
-            });
-            it("... and context changed hooks template is passed and has state as default export, Then result will match expected string", async () => {
-                // arrange:
-                const testModel = getTestModel();
-                const clazz = new TemplatingEngine();
-
-                // act
-                await clazz.initialize();
-                const result = await clazz.compile(
-                    clazz.contextTemplates.contextChangedHooks,
-                    testModel
-                );
-
-                // assert
-                expect(result.replace(/\r\n/g, "\n")).toBe(`/**
+/**
  * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
  * @param callback callback which will be called dispatch gets called
  */

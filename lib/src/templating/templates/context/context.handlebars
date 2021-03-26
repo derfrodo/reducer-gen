@@ -27,3 +27,7 @@ export const {{featureName.pascalCase}}ReducerContext = React.createContext<I{{f
 export const Dispatch{{featureName.pascalCase}}ReducerContext = React.createContext<IDispatch{{featureName.pascalCase}}ReducerContext>(() => undefined);
 
 export const State{{featureName.pascalCase}}ReducerContext = React.createContext<IState{{featureName.pascalCase}}ReducerContext>({{state.getDefaultStateMethodName}}());
+
+{{>reducerContextProvider}}
+{{>useReducerContextHooks}}
+{{>useStateChangedEffectHooks}}

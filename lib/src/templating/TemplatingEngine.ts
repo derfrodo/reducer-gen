@@ -37,10 +37,10 @@ type RootTemplates = {
 };
 
 type ContextTemplates = {
-    boilerplate: string;
+    // boilerplate: string;
     context: string;
-    contextHooks: string;
-    contextChangedHooks: string;
+    // contextHooks: string;
+    // contextChangedHooks: string;
 };
 export class TemplatingEngine {
     private _contextTemplates: ContextTemplates | undefined;
@@ -173,6 +173,11 @@ export class TemplatingEngine {
             path.join(__dirname, "templates", "reducer", "partials")
         );
 
+        // Initialize context Partials
+        await this.addPartialsFromFolder(
+            path.join(__dirname, "templates", "context", "partials")
+        );
+
         // // Initialize general partials
         // handlebars.registerPartial(
         //     "currentContext",
@@ -289,38 +294,38 @@ export class TemplatingEngine {
 
     async readContextTemplates(): Promise<ContextTemplates> {
         return {
-            boilerplate: await readTemplate(
-                path.join(
-                    __dirname,
-                    "templates",
-                    "context",
-                    "ContextBoilerplate.handlebars"
-                )
-            ),
+            // boilerplate: await readTemplate(
+            //     path.join(
+            //         __dirname,
+            //         "templates",
+            //         "context",
+            //         "ContextBoilerplate.handlebars"
+            //     )
+            // ),
             context: await readTemplate(
                 path.join(
                     __dirname,
                     "templates",
                     "context",
-                    "ReducerContextProvider.handlebars"
+                    "context.handlebars"
                 )
             ),
-            contextHooks: await readTemplate(
-                path.join(
-                    __dirname,
-                    "templates",
-                    "context",
-                    "useReducerContextHooks.handlebars"
-                )
-            ),
-            contextChangedHooks: await readTemplate(
-                path.join(
-                    __dirname,
-                    "templates",
-                    "context",
-                    "useStateChangedEffectHooks.handlebars"
-                )
-            ),
+            // contextHooks: await readTemplate(
+            //     path.join(
+            //         __dirname,
+            //         "templates",
+            //         "context",
+            //         "useReducerContextHooks.handlebars"
+            //     )
+            // ),
+            // contextChangedHooks: await readTemplate(
+            //     path.join(
+            //         __dirname,
+            //         "templates",
+            //         "context",
+            //         "useStateChangedEffectHooks.handlebars"
+            //     )
+            // ),
         };
     }
 
