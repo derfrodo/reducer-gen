@@ -274,7 +274,7 @@ export class TemplatingEngine {
                     );
                     handlebars.registerPartial(
                         partialName,
-                        path.join(basefolder, name)
+                        await readTemplate(path.join(basefolder, name))
                     );
                 } catch (err) {
                     log.error(
