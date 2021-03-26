@@ -179,12 +179,35 @@ export class StateAnalyzer {
                         log.debug({
                             module: JSON.stringify(module),
                             node: JSON.stringify(node),
+                            importClauseName: node.importClause?.name?.getText(
+                                doc
+                            ),
+                            importClauseNamedBindings: node.importClause?.namedBindings
+                                ?.getChildren(doc)
+                                .map((c) => {
+                                    switch (c.kind) {
+                                        case ts.SyntaxKind.OpenBraceToken:
+                                            return c.getText(doc);
+                                        case ts.SyntaxKind.CloseBraceToken:
+                                            return c.getText(doc);
+                                        case ts.SyntaxKind.SyntaxList:
+                                            return JSON.stringify(
+                                                c.getChildren(doc)
+                                            );
+                                    }
+                                })
+                                .join(","),
                             text: text,
 
                             path,
                             resolvedModule: JSON.stringify(
                                 module.resolvedModule
                             ),
+                            file: module.resolvedModule
+                                ? ts.sys.readFile(
+                                      module.resolvedModule.resolvedFileName
+                                  )
+                                : "",
                         });
                         result.importClauses.push(
                             stringHelper.trim(node.getFullText(doc))
