@@ -155,9 +155,10 @@ export class StateAnalyzer {
                             text,
                             path,
                             {
-                                // moduleResolution:
-                                //     ts.ModuleResolutionKind.NodeJs,
-                                // include: ["src"],
+                                moduleResolution:
+                                    ts.ModuleResolutionKind.NodeJs,
+                                module: ts.ModuleKind.ESNext,
+                                // include: [ "src"],
                                 // lib: ["dom", "dom.iterable", "esnext"],
                                 // allowJs: true,
                                 // skipLibCheck: true,
@@ -166,7 +167,6 @@ export class StateAnalyzer {
                                 // strict: true,
                                 // forceConsistentCasingInFileNames: true,
                                 // noFallthroughCasesInSwitch: true,
-                                // module: ts.ModuleKind.ESNext,
                                 // resolveJsonModule: true,
                                 // isolatedModules: true,
                                 // noEmit: true,
