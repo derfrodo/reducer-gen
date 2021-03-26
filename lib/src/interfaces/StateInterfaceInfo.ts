@@ -23,11 +23,11 @@ export interface StatePropertyInfo {
 }
 
 export enum STATE_PROPERT_TYPES {
-    STRING,
-    NUMBER,
-    BOOLEAN,
-    OBJECT,
-    ARRAY,
+    STRING = "STRING",
+    NUMBER = "NUMBER",
+    BOOLEAN = "BOOLEAN",
+    OBJECT = "OBJECT",
+    ARRAY = "ARRAY",
 }
 
 export default StateInterfaceInfo;
