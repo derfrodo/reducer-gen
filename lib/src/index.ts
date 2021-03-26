@@ -131,6 +131,17 @@ export const generate = async (argv: CliArgs): Promise<void> => {
         stateFilePaths
     );
     const stateInfos = await stateAnalyzer.analyseStateFiles(featureFSData);
+
+    if (argv.skipCodeGeneration) {
+        log.info(
+            "Skipping generating code since skipCodeGeneration flag is set"
+        );
+        log.debug("Resolved state informations", {
+            stateInfos: stateInfos.map((si) => JSON.stringify(si)),
+        });
+        return;
+    }
+
     const generatedCodes = await codeGenerator.generateStateCodes(stateInfos);
     log.debug(JSON.stringify(generatedCodes));
     await Promise.all(
