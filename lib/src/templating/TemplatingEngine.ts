@@ -1,11 +1,12 @@
 // Todo: Add some precompiling here
 import handlebars from "handlebars";
-import { readFile } from "fs";
 import path from "path";
 import { doBindPrototype } from "@derfrodo/frodo-s-little-helpers/dist";
 import { TemplateHandlebarModel } from "../util/models/TemplateHandlebarModel";
 import { StateHandlebarModel } from "../util/models/StateHandlebarModel";
 import { StatePropertyHandlebarModel } from "../util/models/StatePropertyHandlebarModel";
+import { readFile, readdir, Dirent } from "fs";
+import log from "loglevel";
 
 type FeatureTemplate = {
     main: string;
@@ -148,73 +149,142 @@ export class TemplatingEngine {
 
     async initializePartials(): Promise<void> {
         // Initialize general partials
-        handlebars.registerPartial(
-            "currentContext",
-            await readTemplate(
-                path.join(
-                    __dirname,
-                    "templates",
-                    "partials",
-                    "currentContext.handlebars"
-                )
-            )
+        await this.addPartialsFromFolder(
+            path.join(__dirname, "templates", "partials")
         );
 
-        // Initialize actionCreator Partials
-        handlebars.registerPartial(
-            "additionalArrayCreators",
-            await readTemplate(
-                path.join(
-                    __dirname,
-                    "templates",
-                    "actionCreators",
-                    "partials",
-                    "additionalArrayCreators.handlebars"
-                )
-            )
+        // Initialize actionCreator partials
+        await this.addPartialsFromFolder(
+            path.join(__dirname, "templates", "actionCreators", "partials")
         );
 
-        // Initialize actions Partials
-        handlebars.registerPartial(
-            "additionalArrayActions",
-            await readTemplate(
-                path.join(
-                    __dirname,
-                    "templates",
-                    "actions",
-                    "partials",
-                    "additionalArrayActions.handlebars"
-                )
-            )
+        // Initialize actions partials
+        await this.addPartialsFromFolder(
+            path.join(__dirname, "templates", "actions", "partials")
         );
 
         // Initialize reducer actions Partials
-        handlebars.registerPartial(
-            "additionalArrayReducerActions",
-            await readTemplate(
-                path.join(
-                    __dirname,
-                    "templates",
-                    "reducerActions",
-                    "partials",
-                    "additionalArrayReducerActions.handlebars"
-                )
-            )
+        await this.addPartialsFromFolder(
+            path.join(__dirname, "templates", "reducerActions", "partials")
         );
 
         // Initialize reducer Partials
-        handlebars.registerPartial(
-            "additionalArrayReducerCases",
-            await readTemplate(
-                path.join(
-                    __dirname,
-                    "templates",
-                    "reducer",
-                    "partials",
-                    "additionalArrayReducerCases.handlebars"
-                )
-            )
+        await this.addPartialsFromFolder(
+            path.join(__dirname, "templates", "reducer", "partials")
         );
+
+        // // Initialize general partials
+        // handlebars.registerPartial(
+        //     "currentContext",
+        //     await readTemplate(
+        //         path.join(
+        //             __dirname,
+        //             "templates",
+        //             "partials",
+        //             "currentContext.handlebars"
+        //         )
+        //     )
+        // );
+
+        // // Initialize actionCreator Partials
+        // handlebars.registerPartial(
+        //     "additionalArrayCreators",
+        //     await readTemplate(
+        //         path.join(
+        //             __dirname,
+        //             "templates",
+        //             "actionCreators",
+        //             "partials",
+        //             "additionalArrayCreators.handlebars"
+        //         )
+        //     )
+        // );
+
+        // // Initialize actions Partials
+        // handlebars.registerPartial(
+        //     "additionalArrayActions",
+        //     await readTemplate(
+        //         path.join(
+        //             __dirname,
+        //             "templates",
+        //             "actions",
+        //             "partials",
+        //             "additionalArrayActions.handlebars"
+        //         )
+        //     )
+        // );
+
+        // // Initialize reducer actions Partials
+        // handlebars.registerPartial(
+        //     "additionalArrayReducerActions",
+        //     await readTemplate(
+        //         path.join(
+        //             __dirname,
+        //             "templates",
+        //             "reducerActions",
+        //             "partials",
+        //             "additionalArrayReducerActions.handlebars"
+        //         )
+        //     )
+        // );
+
+        // // Initialize reducer Partials
+        // handlebars.registerPartial(
+        //     "additionalArrayReducerCases",
+        //     await readTemplate(
+        //         path.join(
+        //             __dirname,
+        //             "templates",
+        //             "reducer",
+        //             "partials",
+        //             "additionalArrayReducerCases.handlebars"
+        //         )
+        //     )
+        // );
+    }
+
+    async addPartialsFromFolder(basefolder: string): Promise<void> {
+        const files = await new Promise<Dirent[]>((resolve, reject) =>
+            readdir(basefolder, { withFileTypes: true }, (err, files) => {
+                if (err !== null) {
+                    reject(err);
+                } else {
+                    resolve(files);
+                }
+            })
+        );
+        const extension = ".handlebars";
+        const extensionLength = extension.length;
+
+        for (const file of files) {
+            const { name } = file;
+
+            if (
+                file.isFile() &&
+                name.toLowerCase().lastIndexOf(extension) ===
+                    name.length - extensionLength
+            ) {
+                const partialName = name.substr(
+                    0,
+                    name.length - extensionLength
+                );
+                try {
+                    log.info(
+                        `Register partial template "${partialName}" using file "${name}" in folder ${basefolder}`
+                    );
+                    handlebars.registerPartial(
+                        partialName,
+                        path.join(basefolder, name)
+                    );
+                } catch (err) {
+                    log.error(
+                        `Registering partial template "${partialName}" failed.`,
+                        { error: err }
+                    );
+                    throw err;
+                }
+            }
+        }
     }
 
     async readContextTemplates(): Promise<ContextTemplates> {
