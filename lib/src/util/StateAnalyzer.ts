@@ -146,6 +146,46 @@ export class StateAnalyzer {
                     break;
                 case ts.SyntaxKind.ImportDeclaration:
                     if (ts.isImportDeclaration(node)) {
+                        const text = node.moduleSpecifier
+                            .getText(doc)
+                            .replace(/[\"\']/g, "");
+
+                        console.log({ text });
+                        const module = ts.resolveModuleName(
+                            text,
+                            path,
+                            {
+                                // moduleResolution:
+                                //     ts.ModuleResolutionKind.NodeJs,
+                                // include: ["src"],
+                                // lib: ["dom", "dom.iterable", "esnext"],
+                                // allowJs: true,
+                                // skipLibCheck: true,
+                                // esModuleInterop: true,
+                                // allowSyntheticDefaultImports: true,
+                                // strict: true,
+                                // forceConsistentCasingInFileNames: true,
+                                // noFallthroughCasesInSwitch: true,
+                                // module: ts.ModuleKind.ESNext,
+                                // resolveJsonModule: true,
+                                // isolatedModules: true,
+                                // noEmit: true,
+                            },
+                            {
+                                fileExists: ts.sys.fileExists,
+                                readFile: ts.sys.readFile,
+                            }
+                        );
+                        log.debug({
+                            module: JSON.stringify(module),
+                            node: JSON.stringify(node),
+                            text: text,
+
+                            path,
+                            resolvedModule: JSON.stringify(
+                                module.resolvedModule
+                            ),
+                        });
                         result.importClauses.push(
                             stringHelper.trim(node.getFullText(doc))
                         );
