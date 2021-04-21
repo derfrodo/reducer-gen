@@ -2,8 +2,8 @@
 
 # generated code:
 *.generated.*
-!reducer/state.ts
 **/reducer/**/*.ts
+!**/reducer/state.ts
 
 # dependencies
 /node_modules
