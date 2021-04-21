@@ -1,4 +1,4 @@
-import { TodoData } from "../types/TodoData";
+import { TodoData } from "./TodoData";
 
 export interface State {
   todos: TodoData[];
