@@ -1,12 +1,13 @@
 export const {{featureName.pascalCase}}ReducerContextProvider = (props: {
     children: React.ReactNode;
+    getDefaultState?: typeof {{state.getDefaultStateMethodName}};
 }) => {
-    const { children } = props;
+    const { children, getDefaultState } = props;
 
     const [state, dispatch] = React.useReducer(
         {{reducer.mainReducerName}},
         undefined,
-        {{state.getDefaultStateMethodName}}
+        getDefaultState ?? {{state.getDefaultStateMethodName}}
     );
 
     const dispatchWillBeCalledCallbacks = useRef<

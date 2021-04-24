@@ -14,5 +14,7 @@ export { {{reducerActions.mainReducerTypeguard}} } from "./reducerActions/{{modu
 export { {{reducerActions.extendedReducerTypeguard}} } from "./reducerActions/{{moduleNames.extended.reducerActions}}";
 export { {{reducerActions.baseReducerTypeguard}} } from "./reducerActions/{{moduleNames.base.reducerActions}}";
 
+export { {{state.getDefaultStateMethodName}} } from "./{{moduleNames.base.defaultState}}";
+
 export type {{reducerActions.mainReducerActionsName}} = RAs;
 export type {{featureName.pascalCase}}State = {{state.stateName}};
