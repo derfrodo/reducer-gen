@@ -492,6 +492,8 @@ export { isMainTestReducer } from "./reducerActions/reducerActions.main.generate
 export { isExtendedTestReducer } from "./reducerActions/reducerActions.extended";
 export { isBaseTestReducer } from "./reducerActions/reducerActions.base.generated";
 
+export { getTestStateDefault } from "./defaultState.base.generated";
+
 export type MAIN_REDUCERACTIONS = RAs;
 export type TestFeatureState = TESTSTATE;
 `);
@@ -525,6 +527,8 @@ export * from "./ReducerContext.main.generated";
 export { isMainTestReducer } from "./reducerActions/reducerActions.main.generated";
 export { isExtendedTestReducer } from "./reducerActions/reducerActions.extended";
 export { isBaseTestReducer } from "./reducerActions/reducerActions.base.generated";
+
+export { getTestStateDefault } from "./defaultState.base.generated";
 
 export type MAIN_REDUCERACTIONS = RAs;
 export type TestFeatureState = TESTSTATE;
@@ -621,13 +625,14 @@ export const StateTestFeatureReducerContext = React.createContext<IStateTestFeat
 
 export const TestFeatureReducerContextProvider = (props: {
     children: React.ReactNode;
+    getDefaultState?: typeof getTestStateDefault;
 }) => {
-    const { children } = props;
+    const { children, getDefaultState } = props;
 
     const [state, dispatch] = React.useReducer(
         mainTestReducer,
         undefined,
-        getTestStateDefault
+        getDefaultState ?? getTestStateDefault
     );
 
     const dispatchWillBeCalledCallbacks = useRef<
