@@ -27,6 +27,7 @@ const getGeneratorOptionsFromArgs = (
         createReducerContext,
         addBubbleFlagForActions,
         addArrayFunctions,
+        decoupleStateChangedCallbackByTimeout,
     } = argv;
     const result: ReduxCodeGeneratorOptions = {
         createReducerContext: createReducerContext,
@@ -34,6 +35,8 @@ const getGeneratorOptionsFromArgs = (
             addBubbleFlagForActions === undefined ||
             addBubbleFlagForActions === true,
         addArrayFunctions,
+        decoupleStateChangedCallbackByTimeout:
+            decoupleStateChangedCallbackByTimeout ?? false,
     };
     return result;
 };
