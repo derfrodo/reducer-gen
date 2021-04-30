@@ -47,6 +47,14 @@ npm run generateReducers
 -   mainFilesSuffix (default: ".main.generated" )
 -   mainFilesPrefix (default: "" )
 -   createReducerContext (default: false)
+-   addArrayFunctions (default: true)
+-   addBubbleFlagForActions (default: true)
+-   decoupleStateChangedCallbackByTimeout (default: false)
+
+### Deprecated Arguments, which will more or less do nothing (... sensible 😅 )
+-   generateSyncStateActions (default: false, deprecated - use @derfrodo/call-for-action 🤗)
+-   generateWebAppHybridHooks (default: false, deprecated - use @derfrodo/call-for-action 🤗)
+-   generateReactNativeHybridHooks (default: false, deprecated - use @derfrodo/call-for-action 🤗)
 
 ```
  logLevelChoices = [
