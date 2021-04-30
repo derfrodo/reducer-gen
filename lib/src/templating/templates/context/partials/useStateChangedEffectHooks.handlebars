@@ -34,7 +34,7 @@ export const use{{featureName.pascalCase}}StateChangedEffect = (
         callbackRef.current = onStateChanged;
     }, [onStateChanged]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setOld((prev) => {
             const { current } = callbackRef;
             if (current && state !== prev) {
