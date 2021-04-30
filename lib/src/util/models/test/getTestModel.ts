@@ -8,6 +8,7 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
             createReducerContext: true,
             addBubbleFlagForActions: true,
             addArrayFunctions: true,
+            decoupleStateChangedCallbackByTimeout: false,
         },
         featureName: {
             asIs: "test_feature",

@@ -590,7 +590,7 @@ export default getTestStateDefault;
                     testModel
                 );
 
-                console.log(result);
+                // console.log(result);
                 // assert
                 expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -753,8 +753,9 @@ export const useTestFeatureStateChangedEffect = (
 
     useEffect(() => {
         setOld((prev) => {
-            if (callbackRef.current && state !== prev) {
-                callbackRef.current(state, prev);
+            const { current } = callbackRef;
+            if (current && state !== prev) {
+                current(state, prev);
             }
             return state;
         });

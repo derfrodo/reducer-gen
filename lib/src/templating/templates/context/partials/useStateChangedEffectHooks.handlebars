@@ -36,8 +36,16 @@ export const use{{featureName.pascalCase}}StateChangedEffect = (
 
     useEffect(() => {
         setOld((prev) => {
-            if (callbackRef.current && state !== prev) {
-                callbackRef.current(state, prev);
+            const { current } = callbackRef;
+            if (current && state !== prev) {
+{{#if options.decoupleStateChangedCallbackByTimeout}}
+                (async ()=> {
+                    await new Promise(r => setTimeout(r, 20));
+                    current(state, prev);
+                })();
+{{else}}
+                current(state, prev);
+{{/if}}
             }
             return state;
         });
