@@ -236,6 +236,7 @@ export const createTestFactory = (): TemplateModelFactory => {
             addBubbleFlagForActions: true,
             createReducerContext: true,
             addArrayFunctions: true,
+            decoupleStateChangedCallbackByTimeout: false,
         }
     );
 };

@@ -15,6 +15,7 @@ export interface CliArgs {
     generateSyncStateActions: boolean;
     generateWebAppHybridHooks: boolean;
     generateReactNativeHybridHooks: boolean;
+    decoupleStateChangedCallbackByTimeout: boolean;
 }
 
 export default CliArgs;
