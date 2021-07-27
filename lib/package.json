@@ -25,8 +25,9 @@
         "prestart": "npm run clean",
         "start": "tsc -w",
         "lint": "tsc -p tsconfig.test.json --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-        "prepublish:beta": "npm run prepareForPublish",
-        "prepublish:public": "npm run prepareForPublish",
+        "dos2unixMe": "dos2unix ./dist/cli.js",
+        "prepublish:beta": "npm run dos2unixMe && npm run prepareForPublish",
+        "prepublish:public": "npm run dos2unixMe && npm run prepareForPublish",
         "publish:beta": "npm publish --access public --tag beta",
         "publish:public": "npm publish --access public",
         "generateReducer": "npm run copyTemplates && reducer-gen --loglevel debug --createReducerContext --addBubbleFlagForActions"
@@ -35,6 +36,7 @@
     "license": "MIT",
     "dependencies": {
         "@derfrodo/frodo-s-little-helpers": "^0.1.12",
+        "dos2unix": "^1.1.2",
         "handlebars": "^4.7.7",
         "loglevel": "^1.6.8",
         "typescript": "^3.8.3",
