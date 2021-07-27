@@ -11,7 +11,7 @@
         "reducer-gen": "./dist/cli.js"
     },
     "scripts": {
-        "prepareForPublish": "npm run initializeTestState && npm run build && npm install --production && npm run cleanForPublish",
+        "prepareForPublish": "npm run initializeTestState && npm run build && npm run dos2unixMe && npm install --production && npm run cleanForPublish",
         "copyTemplates": "node copyTemplates",
         "initializeTestState": "node initializeTestState.js",
         "cleanForPublish": "node cleanForPublish.js",
@@ -26,8 +26,8 @@
         "start": "tsc -w",
         "lint": "tsc -p tsconfig.test.json --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
         "dos2unixMe": "dos2unix ./dist/cli.js",
-        "prepublish:beta": "npm run dos2unixMe && npm run prepareForPublish",
-        "prepublish:public": "npm run dos2unixMe && npm run prepareForPublish",
+        "prepublish:beta": "npm run prepareForPublish",
+        "prepublish:public": "npm run prepareForPublish",
         "publish:beta": "npm publish --access public --tag beta",
         "publish:public": "npm publish --access public",
         "generateReducer": "npm run copyTemplates && reducer-gen --loglevel debug --createReducerContext --addBubbleFlagForActions"
