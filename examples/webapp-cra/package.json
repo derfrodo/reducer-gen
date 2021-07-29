@@ -45,6 +45,6 @@
     ]
   },
   "devDependencies": {
-    "@derfrodo/reducer-gen": "^0.2.10"
+    "@derfrodo/reducer-gen": "^0.2.11"
   }
 }
