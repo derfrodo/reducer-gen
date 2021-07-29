@@ -11,7 +11,7 @@
         "reducer-gen": "./dist/cli.js"
     },
     "scripts": {
-        "prepareForPublish": "npm run initializeTestState && npm run build && npm run dos2unixMe && npm install --production && npm run cleanForPublish",
+        "prepareForPublish": "npm run initializeTestState && npm run build && npm install --production && npm run cleanForPublish",
         "copyTemplates": "node copyTemplates",
         "initializeTestState": "node initializeTestState.js",
         "cleanForPublish": "node cleanForPublish.js",
@@ -25,7 +25,6 @@
         "prestart": "npm run clean",
         "start": "tsc -w",
         "lint": "tsc -p tsconfig.test.json --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-        "dos2unixMe": "crlf --set=LF ./dist/*",
         "prepublish:beta": "npm run prepareForPublish",
         "prepublish:public": "npm run prepareForPublish",
         "publish:beta": "npm publish --access public --tag beta",
@@ -54,7 +53,6 @@
         "@typescript-eslint/eslint-plugin": "^2.26.0",
         "@typescript-eslint/parser": "^2.26.0",
         "babel-jest": "*",
-        "crlf": "^1.1.1",
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.10.1",
         "eslint-plugin-prettier": "^3.1.2",

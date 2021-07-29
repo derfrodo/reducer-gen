@@ -17,7 +17,8 @@
       "outDir": "./dist",
       "declaration": true,
       "experimentalDecorators": true,
-      "emitDecoratorMetadata": true
+      "emitDecoratorMetadata": true,
+      "newLine": "lf",
   },
   "include": ["src"],
   "exclude": ["**/*.test.ts"]
