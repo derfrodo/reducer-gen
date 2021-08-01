@@ -57,7 +57,7 @@ export class StateAnalyzer {
         } = this.fsHelper;
 
         const result: FeatureStateDataObject[] = [];
-        for await (const path of pathsToStateFiles) {
+        for (const path of pathsToStateFiles) {
             const reduxPath = await getParentFolderFromFSObjectsPath(path);
             const featurePath = await getParentFolderFromFSObjectsPath(
                 reduxPath
@@ -73,9 +73,6 @@ export class StateAnalyzer {
                 indexFile: await this.getFeatureModuleFileInfoForFile(
                     combinePath(reduxPath, "index.ts")
                 ),
-
-                // extensionFiles: {},
-                // mainFiles: {},
             });
         }
         return result;
