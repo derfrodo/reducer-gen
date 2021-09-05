@@ -25,6 +25,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: cd lib && npm ci
     - run: cd lib && npm run build
+    
+    - name: show folder
+    - run: cd lib && ls
 
 
 #    - run: npm test
