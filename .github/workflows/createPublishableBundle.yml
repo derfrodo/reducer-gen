@@ -28,7 +28,7 @@ jobs:
     
     - name: create ZIP archive
       shell: bash
-      run: zip -r "archive-node-${{ matrix.node-version }}.zip" "lib/build/"
+      run: zip -r "archive-node-${{ matrix.node-version }}.zip" "lib/*"
 
     - name: Archive code 
       uses: actions/upload-artifact@v2
