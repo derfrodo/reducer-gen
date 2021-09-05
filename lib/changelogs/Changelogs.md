@@ -1,6 +1,10 @@
 # Changelog 
 
 ## Version 0.2.14
+- Extended README
+- Added action for github
+
+## Version 0.2.14
 - fixed clean script - i really should drink more coffee
 
 ## Version 0.2.13
