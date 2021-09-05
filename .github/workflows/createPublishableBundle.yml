@@ -43,14 +43,20 @@ jobs:
         cd lib
         npm run prepareForPublish
 
-    - name: create ZIP archive
-      shell: bash
-      run: |
-        cd lib
-        zip -r "../archive-node-${{ matrix.node-version }}.zip" "."
-
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
         name: code-node-${{ matrix.node-version }}
-        path: "archive-node-${{ matrix.node-version }}.zip"
+        path: "lib/*"
+        
+#    - name: create ZIP archive
+#      shell: bash
+#      run: |
+#        cd lib
+#        zip -r "../archive-node-${{ matrix.node-version }}.zip" "."
+
+#    - name: Archive code 
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: code-node-${{ matrix.node-version }}
+#        path: "archive-node-${{ matrix.node-version }}.zip"
