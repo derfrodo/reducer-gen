@@ -1,5 +1,4 @@
 # This is a basic workflow that is manually triggered
-
 name: Create Publishable Bundle
 
 on:
@@ -27,7 +26,7 @@ jobs:
     - run: cd lib && npm run build
     
     - name: show folder
-    - run: cd lib && ls
+      run: cd lib && ls
 
 
 #    - run: npm test
