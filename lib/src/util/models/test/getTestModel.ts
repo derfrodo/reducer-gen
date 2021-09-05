@@ -1,6 +1,5 @@
 import { STATE_PROPERT_TYPES } from "../../../interfaces/StateInterfaceInfo";
-import { createTestFactory } from "../../services/TemplateModelFactory";
-import { TemplateHandlebarModel } from "../TemplateHandlebarModel";
+import type { TemplateHandlebarModel } from "../TemplateHandlebarModel";
 
 export const getTestModel: () => TemplateHandlebarModel = () => {
     const result: TemplateHandlebarModel = {
@@ -39,7 +38,29 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
             mainActionCreatorsName: "CREATOR_MAIN",
             extendedActionCreatorsName: "CREATOR_EXT",
         },
-        moduleNames: createTestFactory().createModuleNamesHandlebarModel(),
+        moduleNames: {
+            base: {
+                actionCreators: "actionCreators.base.generated",
+                actions: "actions.base.generated",
+                defaultState: "defaultState.base.generated",
+                reducer: "reducer.base.generated",
+                reducerActions: "reducerActions.base.generated",
+            },
+            extended: {
+                actionCreators: "actionCreators.extended",
+                actions: "actions.extended",
+                reducer: "reducer.extended",
+                reducerActions: "reducerActions.extended",
+            },
+            main: {
+                actionCreators: "actionCreators.main.generated",
+                actions: "actions.main.generated",
+                reducer: "reducer.main.generated",
+                reducerActions: "reducerActions.main.generated",
+                index: "index.test",
+                reducerContext: "reducerContext.test",
+            },
+        },
         state: {
             importsWithAdditionalLevel: [
                 'import test from "with additional level"',

@@ -228,16 +228,3 @@ export class TemplateModelFactory {
         };
     }
 }
-
-export const createTestFactory = (): TemplateModelFactory => {
-    return new TemplateModelFactory(
-        new ReduxModuleNamingHelper({ addFeatureAsActionPrefix: true }),
-        new ReduxModulFileService({}),
-        {
-            addBubbleFlagForActions: true,
-            createReducerContext: true,
-            addArrayFunctions: true,
-            decoupleStateChangedCallbackByTimeout: false,
-        }
-    );
-};
