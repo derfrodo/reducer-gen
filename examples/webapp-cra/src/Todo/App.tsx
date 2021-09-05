@@ -15,6 +15,7 @@ const useAppStyles = makeStyles((t) =>
     },
   })
 );
+
 function App() {
   const classes = useAppStyles();
   return (
