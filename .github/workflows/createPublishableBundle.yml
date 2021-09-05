@@ -24,10 +24,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: cd lib && npm ci
     - run: cd lib && npm run build
+#    - run: npm test
     
     - name: create ZIP archive
       shell: bash
       run: zip -r "archive-node-${{ matrix.node-version }}.zip" "lib/build/"
 
-
-#    - run: npm test
+    - name: Archive code 
+      uses: actions/upload-artifact@v2
+      with:
+        name: code
+        path: "archive-node-${{ matrix.node-version }}.zip"
