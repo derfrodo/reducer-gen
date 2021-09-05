@@ -31,12 +31,22 @@ jobs:
       shell: bash
       run: |
         cd lib
-#        npm test
+        npm test
     
     - name: build bundle (npm ci)
       shell: bash
       run: cd lib && npm run build
     
+    - name: build bundle (npm ci)
+      shell: bash
+      run: cd lib && npm run build
+      
+    - name: prepare package for publishing
+      shell: bash
+      run: |
+        cd lib
+        npm run prepareForPublish
+
     - name: create ZIP archive
       shell: bash
       run: zip -r "archive-node-${{ matrix.node-version }}.zip" "./lib/"
@@ -44,5 +54,5 @@ jobs:
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: code
+        name: code-node-${{ matrix.node-version }}
         path: "archive-node-${{ matrix.node-version }}.zip"
