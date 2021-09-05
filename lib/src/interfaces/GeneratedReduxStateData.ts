@@ -1,7 +1,7 @@
-import StateInterfaceInfo from "./StateInterfaceInfo";
-import FeatureStateDataObject from "./FeatureStateDataObject";
+import type { StateInterfaceInfo } from "./StateInterfaceInfo";
+import type { FeatureStateDataObject } from "./FeatureStateDataObject";
 
-interface ReduxCodes {
+export interface ReduxCodes {
     actions: string;
     actionCreators: string;
     reducer: string;

@@ -1,4 +1,5 @@
-import StateInterfaceInfo, {
+import {
+    StateInterfaceInfo,
     STATE_PROPERT_TYPES,
 } from "../interfaces/StateInterfaceInfo";
 
@@ -74,5 +75,3 @@ export const getDefaultTestStateInfo = (): StateInterfaceInfo => ({
     },
     stateInterfaceName: "TestState",
 });
-
-export default getDefaultTestStateInfo;

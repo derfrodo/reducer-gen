@@ -1,6 +1,6 @@
 import { LogLevelDesc } from "loglevel";
-import { Options } from "yargs";
-import CliArgs from "../interfaces/CliArgs";
+import type { Options } from "yargs";
+import type { CliArgs } from "../interfaces/CliArgs";
 
 const logLevelChoices: ReadonlyArray<LogLevelDesc> = [
     0,
@@ -44,5 +44,3 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
     generateReactNativeHybridHooks: { boolean: true, default: false },
     decoupleStateChangedCallbackByTimeout: { boolean: true, default: false },
 };
-
-export default ArgsOptions;

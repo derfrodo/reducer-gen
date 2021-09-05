@@ -3,17 +3,23 @@ import {
     StringHelper,
 } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import log from "loglevel";
-import CliArgs from "./interfaces/CliArgs";
+import type { CliArgs } from "./interfaces/CliArgs";
 import FeatureStateDataObject from "./interfaces/FeatureStateDataObject";
-import ReduxCodeGeneratorOptions from "./interfaces/ReduxCodeGeneratorOptions";
-import ReduxModuleNamingHelperOptions from "./interfaces/ReduxModuleNamingHelperOptions";
-import ReduxModulFileGeneratorOptions from "./interfaces/ReduxModulFileGeneratorOptions";
-import ReduxModulFileServiceOptions from "./interfaces/ReduxModulFileServiceOptions";
-import StateAnalyzerOptions from "./interfaces/StateAnalyzerOptions";
+import {
+    getDefaultReduxCodeGeneratorOptions,
+    ReduxCodeGeneratorOptions,
+} from "./interfaces/ReduxCodeGeneratorOptions";
+import type { ReduxModuleNamingHelperOptions } from "./interfaces/ReduxModuleNamingHelperOptions";
+import type { ReduxModulFileGeneratorOptions } from "./interfaces/ReduxModulFileGeneratorOptions";
+import {
+    getDefaultReduxModulFileServiceOptions,
+    ReduxModulFileServiceOptions,
+} from "./interfaces/ReduxModulFileServiceOptions";
+import type { StateAnalyzerOptions } from "./interfaces/StateAnalyzerOptions";
 import { ReduxCodeGenerator } from "./util/ReduxCodeGenerator";
-import ReduxModuleNamingHelper from "./util/ReduxModuleNamingHelper";
-import ReduxModulFileGenerator from "./util/ReduxModulFileGenerator";
-import ReduxModulFileService from "./util/ReduxModulFileService";
+import { ReduxModuleNamingHelper } from "./util/ReduxModuleNamingHelper";
+import { ReduxModulFileGenerator } from "./util/ReduxModulFileGenerator";
+import { ReduxModulFileService } from "./util/ReduxModulFileService";
 import { ReactNativeAppHooksCodesGenerator } from "./util/services/ReactNativeAppHooksCodesGenerator";
 import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
 import { WebAppHooksCodesGeneratorGenerator } from "./util/services/WebAppHooksCodesGenerator";
@@ -30,6 +36,7 @@ const getGeneratorOptionsFromArgs = (
         decoupleStateChangedCallbackByTimeout,
     } = argv;
     const result: ReduxCodeGeneratorOptions = {
+        ...getDefaultReduxCodeGeneratorOptions(),
         createReducerContext: createReducerContext,
         addBubbleFlagForActions:
             addBubbleFlagForActions === undefined ||
@@ -64,10 +71,9 @@ const getFileServiceOptionsFromArgs = (
 ): ReduxModulFileServiceOptions => {
     const { filesSuffix, filesPrefix, mainFilesPrefix, mainFilesSuffix } = argv;
     const result: ReduxModulFileServiceOptions = {
+        ...getDefaultReduxModulFileServiceOptions(),
         filesSuffix: filesSuffix,
         filesPrefix: filesPrefix,
-        extendedFilesPrefix: "",
-        extendedFilesSuffix: ".extended",
         mainFilesPrefix: mainFilesPrefix,
         mainFilesSuffix: mainFilesSuffix,
     };

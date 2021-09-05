@@ -8,4 +8,7 @@ export interface ReduxModulFileServiceOptions {
     mainFilesSuffix?: string;
 }
 
-export default ReduxModulFileServiceOptions;
+export const getDefaultReduxModulFileServiceOptions: () => ReduxModulFileServiceOptions = () => ({
+    extendedFilesPrefix: "",
+    extendedFilesSuffix: ".extended",
+});

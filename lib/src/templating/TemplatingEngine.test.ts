@@ -593,7 +593,7 @@ export default getTestStateDefault;
                 // console.log(result);
                 // assert
                 expect(result.replace(/\r\n/g, "\n"))
-                    .toBe(`import React, { useCallback, useEffect, useRef, useState } from "react";
+                    .toBe(`import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { TESTSTATE } from "./state";
 import { mainTestReducer } from "./reducer/reducer.main.generated";
 import { getTestStateDefault } from "./defaultState.base.generated";
@@ -751,7 +751,7 @@ export const useTestFeatureStateChangedEffect = (
         callbackRef.current = onStateChanged;
     }, [onStateChanged]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setOld((prev) => {
             const { current } = callbackRef;
             if (current && state !== prev) {

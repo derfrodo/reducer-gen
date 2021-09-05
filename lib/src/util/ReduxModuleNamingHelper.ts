@@ -1,7 +1,8 @@
-import StateInterfaceInfo, {
+import {
+    StateInterfaceInfo,
     StatePropertyInfo,
 } from "../interfaces/StateInterfaceInfo";
-import ReduxModuleNamingHelperOptions from "../interfaces/ReduxModuleNamingHelperOptions";
+import { ReduxModuleNamingHelperOptions } from "../interfaces/ReduxModuleNamingHelperOptions";
 import { StringHelper } from "@derfrodo/frodo-s-little-helpers";
 import { ArrayActionEnumValues } from "../interfaces/ArrayActionEnumValues";
 
@@ -203,5 +204,3 @@ export class ReduxModuleNamingHelper {
         } from "${options?.pathToState || "./state"}";`;
     }
 }
-
-export default ReduxModuleNamingHelper;

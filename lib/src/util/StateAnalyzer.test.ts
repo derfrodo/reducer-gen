@@ -1,9 +1,9 @@
 import { StringHelper } from "@derfrodo/frodo-s-little-helpers/dist";
 import FileSystemHelper from "@derfrodo/frodo-s-little-helpers/dist/util/FileSystemHelper";
-import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
-import StateInterfaceInfo from "../interfaces/StateInterfaceInfo";
+import type { ReduxCodeGeneratorOptions } from "../interfaces/ReduxCodeGeneratorOptions";
+import type { StateInterfaceInfo } from "../interfaces/StateInterfaceInfo";
 import createMockService, { MockedType } from "../__mocks__/createMockService";
-import getDefaultTestStateInfo from "../__mocks__/getDefaultTestStateInfo";
+import { getDefaultTestStateInfo } from "../__mocks__/getDefaultTestStateInfo";
 import getReduxModuleNamingHelperMock from "../__mocks__/getReduxModuleNamingHelperMock";
 import { StateAnalyzer } from "./StateAnalyzer";
 

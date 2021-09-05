@@ -5,4 +5,12 @@ export interface ReduxCodeGeneratorOptions {
     decoupleStateChangedCallbackByTimeout: boolean;
 }
 
-export default ReduxCodeGeneratorOptions;
+export const getDefaultReduxCodeGeneratorOptions: (
+    presets?: Partial<ReduxCodeGeneratorOptions>
+) => ReduxCodeGeneratorOptions = (presets) => ({
+    createReducerContext: false,
+    addBubbleFlagForActions: false,
+    addArrayFunctions: false,
+    decoupleStateChangedCallbackByTimeout: false,
+    ...(presets ?? {}),
+});

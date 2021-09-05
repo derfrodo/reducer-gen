@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ReduxModuleNamingHelper from "../util/ReduxModuleNamingHelper";
+import { ReduxModuleNamingHelper } from "../util/ReduxModuleNamingHelper";
 import createMockService from "./createMockService";
 
 jest.mock("../util/ReduxModuleNamingHelper");

@@ -1,8 +1,9 @@
 import { doBindPrototype } from "@derfrodo/frodo-s-little-helpers";
-import StateInterfaceInfo from "../../interfaces/StateInterfaceInfo";
-import ReduxModuleNamingHelper from "../ReduxModuleNamingHelper";
-import ReduxModulFileService from "../ReduxModulFileService";
+import type { StateInterfaceInfo } from "../../interfaces/StateInterfaceInfo";
+import { ReduxModuleNamingHelper } from "../ReduxModuleNamingHelper";
+import { ReduxModulFileService } from "../ReduxModulFileService";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SyncStateActionCodesGeneratorOptions {}
 
 export class SyncStateActionCodesGenerator {

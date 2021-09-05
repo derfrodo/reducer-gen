@@ -2,21 +2,22 @@ import {
     doBindPrototype,
     StringHelper,
 } from "@derfrodo/frodo-s-little-helpers/dist";
-import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
-import StateInterfaceInfo, {
+import type { ReduxCodeGeneratorOptions } from "../../interfaces/ReduxCodeGeneratorOptions";
+import {
+    StateInterfaceInfo,
     StatePropertyInfo,
     STATE_PROPERT_TYPES,
 } from "../../interfaces/StateInterfaceInfo";
-import { ActionCreatorsHandlebarModel } from "../models/ActionCreatorsHandlebarModel";
-import { ActionsHandlebarModel } from "../models/ActionsHandlebarModel";
-import { ModuleNamesHandlebarModel } from "../models/ModuleNamesHandlebarModel";
-import { ReducerActionsHandlebarModel } from "../models/ReducerActionsHandlebarModel";
-import { ReducerHandlebarModel } from "../models/ReducerHandlebarModel";
-import { StateHandlebarModel } from "../models/StateHandlebarModel";
-import { StatePropertyHandlebarModel } from "../models/StatePropertyHandlebarModel";
-import { TemplateHandlebarModel } from "../models/TemplateHandlebarModel";
-import ReduxModuleNamingHelper from "../ReduxModuleNamingHelper";
-import ReduxModulFileService from "../ReduxModulFileService";
+import type { ActionCreatorsHandlebarModel } from "../models/ActionCreatorsHandlebarModel";
+import type { ActionsHandlebarModel } from "../models/ActionsHandlebarModel";
+import type { ModuleNamesHandlebarModel } from "../models/ModuleNamesHandlebarModel";
+import type { ReducerActionsHandlebarModel } from "../models/ReducerActionsHandlebarModel";
+import type { ReducerHandlebarModel } from "../models/ReducerHandlebarModel";
+import type { StateHandlebarModel } from "../models/StateHandlebarModel";
+import type { StatePropertyHandlebarModel } from "../models/StatePropertyHandlebarModel";
+import type { TemplateHandlebarModel } from "../models/TemplateHandlebarModel";
+import { ReduxModuleNamingHelper } from "../ReduxModuleNamingHelper";
+import { ReduxModulFileService } from "../ReduxModulFileService";
 import { StateService } from "./StateService";
 
 export class TemplateModelFactory {

@@ -2,14 +2,15 @@ import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import { FeatureStateDataObject } from "../interfaces/FeatureStateDataObject";
 
 import * as ts from "typescript";
-import StateInterfaceInfo, {
+import {
+    StateInterfaceInfo,
     StatePropertyInfo,
     STATE_PROPERT_TYPES,
 } from "../interfaces/StateInterfaceInfo";
 import { StringHelper } from "@derfrodo/frodo-s-little-helpers";
 import log from "loglevel";
-import StateAnalyzerOptions from "../interfaces/StateAnalyzerOptions";
-import FeatureModuleFileInfo from "../interfaces/FeatureModuleFileInfo";
+import { StateAnalyzerOptions } from "../interfaces/StateAnalyzerOptions";
+import { FeatureModuleFileInfo } from "../interfaces/FeatureModuleFileInfo";
 
 type UnionTypeTypes = {
     types: STATE_PROPERT_TYPES[];

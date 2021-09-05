@@ -1,8 +1,8 @@
 import { doBindPrototype } from "@derfrodo/frodo-s-little-helpers";
-import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
-import StateInterfaceInfo from "../../interfaces/StateInterfaceInfo";
-import { TemplatingEngine } from "../../templating/TemplatingEngine";
-import { TemplateModelFactory } from "./TemplateModelFactory";
+import type { ReduxCodeGeneratorOptions } from "../../interfaces/ReduxCodeGeneratorOptions";
+import type { StateInterfaceInfo } from "../../interfaces/StateInterfaceInfo";
+import type { TemplatingEngine } from "../../templating/TemplatingEngine";
+import type { TemplateModelFactory } from "./TemplateModelFactory";
 
 export class IndexCodeGenerator {
     constructor(

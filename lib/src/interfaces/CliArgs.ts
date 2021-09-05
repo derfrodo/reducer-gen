@@ -17,5 +17,3 @@ export interface CliArgs {
     generateReactNativeHybridHooks: boolean;
     decoupleStateChangedCallbackByTimeout: boolean;
 }
-
-export default CliArgs;

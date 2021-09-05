@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ReduxModulFileService from "../util/ReduxModulFileService";
+import { ReduxModulFileService } from "../util/ReduxModulFileService";
 import createMockService from "./createMockService";
 
 jest.mock("../util/ReduxModulFileService");

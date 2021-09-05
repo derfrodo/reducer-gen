@@ -1,6 +1,6 @@
-import GeneratedReduxStateData from "../interfaces/GeneratedReduxStateData";
-import ReduxModulFileGeneratorOptions from "../interfaces/ReduxModulFileGeneratorOptions";
-import ReduxModulFileService from "./ReduxModulFileService";
+import type { GeneratedReduxStateData } from "../interfaces/GeneratedReduxStateData";
+import type { ReduxModulFileGeneratorOptions } from "../interfaces/ReduxModulFileGeneratorOptions";
+import { ReduxModulFileService } from "./ReduxModulFileService";
 import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import log from "loglevel";
 

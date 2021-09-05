@@ -1,11 +1,11 @@
 import { BindToClass, StringHelper } from "@derfrodo/frodo-s-little-helpers";
 import log from "loglevel";
-import GeneratedReduxStateData from "../interfaces/GeneratedReduxStateData";
-import ReduxCodeGeneratorOptions from "../interfaces/ReduxCodeGeneratorOptions";
-import StateInterfaceInfo from "../interfaces/StateInterfaceInfo";
+import type { GeneratedReduxStateData } from "../interfaces/GeneratedReduxStateData";
+import type { ReduxCodeGeneratorOptions } from "../interfaces/ReduxCodeGeneratorOptions";
+import type { StateInterfaceInfo } from "../interfaces/StateInterfaceInfo";
 import { TemplatingEngine } from "../templating/TemplatingEngine";
-import ReduxModuleNamingHelper from "./ReduxModuleNamingHelper";
-import ReduxModulFileService from "./ReduxModulFileService";
+import { ReduxModuleNamingHelper } from "./ReduxModuleNamingHelper";
+import { ReduxModulFileService } from "./ReduxModulFileService";
 import { IndexCodeGenerator } from "./services/IndexCodeGenerator";
 import { TemplateModelFactory } from "./services/TemplateModelFactory";
 import { ReducerActionCodesGenerator } from "./services/ReducerActionCodesGenerator";

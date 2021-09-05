@@ -2,7 +2,7 @@ import {
     doBindPrototype,
     StringHelper,
 } from "@derfrodo/frodo-s-little-helpers";
-import ReduxModulFileServiceOptions from "../interfaces/ReduxModulFileServiceOptions";
+import type { ReduxModulFileServiceOptions } from "../interfaces/ReduxModulFileServiceOptions";
 
 export interface ReduxFileNames {
     actions: string;
@@ -27,6 +27,12 @@ export const REDUX_FILE_NAME: Readonly<FullReduxFileNames> = Object.freeze({
 });
 
 export class ReduxModulFileService {
+    constructor(
+        private options: ReduxModulFileServiceOptions,
+        private stringHelper: StringHelper = new StringHelper()
+    ) {
+        doBindPrototype(this, ReduxModulFileService.prototype);
+    }
     getGeneratedFilesPrefix(): string {
         const { filesPrefix: prefix } = this.options;
         return prefix === undefined ? "" : prefix;
@@ -51,7 +57,6 @@ export class ReduxModulFileService {
         const { mainFilesSuffix: suffix } = this.options;
         return suffix === undefined ? ".main.generated" : suffix;
     }
-
     getGeneratedModulNames(): ReduxFileNames & { defaultState: string } {
         return this.getCombinedReduxNames<
             ReduxFileNames,
@@ -61,14 +66,12 @@ export class ReduxModulFileService {
             defaultState: REDUX_FILE_NAME.defaultState,
         });
     }
-
     getGeneratedFileNames(): ReduxFileNames & { defaultState: string } {
         return this.getFilenamesWithExtension(
             this.getGeneratedModulNames(),
             ".ts"
         );
     }
-
     getExtensionModulNames(): ReduxFileNames {
         return this.getCombinedReduxNames(
             this.getExtFilesPrefix(),
@@ -76,14 +79,12 @@ export class ReduxModulFileService {
             {}
         );
     }
-
     getExtensionFileNames(): ReduxFileNames {
         return this.getFilenamesWithExtension<ReduxFileNames>(
             this.getExtensionModulNames(),
             ".ts"
         );
     }
-
     getMainModulNames(): ReduxFileNames & {
         index: string;
         reducerContext: string;
@@ -97,7 +98,6 @@ export class ReduxModulFileService {
             reducerContext: REDUX_FILE_NAME.reducerContext,
         });
     }
-
     getMainFileNames(): ReduxFileNames & {
         index: string;
         reducerContext: string;
@@ -110,14 +110,6 @@ export class ReduxModulFileService {
             ),
         };
     }
-
-    constructor(
-        private options: ReduxModulFileServiceOptions,
-        private stringHelper: StringHelper = new StringHelper()
-    ) {
-        doBindPrototype(this, ReduxModulFileService.prototype);
-    }
-
     getFilenamesWithExtension<T extends {}>(
         filenamesObject: T,
         extension = ".ts"
@@ -136,20 +128,16 @@ export class ReduxModulFileService {
         }
         return result;
     }
-
     getFilenameWithExtension(filename: string, extension = ".ts"): string {
         const { combine } = this.stringHelper;
         return combine(filename, extension);
     }
-
     addLevelToImportClause(clause: string): string {
         return clause.replace(/(?<=(from\s*['"]{1}))(\.)/, (m) => `../${m}`);
     }
-
     addCommentToImportClause(clause: string): string {
         return `// ${clause}`;
     }
-
     getCombinedReduxNames<
         T,
         TKey extends keyof T & keyof ReduxFileNames,
@@ -194,5 +182,3 @@ export class ReduxModulFileService {
         } as unknown) as TAdd;
     }
 }
-
-export default ReduxModulFileService;

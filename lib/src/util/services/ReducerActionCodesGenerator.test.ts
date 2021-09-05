@@ -1,6 +1,6 @@
-import ReduxCodeGeneratorOptions from "../../interfaces/ReduxCodeGeneratorOptions";
-import StateInterfaceInfo from "../../interfaces/StateInterfaceInfo";
-import getDefaultTestStateInfo from "../../__mocks__/getDefaultTestStateInfo";
+import type { ReduxCodeGeneratorOptions } from "../../interfaces/ReduxCodeGeneratorOptions";
+import type { StateInterfaceInfo } from "../../interfaces/StateInterfaceInfo";
+import { getDefaultTestStateInfo } from "../../__mocks__/getDefaultTestStateInfo";
 import getTemplateModelFactory from "../../__mocks__/getTemplateModelFactoryMock";
 import getTemplatingEngineMock from "../../__mocks__/getTemplatingEngineMock";
 import { ReducerActionCodesGenerator } from "./ReducerActionCodesGenerator";

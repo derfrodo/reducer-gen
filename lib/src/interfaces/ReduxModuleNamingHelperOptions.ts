@@ -2,4 +2,6 @@ export interface ReduxModuleNamingHelperOptions {
     addFeatureAsActionPrefix: boolean;
 }
 
-export default ReduxModuleNamingHelperOptions;
+export function getDefaultReduxModuleNamingHelperOptions(): ReduxModuleNamingHelperOptions {
+    return { addFeatureAsActionPrefix: false };
+}

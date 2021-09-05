@@ -1,4 +1,4 @@
-import FeatureStateDataObject from "./FeatureStateDataObject";
+import type { FeatureStateDataObject } from "./FeatureStateDataObject";
 
 export interface StateInterfaceInfo {
     featureData: FeatureStateDataObject;
@@ -29,5 +29,3 @@ export enum STATE_PROPERT_TYPES {
     OBJECT,
     ARRAY,
 }
-
-export default StateInterfaceInfo;

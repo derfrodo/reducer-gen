@@ -1,5 +1,12 @@
 {
     "jest.pathToJest": "node_modules/.bin/jest",
     "jest.pathToConfig": "./jest.config.js",
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "jest.autoRun": {
+        "jest.autoRun": {
+            "watch": true,
+            "onStartup": ["all-tests"],
+            "onSave": "test-src-file"
+        }
+    }
 }
