@@ -12,35 +12,8 @@ jest.mock("./StateService");
 
 describe("TemplateModelFactory tests", () => {
     describe("TemplateModelFactory.addLevelToImportClause tests", () => {
-        it("TemplateModelFactory.addLevelToImportClause returns something", async () => {
-            // arrange:
-            const mockNamingHelper = new ReduxModuleNamingHelper(
-                getDefaultReduxModuleNamingHelperOptions(),
-                null
-            );
-            const mocReduxModulFileService = new ReduxModulFileService(
-                getDefaultReduxModulFileServiceOptions()
-            );
-            const mocStateService = new StateService();
-
-            const uut = new TemplateModelFactory(
-                mockNamingHelper,
-                mocReduxModulFileService,
-                getDefaultReduxCodeGeneratorOptions(),
-                mocStateService
-            );
-
-            // act
-            const result = uut.addLevelToImportClause("SOMECLAUSE");
-
-            // assert
-            expect(result).toBe("SOMECLAUSE");
-        });
-
         it("TemplateModelFactory.addLevelToImportClause adds an additional level to relative path", async () => {
             // arrange:
-            console.log(typeof ReduxModuleNamingHelper);
-
             const mockNamingHelper = new ReduxModuleNamingHelper(
                 getDefaultReduxModuleNamingHelperOptions(),
                 null
@@ -93,6 +66,79 @@ describe("TemplateModelFactory tests", () => {
 
             // assert
             expect(result).toBe('import something from "src/SOMEFILE"');
+        });
+
+        it.each<[string, string]>([
+            [
+                'import something from "./SOMECLAUSE"',
+                'import something from "./../SOMECLAUSE"',
+            ],
+            [
+                "import something from './SOMECLAUSE'",
+                "import something from './../SOMECLAUSE'",
+            ],
+            [
+                "import something from './..SOMECLAUSE'",
+                "import something from './../..SOMECLAUSE'",
+            ],
+        ])(
+            `when %s passed, new result %s is expected`,
+            async (given, expected) => {
+                // arrange:
+                const mockNamingHelper = new ReduxModuleNamingHelper(
+                    getDefaultReduxModuleNamingHelperOptions(),
+                    null
+                );
+                const mocReduxModulFileService = new ReduxModulFileService(
+                    getDefaultReduxModulFileServiceOptions()
+                );
+                const mocStateService = new StateService();
+
+                const uut = new TemplateModelFactory(
+                    mockNamingHelper,
+                    mocReduxModulFileService,
+                    getDefaultReduxCodeGeneratorOptions(),
+                    mocStateService
+                );
+
+                // act
+                const result = uut.addLevelToImportClause(given);
+
+                // assert
+                expect(result).toBe(expected);
+            }
+        );
+
+        it.each<string>([
+            "SOMECLAUSE",
+            "./SOMECLAUSE",
+            "./..SOMECLAUSE",
+            'import something from "@./SOMECLAUSE"',
+            "import something from '@./SOMECLAUSE'",
+            "import something from '/SOMECLAUSE'",
+        ])(`when %s passed, no changes are applied`, async (given) => {
+            // arrange:
+            const mockNamingHelper = new ReduxModuleNamingHelper(
+                getDefaultReduxModuleNamingHelperOptions(),
+                null
+            );
+            const mocReduxModulFileService = new ReduxModulFileService(
+                getDefaultReduxModulFileServiceOptions()
+            );
+            const mocStateService = new StateService();
+
+            const uut = new TemplateModelFactory(
+                mockNamingHelper,
+                mocReduxModulFileService,
+                getDefaultReduxCodeGeneratorOptions(),
+                mocStateService
+            );
+
+            // act
+            const result = uut.addLevelToImportClause(given);
+
+            // assert
+            expect(result).toBe(given);
         });
     });
 });

@@ -120,7 +120,7 @@ export default IState;
                 ...getVisitStateFileTestDefaultParams()
             );
 
-            console.log(visitResult);
+            // console.log(visitResult);
             expect(visitResult.stateInterfaceName === "IState");
         });
         it("StateAnalyzer.visitStateFile finds State interface name", async () => {
@@ -153,7 +153,7 @@ export default State;
                 ...getVisitStateFileTestDefaultParams()
             );
 
-            console.log(visitResult);
+            // console.log(visitResult);
             expect(visitResult.stateInterfaceName === "State");
         });
     });
@@ -164,7 +164,7 @@ export default State;
             const options = { ...getDefaultTestGeneratorOptions() };
             const fsMock = getFileSystemHelperMock();
             fsMock.mock.readFile.mockImplementation(() => {
-                console.log("File read");
+                // console.log("File read");
                 return Promise.resolve("");
             });
 
