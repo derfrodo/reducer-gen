@@ -188,7 +188,7 @@ export class TemplateModelFactory {
      * @param clause clause like "import * from "../../module"
      */
     addLevelToImportClause(clause: string): string {
-        return clause.replace(/(?<=(from\s*['"]{1}))(\.)/, (m) => `../${m}`);
+        return clause.replace(/(?<=(from\s*['"]{1}(\.)+)\/)/, (m) => `../${m}`);
     }
 
     getImportClausesWithAdditionalLevel(
