@@ -11,6 +11,15 @@ npm install --save-dev @derfrodo/reducer-gen
 
 Installation guides will follow (hopefully soon)
 
+## Migration from 0.1.x to 0.2.x
+
+### Actions modules and variables has been renamed to be "actions" instead of "action". 
+You may have to adjust file names for extended actions to match this requirements. Also you will need to rename your extended actions themselves.
+Imports may break (do not worry: Just change "actions" in the generated documents to "action" and perform the renaming with typescript. Everything should follow this renaming, then 😊 )
+
+### extended Reducers are expected to be exported as named exports
+just add ```export``` to your extended reducer constant
+
 ## Quick Start
 call via package.json script:  
 
@@ -38,6 +47,14 @@ npm run generateReducers
 -   mainFilesSuffix (default: ".main.generated" )
 -   mainFilesPrefix (default: "" )
 -   createReducerContext (default: false)
+-   addArrayFunctions (default: true)
+-   addBubbleFlagForActions (default: true)
+-   decoupleStateChangedCallbackByTimeout (default: false)
+
+### Deprecated Arguments, which will more or less do nothing (... sensible 😅 )
+-   generateSyncStateActions (default: false, deprecated - use @derfrodo/call-for-action 🤗)
+-   generateWebAppHybridHooks (default: false, deprecated - use @derfrodo/call-for-action 🤗)
+-   generateReactNativeHybridHooks (default: false, deprecated - use @derfrodo/call-for-action 🤗)
 
 ```
  logLevelChoices = [
