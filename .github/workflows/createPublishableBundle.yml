@@ -25,7 +25,7 @@ jobs:
     - run: cd lib && npm ci
     - run: cd lib && npm run build
     
-    - name: create zio archive
+    - name: create ZIP archive
       shell: bash
       run: zip -r "archive-node-${{ matrix.node-version }}.zip" "lib/build/"
 
