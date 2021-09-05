@@ -26,7 +26,7 @@ jobs:
     - run: cd lib && npm run build
     
     - name: show folder
-      run: cd lib && ls
+      run: zip -r "archive-node-${ matrix.node-version }.zip" "lib/build/"
 
 
 #    - run: npm test
