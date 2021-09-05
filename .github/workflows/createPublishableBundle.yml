@@ -36,10 +36,6 @@ jobs:
     - name: build bundle (npm ci)
       shell: bash
       run: cd lib && npm run build
-    
-    - name: build bundle (npm ci)
-      shell: bash
-      run: cd lib && npm run build
       
     - name: prepare package for publishing
       shell: bash
