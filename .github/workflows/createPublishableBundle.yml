@@ -22,9 +22,20 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd lib && npm ci
-    - run: cd lib && npm run build
-#    - run: npm test
+    
+    - name: perform installation (npm ci)
+      shell: bash
+      run: cd lib && npm ci
+    
+    - name: perform unittests
+      shell: bash
+      run: |
+        cd lib
+#        npm test
+    
+    - name: build bundle (npm ci)
+      shell: bash
+      run: cd lib && npm run build
     
     - name: create ZIP archive
       shell: bash
