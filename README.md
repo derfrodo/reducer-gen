@@ -27,7 +27,7 @@ just add `export` to your extended reducer constant
 
 call via package.json script:
 
-### Either in package.json
+### Add in package.json
 
 ```json
 {
@@ -41,7 +41,7 @@ call via package.json script:
 
 _package.json_
 
-### ...or direct in cli
+### ...then use the script 🎉
 
 ```cli
 npm run generateReducers
