@@ -1,8 +1,12 @@
 # Changelog 
 
+## Version 0.2.17
+- Upgrade dependencies
+
 ## Version 0.2.16
 - Upgrade dependencies
 - Fixed readme
+
 ## Version 0.2.15
 - Extended README
 - Added action for github
