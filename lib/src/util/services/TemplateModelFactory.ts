@@ -35,18 +35,21 @@ export class TemplateModelFactory {
         stateInfo: StateInterfaceInfo
     ): ActionCreatorsHandlebarModel {
         const result: ActionCreatorsHandlebarModel = {
-            baseActionCreatorsName: this.reduxModuleNamingHelper.getActionCreatorsName(
-                stateInfo,
-                "base"
-            ),
-            mainActionCreatorsName: this.reduxModuleNamingHelper.getActionCreatorsName(
-                stateInfo,
-                "main"
-            ),
-            extendedActionCreatorsName: this.reduxModuleNamingHelper.getActionCreatorsName(
-                stateInfo,
-                "ext"
-            ),
+            baseActionCreatorsName:
+                this.reduxModuleNamingHelper.getActionCreatorsName(
+                    stateInfo,
+                    "base"
+                ),
+            mainActionCreatorsName:
+                this.reduxModuleNamingHelper.getActionCreatorsName(
+                    stateInfo,
+                    "main"
+                ),
+            extendedActionCreatorsName:
+                this.reduxModuleNamingHelper.getActionCreatorsName(
+                    stateInfo,
+                    "ext"
+                ),
         };
         return result;
     }
@@ -63,13 +66,13 @@ export class TemplateModelFactory {
                 stateInfo,
                 "main"
             ),
-            extendedActionsEnumName: this.reduxModuleNamingHelper.getActionEnumName(
-                stateInfo,
-                "ext"
-            ),
-            baseActions: this.reduxModuleNamingHelper.getActionStrings(
-                stateInfo
-            ),
+            extendedActionsEnumName:
+                this.reduxModuleNamingHelper.getActionEnumName(
+                    stateInfo,
+                    "ext"
+                ),
+            baseActions:
+                this.reduxModuleNamingHelper.getActionStrings(stateInfo),
         };
         return result;
     }
@@ -78,30 +81,36 @@ export class TemplateModelFactory {
         stateInfo: StateInterfaceInfo
     ): ReducerActionsHandlebarModel {
         const result: ReducerActionsHandlebarModel = {
-            baseReducerActionsName: this.reduxModuleNamingHelper.getReducerActionName(
-                stateInfo,
-                "base"
-            ),
-            mainReducerActionsName: this.reduxModuleNamingHelper.getReducerActionName(
-                stateInfo,
-                "main"
-            ),
-            extendedReducerActionsName: this.reduxModuleNamingHelper.getReducerActionName(
-                stateInfo,
-                "ext"
-            ),
-            baseReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
-                stateInfo,
-                "base"
-            ),
-            mainReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
-                stateInfo,
-                "main"
-            ),
-            extendedReducerTypeguard: this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
-                stateInfo,
-                "ext"
-            ),
+            baseReducerActionsName:
+                this.reduxModuleNamingHelper.getReducerActionName(
+                    stateInfo,
+                    "base"
+                ),
+            mainReducerActionsName:
+                this.reduxModuleNamingHelper.getReducerActionName(
+                    stateInfo,
+                    "main"
+                ),
+            extendedReducerActionsName:
+                this.reduxModuleNamingHelper.getReducerActionName(
+                    stateInfo,
+                    "ext"
+                ),
+            baseReducerTypeguard:
+                this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
+                    stateInfo,
+                    "base"
+                ),
+            mainReducerTypeguard:
+                this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
+                    stateInfo,
+                    "main"
+                ),
+            extendedReducerTypeguard:
+                this.reduxModuleNamingHelper.getReducerActionTypeGuardMethodName(
+                    stateInfo,
+                    "ext"
+                ),
         };
         return result;
     }
@@ -118,10 +127,11 @@ export class TemplateModelFactory {
                 stateInfo,
                 "main"
             ),
-            extendedReducerName: this.reduxModuleNamingHelper.getReducerMethodName(
-                stateInfo,
-                "ext"
-            ),
+            extendedReducerName:
+                this.reduxModuleNamingHelper.getReducerMethodName(
+                    stateInfo,
+                    "ext"
+                ),
         };
         return result;
     }
@@ -136,18 +146,19 @@ export class TemplateModelFactory {
 
         const result: StateHandlebarModel = {
             stateName: stateName,
-            hasStateAsDefaultExport: stateInfo.hasStateAsDefaultExport || false,
+            hasStateAsDefaultExport:
+                !!stateInfo.hasStateAsDefaultExport || false,
             properties: stateInfo.stateProperties.map((p) =>
                 this.createStatePropertyHandlebarModel(p, stateInfo)
             ),
             imports: stateInfo.importClauses,
-            importsWithAdditionalLevel: this.getImportClausesWithAdditionalLevel(
-                stateInfo
-            ),
-            getDefaultStateMethodName: this.reduxModuleNamingHelper.getGetDefaultStateMethodName(
-                stateInfo,
-                "main"
-            ),
+            importsWithAdditionalLevel:
+                this.getImportClausesWithAdditionalLevel(stateInfo),
+            getDefaultStateMethodName:
+                this.reduxModuleNamingHelper.getGetDefaultStateMethodName(
+                    stateInfo,
+                    "main"
+                ),
         };
         return result;
     }
@@ -164,13 +175,13 @@ export class TemplateModelFactory {
                 propertyInfo,
                 stateInfo
             ),
-            arrayActionEnumValues: this.reduxModuleNamingHelper.getArrayActionStrings(
-                propertyInfo,
-                stateInfo
-            ),
-            initialValue: this.stateService.getInitialPropertyValue(
-                propertyInfo
-            ),
+            arrayActionEnumValues:
+                this.reduxModuleNamingHelper.getArrayActionStrings(
+                    propertyInfo,
+                    stateInfo
+                ),
+            initialValue:
+                this.stateService.getInitialPropertyValue(propertyInfo),
             types: propertyInfo.types,
             nullable: propertyInfo.nullable,
             undefineable: propertyInfo.undefineable,

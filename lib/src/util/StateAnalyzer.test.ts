@@ -1,12 +1,15 @@
 import { StringHelper } from "@derfrodo/frodo-s-little-helpers/dist";
 import FileSystemHelper from "@derfrodo/frodo-s-little-helpers/dist/util/FileSystemHelper";
+import ts from "typescript";
 import type { ReduxCodeGeneratorOptions } from "../interfaces/ReduxCodeGeneratorOptions";
+import { StateAnalyzerOptions } from "../interfaces/StateAnalyzerOptions";
+import { STATE_PROPERT_TYPES } from "../interfaces/StateInterfaceInfo";
 import createMockService, { MockedType } from "../__mocks__/createMockService";
 import { StateAnalyzer } from "./StateAnalyzer";
 
 jest.mock("./ReduxModuleNamingHelper");
-
 jest.mock("@derfrodo/frodo-s-little-helpers/dist/util/FileSystemHelper");
+
 export const getFileSystemHelperMock = (): {
     service: FileSystemHelper;
     mock: MockedType<FileSystemHelper>;
@@ -198,6 +201,315 @@ export default State;
             // export default ActionsEnum;
             // `);
             //         });
+        });
+    });
+
+    describe("StateAnalyzer resolveTypesOfUnionTypes tests", () => {
+        it("StateAnalyzer.resolveTypesOfUnionTypes base test", async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                ...getDefaultTestGeneratorOptions(),
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const typeNodes: ts.NodeArray<ts.TypeNode> =
+                ts.factory.createNodeArray(
+                    [
+                        {
+                            kind: ts.SyntaxKind.StringKeyword,
+                            end: 80,
+                            flags: ts.NodeFlags.None,
+                            pos: 75,
+                        } as ts.KeywordTypeNode,
+                    ],
+                    false
+                );
+
+            // act
+            const result = uut.resolveTypesOfUnionTypes({
+                types: typeNodes,
+                end: 100,
+                flags: ts.NodeFlags.None,
+            } as ts.UnionTypeNode);
+
+            // assert
+            expect(result).toEqual({ types: [STATE_PROPERT_TYPES.STRING] });
+        });
+
+        describe.each<ts.SyntaxKind>(
+            Object.entries(ts.SyntaxKind)
+                .filter(
+                    (e) =>
+                        typeof e[1] === "number" &&
+                        [
+                            ts.SyntaxKind.TypeReference,
+                            ts.SyntaxKind.ArrayType,
+                            ts.SyntaxKind.BooleanKeyword,
+                            ts.SyntaxKind.NumberKeyword,
+                            ts.SyntaxKind.StringKeyword,
+                            ts.SyntaxKind.UndefinedKeyword,
+                            ts.SyntaxKind.NullKeyword,
+                        ].findIndex((known) => known === e[1]) === -1
+                )
+                .map((e) => e[1]) as ts.SyntaxKind[]
+        )(
+            "StateAnalyzer.resolveTypesOfUnionTypes throws if unknown type %s",
+            (given) => {
+                it("... to %s", () => {
+                    // arrange:
+                    const options: StateAnalyzerOptions = {
+                        ...getDefaultTestGeneratorOptions(),
+                        srcFolder: "Fakefolder",
+                    };
+                    const fsMock = getFileSystemHelperMock();
+                    fsMock.mock.readFile.mockImplementation(() => {
+                        return Promise.resolve("");
+                    });
+
+                    const uut = new StateAnalyzer(
+                        options,
+                        fsMock.service,
+                        new StringHelper()
+                    );
+
+                    const typeNodes: ts.NodeArray<ts.TypeNode> =
+                        ts.factory.createNodeArray(
+                            [
+                                {
+                                    kind: given,
+                                    end: 80,
+                                    flags: ts.NodeFlags.None,
+                                    pos: 75,
+                                } as ts.KeywordTypeNode,
+                            ],
+                            false
+                        );
+
+                    // act
+                    const result = () =>
+                        uut.resolveTypesOfUnionTypes({
+                            types: typeNodes,
+                            end: 100,
+                            flags: ts.NodeFlags.None,
+                        } as ts.UnionTypeNode);
+
+                    // assert
+                    expect(result).toThrowError(
+                        /Inner type for unionType can not be resolved.*/
+                    );
+                });
+            }
+        );
+
+        describe.each<[ts.SyntaxKind[], STATE_PROPERT_TYPES[]]>([
+            [
+                [ts.SyntaxKind.StringKeyword, ts.SyntaxKind.TypeReference],
+                [STATE_PROPERT_TYPES.STRING, STATE_PROPERT_TYPES.OBJECT],
+            ],
+            [[ts.SyntaxKind.StringKeyword], [STATE_PROPERT_TYPES.STRING]],
+            [[ts.SyntaxKind.ArrayType], [STATE_PROPERT_TYPES.ARRAY]],
+            [[ts.SyntaxKind.BooleanKeyword], [STATE_PROPERT_TYPES.BOOLEAN]],
+            [[ts.SyntaxKind.NumberKeyword], [STATE_PROPERT_TYPES.NUMBER]],
+            // [[ts.SyntaxKind.UndefinedKeyword], []],
+            // [[ts.SyntaxKind.NullKeyword], []],
+        ])(
+            "StateAnalyzer.resolveTypesOfUnionTypes resolves %s to %s",
+            (given, expected) => {
+                it("... to %s", () => {
+                    // arrange:
+                    const options: StateAnalyzerOptions = {
+                        ...getDefaultTestGeneratorOptions(),
+                        srcFolder: "Fakefolder",
+                    };
+                    const fsMock = getFileSystemHelperMock();
+                    fsMock.mock.readFile.mockImplementation(() => {
+                        return Promise.resolve("");
+                    });
+
+                    const uut = new StateAnalyzer(
+                        options,
+                        fsMock.service,
+                        new StringHelper()
+                    );
+
+                    const typeNodes: ts.NodeArray<ts.TypeNode> =
+                        ts.factory.createNodeArray(
+                            given.map(
+                                (val, i) =>
+                                    ({
+                                        kind: val,
+                                        end: 80 + i,
+                                        flags: ts.NodeFlags.None,
+                                        pos: 75,
+                                    } as ts.KeywordTypeNode)
+                            ),
+                            false
+                        );
+
+                    // act
+                    const result = uut.resolveTypesOfUnionTypes({
+                        types: typeNodes,
+                        end: 100,
+                        flags: ts.NodeFlags.None,
+                    } as ts.UnionTypeNode);
+
+                    // assert
+                    expect(result).toEqual({ types: expected });
+                });
+
+                it("... with nullable", () => {
+                    // arrange:
+                    const options: StateAnalyzerOptions = {
+                        ...getDefaultTestGeneratorOptions(),
+                        srcFolder: "Fakefolder",
+                    };
+                    const fsMock = getFileSystemHelperMock();
+                    fsMock.mock.readFile.mockImplementation(() => {
+                        return Promise.resolve("");
+                    });
+
+                    const uut = new StateAnalyzer(
+                        options,
+                        fsMock.service,
+                        new StringHelper()
+                    );
+
+                    const typeNodes: ts.NodeArray<ts.TypeNode> =
+                        ts.factory.createNodeArray(
+                            [
+                                {
+                                    kind: ts.SyntaxKind.NullKeyword,
+                                    end: 21,
+                                    flags: ts.NodeFlags.None,
+                                    pos: 75,
+                                } as ts.TypeNode,
+                                ...given.map(
+                                    (val, i) =>
+                                        ({
+                                            kind: val,
+                                            end: 80 + i,
+                                            flags: ts.NodeFlags.None,
+                                            pos: 75,
+                                        } as ts.KeywordTypeNode)
+                                ),
+                            ],
+                            false
+                        );
+
+                    // act
+                    const result = uut.resolveTypesOfUnionTypes({
+                        types: typeNodes,
+                        end: 100,
+                        flags: ts.NodeFlags.None,
+                    } as ts.UnionTypeNode);
+
+                    // assert
+                    expect(result).toEqual({ types: expected, nullable: true });
+                });
+
+                it("... with undefinable", () => {
+                    // arrange:
+                    const options: StateAnalyzerOptions = {
+                        ...getDefaultTestGeneratorOptions(),
+                        srcFolder: "Fakefolder",
+                    };
+                    const fsMock = getFileSystemHelperMock();
+                    fsMock.mock.readFile.mockImplementation(() => {
+                        return Promise.resolve("");
+                    });
+
+                    const uut = new StateAnalyzer(
+                        options,
+                        fsMock.service,
+                        new StringHelper()
+                    );
+
+                    const typeNodes: ts.NodeArray<ts.TypeNode> =
+                        ts.factory.createNodeArray(
+                            [
+                                {
+                                    kind: ts.SyntaxKind.UndefinedKeyword,
+                                    end: 21,
+                                    flags: ts.NodeFlags.None,
+                                    pos: 75,
+                                } as ts.TypeNode,
+                                ...given.map(
+                                    (val, i) =>
+                                        ({
+                                            kind: val,
+                                            end: 80 + i,
+                                            flags: ts.NodeFlags.None,
+                                            pos: 75,
+                                        } as ts.KeywordTypeNode)
+                                ),
+                            ],
+                            false
+                        );
+
+                    // act
+                    const result = uut.resolveTypesOfUnionTypes({
+                        types: typeNodes,
+                        end: 100,
+                        flags: ts.NodeFlags.None,
+                    } as ts.UnionTypeNode);
+
+                    // assert
+                    expect(result).toEqual({
+                        types: expected,
+                        undefineable: true,
+                    });
+                });
+            }
+        );
+    });
+
+    describe("StateAnalyzer createMemberInfo tests", () => {
+        it("StateAnalyzer.createMemberInfo base test", async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                ...getDefaultTestGeneratorOptions(),
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const testnode = {
+                name: "testnode",
+                type: {
+                    kind: ts.SyntaxKind.NumberKeyword,
+                    getFullText: () => "TEST NODE TEXT",
+                } as any,
+            } as unknown as ts.PropertySignature;
+
+            // act
+            const result = uut.createMemberInfo(testnode, {} as ts.SourceFile);
+
+            // assert
+            expect(result).toEqual({
+                name: "",
+                nullable: false,
+                types: [1],
+                typesText: "TEST NODE TEXT",
+                undefineable: false,
+            });
         });
     });
 });

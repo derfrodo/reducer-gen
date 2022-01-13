@@ -31,22 +31,18 @@ export class StateAnalyzer {
         this.options = options;
         this.fsHelper = fsHelper;
         this.strHelper = strHelper;
-        this.createFeatureStateDataObjects = this.createFeatureStateDataObjects.bind(
-            this
-        );
+        this.createFeatureStateDataObjects =
+            this.createFeatureStateDataObjects.bind(this);
         this.analyseStateFiles = this.analyseStateFiles.bind(this);
         this.visitStateFile = this.visitStateFile.bind(this);
         this.printNode = this.printNode.bind(this);
-        this.getWithAnalyseStateInterface = this.getWithAnalyseStateInterface.bind(
-            this
-        );
+        this.getWithAnalyseStateInterface =
+            this.getWithAnalyseStateInterface.bind(this);
         this.createMemberInfo = this.createMemberInfo.bind(this);
-        this.resolveTypesOfUnionTypes = this.resolveTypesOfUnionTypes.bind(
-            this
-        );
-        this.getFeatureModuleFileInfoForFile = this.getFeatureModuleFileInfoForFile.bind(
-            this
-        );
+        this.resolveTypesOfUnionTypes =
+            this.resolveTypesOfUnionTypes.bind(this);
+        this.getFeatureModuleFileInfoForFile =
+            this.getFeatureModuleFileInfoForFile.bind(this);
     }
     async createFeatureStateDataObjects(
         pathsToStateFiles: string[]
@@ -276,8 +272,9 @@ export class StateAnalyzer {
                             (t) => t.kind === ts.SyntaxKind.ArrayType
                         );
                         if (arrayTypes.length === 1) {
-                            const elementType = (arrayTypes[0] as ts.ArrayTypeNode)
-                                .elementType;
+                            const elementType = (
+                                arrayTypes[0] as ts.ArrayTypeNode
+                            ).elementType;
                             result.arrayElementType = sh.trim(
                                 elementType.getFullText(srcFile) ?? "object"
                             );

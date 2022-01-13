@@ -22,7 +22,8 @@ export const getStateInterfaceImportLineMock = jest.fn();
 function ReduxModuleNamingHelper() {
     return {
         getDoNotOverwriteWarning: getDoNotOverwriteWarningMock,
-        getGeneralGenertedFileInformation: getGeneralGenertedFileInformationMock,
+        getGeneralGenertedFileInformation:
+            getGeneralGenertedFileInformationMock,
         addGeneratedHeader: addGeneratedHeaderMock,
         getFeatureName: getFeatureNameMock,
         getActionStrings: getActionStringsMock,
@@ -34,7 +35,8 @@ function ReduxModuleNamingHelper() {
         getPascalCasedFeatureName: getPascalCasedFeatureNameMock,
         getActionCreatorsName: getActionCreatorsNameMock,
         getReducerActionName: getReducerActionNameMock,
-        getReducerActionTypeGuardMethodName: getReducerActionTypeGuardMethodNameMock,
+        getReducerActionTypeGuardMethodName:
+            getReducerActionTypeGuardMethodNameMock,
         getStateInterfaceName: getStateInterfaceNameMock,
         getStateInterfaceImportLine: getStateInterfaceImportLineMock,
     };

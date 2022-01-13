@@ -20,7 +20,7 @@ export const addLevelToImportClauseMock = jest.fn();
 export const addCommentToImportClauseMock = jest.fn();
 export const getCombinedReduxNamesMock = jest.fn();
 
-const ReduxModulFileService = jest.fn().mockImplementation(() => {
+function ReduxModulFileService() {
     return {
         getGeneratedFilesPrefix: getGeneratedFilesPrefixMock,
         getGeneratedFilesSuffix: getGeneratedFilesSuffixMock,
@@ -40,7 +40,7 @@ const ReduxModulFileService = jest.fn().mockImplementation(() => {
         addCommentToImportClause: addCommentToImportClauseMock,
         getCombinedReduxNames: getCombinedReduxNamesMock,
     };
-});
+}
 
 const exportModule: typeof MockedTypes = {
     ...actualTypes,
