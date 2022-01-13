@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.2.18-beta
+- Adding automated tests
+
 ## Version 0.2.17
 - Upgrade dependencies
 
