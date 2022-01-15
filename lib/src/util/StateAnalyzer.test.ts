@@ -511,5 +511,111 @@ export default State;
                 undefineable: false,
             });
         });
+
+        describe.each<[ts.SyntaxKind, STATE_PROPERT_TYPES[]]>([
+            [ts.SyntaxKind.BooleanKeyword, [STATE_PROPERT_TYPES.BOOLEAN]],
+            [ts.SyntaxKind.NumberKeyword, [STATE_PROPERT_TYPES.NUMBER]],
+            [ts.SyntaxKind.StringKeyword, [STATE_PROPERT_TYPES.STRING]],
+            [ts.SyntaxKind.TypeReference, [STATE_PROPERT_TYPES.OBJECT]],
+        ])(
+            "StateAnalyzer.createMemberInfo gets %s as kind",
+            (kind, expectedTypes) => {
+                it(`StateAnalyzer.createMemberInfo returns ${expectedTypes}`, () => {
+                    // arrange:
+                    const options: StateAnalyzerOptions = {
+                        ...getDefaultTestGeneratorOptions(),
+                        srcFolder: "Fakefolder",
+                    };
+                    const fsMock = getFileSystemHelperMock();
+                    fsMock.mock.readFile.mockImplementation(() => {
+                        return Promise.resolve("");
+                    });
+
+                    const uut = new StateAnalyzer(
+                        options,
+                        fsMock.service,
+                        new StringHelper()
+                    );
+
+                    const testnode = {
+                        name: "testnode",
+                        type: {
+                            kind: kind,
+                            getFullText: () => "TEST NODE TEXT",
+                        } as any,
+                    } as unknown as ts.PropertySignature;
+
+                    // act
+                    const result = uut.createMemberInfo(
+                        testnode,
+                        {} as ts.SourceFile
+                    );
+
+                    // assert
+                    expect(result).toEqual({
+                        name: "",
+                        nullable: false,
+                        types: expectedTypes,
+                        typesText: "TEST NODE TEXT",
+                        undefineable: false,
+                    });
+                });
+            }
+        );
+        describe.each<[ts.SyntaxKind, STATE_PROPERT_TYPES[]]>([
+            [ts.SyntaxKind.BooleanKeyword, [STATE_PROPERT_TYPES.BOOLEAN]],
+            [ts.SyntaxKind.NumberKeyword, [STATE_PROPERT_TYPES.NUMBER]],
+            [ts.SyntaxKind.StringKeyword, [STATE_PROPERT_TYPES.STRING]],
+            [ts.SyntaxKind.ArrayType, [STATE_PROPERT_TYPES.ARRAY]],
+            [ts.SyntaxKind.TypeReference, [STATE_PROPERT_TYPES.OBJECT]],
+        ])(
+            "StateAnalyzer.createMemberInfo gets %s as kind",
+            (kind, expectedTypes) => {
+                it(`StateAnalyzer.createMemberInfo returns node for array type`, () => {
+                    // arrange:
+                    const options: StateAnalyzerOptions = {
+                        ...getDefaultTestGeneratorOptions(),
+                        srcFolder: "Fakefolder",
+                    };
+                    const fsMock = getFileSystemHelperMock();
+                    fsMock.mock.readFile.mockImplementation(() => {
+                        return Promise.resolve("");
+                    });
+
+                    const uut = new StateAnalyzer(
+                        options,
+                        fsMock.service,
+                        new StringHelper()
+                    );
+
+                    const testnode = {
+                        name: "testnode",
+                        type: {
+                            kind: ts.SyntaxKind.ArrayType,
+                            getFullText: () => "TEST NODE TEXT",
+                            elementType: {
+                                getFullText: () => "TEST ARRAY NODE TEXT",
+                            },
+                        } as any,
+                    } as unknown as ts.PropertySignature;
+
+                    // act
+                    const result = uut.createMemberInfo(
+                        testnode,
+                        {} as ts.SourceFile
+                    );
+
+                    // assert
+                    expect(result).toEqual({
+                        arrayElementType: "TEST ARRAY NODE TEXT",
+                        name: "",
+                        nullable: false,
+                        types: [STATE_PROPERT_TYPES.ARRAY],
+                        typesText: "TEST NODE TEXT",
+                        undefineable: false,
+                    });
+                });
+            }
+        );
     });
 });
