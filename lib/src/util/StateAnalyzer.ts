@@ -204,7 +204,7 @@ export class StateAnalyzer {
         for (const member of interfaceNode.members) {
             if (ts.isPropertySignature(member)) {
                 interfaceInfo.stateProperties.push(
-                    this.createMemberInfo(member, srcFile)
+                    this.createMemberInfo(member, srcFile,info)
                 );
             } else {
                 this.printNode(member);
@@ -216,7 +216,8 @@ export class StateAnalyzer {
 
     createMemberInfo(
         node: ts.PropertySignature,
-        srcFile?: ts.SourceFile
+        srcFile?: ts.SourceFile,
+        info?: StateInterfaceInfo
     ): StatePropertyInfo {
         const { name, type } = node;
         const sh = this.strHelper;
@@ -261,7 +262,7 @@ export class StateAnalyzer {
                 break;
             case ts.SyntaxKind.UnionType:
                 if (type && ts.isUnionTypeNode(type)) {
-                    const unionTypeTypes = this.resolveTypesOfUnionTypes(type);
+                    const unionTypeTypes = this.resolveTypesOfUnionTypes(type, result, info);
                     result.types.push(...unionTypeTypes.types);
 
                     if (
@@ -305,7 +306,7 @@ export class StateAnalyzer {
         return result;
     }
 
-    resolveTypesOfUnionTypes(unionTypeNode: ts.UnionTypeNode): UnionTypeTypes {
+    resolveTypesOfUnionTypes(unionTypeNode: ts.UnionTypeNode, statePropertyInfo?: StatePropertyInfo, info?: StateInterfaceInfo): UnionTypeTypes {
         const result: UnionTypeTypes = { types: [] };
         for (const ut of unionTypeNode.types) {
             switch (ut.kind) {
@@ -335,7 +336,7 @@ export class StateAnalyzer {
                         this.printNode(ut);
                     }
                     throw new Error(
-                        `Inner type for unionType can not be resolved: ${
+                        `Inner type for unionType in State for feature ${info?.featureData.featureName} can not be resolved: ${
                             ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
                         }`
                     );
