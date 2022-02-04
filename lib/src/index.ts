@@ -49,9 +49,11 @@ const getGeneratorOptionsFromArgs = (
 };
 const getAnalyzerOptionsFromArgs = (argv: CliArgs): StateAnalyzerOptions => {
     // eslint-disable-next-line prettier/prettier
-    const { srcFolder } = argv;
+    const { srcFolder, typeLiteralsAsObject, typeAliasesAsObject } = argv;
     const result: StateAnalyzerOptions = {
         srcFolder,
+        typeAliasesAsObject: typeAliasesAsObject,
+        typeLiteralsAsObject: typeLiteralsAsObject,
     };
     return result;
 };
@@ -136,9 +138,8 @@ export const generate = async (argv: CliArgs): Promise<void> => {
     ];
     log.debug("State files resolved: ", JSON.stringify(stateFilePaths));
 
-    const featureFSData: FeatureStateDataObject[] = await stateAnalyzer.createFeatureStateDataObjects(
-        stateFilePaths
-    );
+    const featureFSData: FeatureStateDataObject[] =
+        await stateAnalyzer.createFeatureStateDataObjects(stateFilePaths);
     const stateInfos = await stateAnalyzer.analyseStateFiles(featureFSData);
     const generatedCodes = await codeGenerator.generateStateCodes(stateInfos);
     log.debug(JSON.stringify(generatedCodes));

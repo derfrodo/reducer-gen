@@ -43,4 +43,6 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
     generateWebAppHybridHooks: { boolean: true, default: false },
     generateReactNativeHybridHooks: { boolean: true, default: false },
     decoupleStateChangedCallbackByTimeout: { boolean: true, default: false },
+    typeAliasesAsObject: { boolean: true, default: false },
+    typeLiteralsAsObject: { boolean: true, default: false },
 };

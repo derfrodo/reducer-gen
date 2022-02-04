@@ -204,7 +204,7 @@ export class StateAnalyzer {
         for (const member of interfaceNode.members) {
             if (ts.isPropertySignature(member)) {
                 interfaceInfo.stateProperties.push(
-                    this.createMemberInfo(member, srcFile,info)
+                    this.createMemberInfo(member, srcFile, info)
                 );
             } else {
                 this.printNode(member);
@@ -262,7 +262,11 @@ export class StateAnalyzer {
                 break;
             case ts.SyntaxKind.UnionType:
                 if (type && ts.isUnionTypeNode(type)) {
-                    const unionTypeTypes = this.resolveTypesOfUnionTypes(type, result, info);
+                    const unionTypeTypes = this.resolveTypesOfUnionTypes(
+                        type,
+                        result,
+                        info
+                    );
                     result.types.push(...unionTypeTypes.types);
 
                     if (
@@ -306,10 +310,32 @@ export class StateAnalyzer {
         return result;
     }
 
-    resolveTypesOfUnionTypes(unionTypeNode: ts.UnionTypeNode, statePropertyInfo?: StatePropertyInfo, info?: StateInterfaceInfo): UnionTypeTypes {
+    resolveTypesOfUnionTypes(
+        unionTypeNode: ts.UnionTypeNode,
+        statePropertyInfo?: StatePropertyInfo,
+        info?: StateInterfaceInfo
+    ): UnionTypeTypes {
         const result: UnionTypeTypes = { types: [] };
         for (const ut of unionTypeNode.types) {
             switch (ut.kind) {
+                case ts.SyntaxKind.TypeAliasDeclaration:
+                    if (this.options.typeAliasesAsObject) {
+                        result.types.push(STATE_PROPERT_TYPES.OBJECT);
+                    } else {
+                        throw new Error(
+                            `Inner type for unionType for property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}" is typeAlias and will  not be resolved - you may set it to resolve typeliterals always to objects by passing --typeAliasesAsObject.`
+                        );
+                    }
+                    break;
+                case ts.SyntaxKind.TypeLiteral:
+                    if (this.options.typeLiteralsAsObject) {
+                        result.types.push(STATE_PROPERT_TYPES.OBJECT);
+                    } else {
+                        throw new Error(
+                            `Inner type for unionType for property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}" is typeliteral and will  not be resolved - you may set it to resolve typeliterals always to objects by passing --typeLiteralsAsObject.`
+                        );
+                    }
+                    break;
                 case ts.SyntaxKind.TypeReference:
                     result.types.push(STATE_PROPERT_TYPES.OBJECT);
                     break;
@@ -336,7 +362,11 @@ export class StateAnalyzer {
                         this.printNode(ut);
                     }
                     throw new Error(
-                        `Inner type for unionType for property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}" can not be resolved: ${
+                        `Inner type for unionType for property "${
+                            statePropertyInfo?.name
+                        }" in State for feature "${
+                            info?.featureData.featureName
+                        }" can not be resolved: ${
                             ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
                         }`
                     );
