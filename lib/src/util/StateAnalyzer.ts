@@ -336,7 +336,7 @@ export class StateAnalyzer {
                         this.printNode(ut);
                     }
                     throw new Error(
-                        `Inner type for unionType in State for feature ${info?.featureData.featureName} can not be resolved: ${
+                        `Inner type for unionType for property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}" can not be resolved: ${
                             ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
                         }`
                     );
