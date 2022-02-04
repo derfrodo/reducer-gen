@@ -17,6 +17,6 @@ export interface CliArgs {
     generateReactNativeHybridHooks: boolean;
     decoupleStateChangedCallbackByTimeout: boolean;
 
-    typeLiteralsAsObject: boolean;
+    literalTypesAsObject: boolean;
     typeAliasesAsObject: boolean;
 }

@@ -327,12 +327,12 @@ export class StateAnalyzer {
                         );
                     }
                     break;
-                case ts.SyntaxKind.TypeLiteral:
-                    if (this.options.typeLiteralsAsObject) {
+                case ts.SyntaxKind.LiteralType:
+                    if (this.options.literalTypesAsObject) {
                         result.types.push(STATE_PROPERT_TYPES.OBJECT);
                     } else {
                         throw new Error(
-                            `Inner type for unionType for property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}" is typeliteral and will  not be resolved - you may set it to resolve typeliterals always to objects by passing --typeLiteralsAsObject.`
+                            `Inner type for unionType for property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}" is literaltype and will  not be resolved - you may set it to resolve typeliterals always to objects by passing --literalTypesAsObject.`
                         );
                     }
                     break;

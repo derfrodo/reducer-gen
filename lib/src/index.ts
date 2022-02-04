@@ -53,7 +53,7 @@ const getAnalyzerOptionsFromArgs = (argv: CliArgs): StateAnalyzerOptions => {
     const result: StateAnalyzerOptions = {
         srcFolder,
         typeAliasesAsObject: typeAliasesAsObject,
-        typeLiteralsAsObject: typeLiteralsAsObject,
+        literalTypesAsObject: typeLiteralsAsObject,
     };
     return result;
 };

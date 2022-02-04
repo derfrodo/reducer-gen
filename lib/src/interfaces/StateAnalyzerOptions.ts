@@ -1,5 +1,5 @@
 export interface StateAnalyzerOptions {
     srcFolder: string;
-    typeLiteralsAsObject?: boolean;
+    literalTypesAsObject?: boolean;
     typeAliasesAsObject?: boolean;
 }
