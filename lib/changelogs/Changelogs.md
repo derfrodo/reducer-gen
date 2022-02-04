@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.2.26
+- FIX: unittests and errors found by other automated tests <3
+
 ## Version 0.2.25
 - FIX: literaltype updated (will now resolve null) => literalTypesAsObject
 - removed typeAliases again - never happend to occur in current testsetup :)
