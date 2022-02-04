@@ -1,5 +1,9 @@
 # Changelog 
 
+## Version 0.2.25
+- FIX: literaltype updated (will now resolve null) => literalTypesAsObject
+- removed typeAliases again - never happend to occur in current testsetup :)
+
 ## Version 0.2.24
 - Change typeliteral to literaltype => literalTypesAsObject
 

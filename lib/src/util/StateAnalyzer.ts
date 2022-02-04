@@ -232,80 +232,59 @@ export class StateAnalyzer {
         if (ts.isIdentifier(name)) {
             result.name = name.text;
         }
-        switch (type?.kind) {
-            case ts.SyntaxKind.BooleanKeyword:
-                result.types.push(STATE_PROPERT_TYPES.BOOLEAN);
-                break;
-            case ts.SyntaxKind.NumberKeyword:
-                result.types.push(STATE_PROPERT_TYPES.NUMBER);
-                break;
-            case ts.SyntaxKind.StringKeyword:
-                result.types.push(STATE_PROPERT_TYPES.STRING);
-                break;
-            case ts.SyntaxKind.UndefinedKeyword:
-                result.undefineable = true;
-                break;
-            case ts.SyntaxKind.NullKeyword:
-                result.nullable = true;
-                break;
-            case ts.SyntaxKind.ArrayType:
-                if (result.arrayElementType === undefined) {
-                    const elementType = (type as ts.ArrayTypeNode).elementType;
-                    result.arrayElementType = sh.trim(
-                        elementType.getFullText(srcFile) ?? "object"
-                    );
-                }
-                result.types.push(STATE_PROPERT_TYPES.ARRAY);
-                break;
-            case ts.SyntaxKind.TypeReference:
-                result.types.push(STATE_PROPERT_TYPES.OBJECT);
-                break;
-            case ts.SyntaxKind.UnionType:
-                if (type && ts.isUnionTypeNode(type)) {
-                    const unionTypeTypes = this.resolveTypesOfUnionTypes(
-                        type,
-                        result,
-                        info
-                    );
-                    result.types.push(...unionTypeTypes.types);
 
-                    if (
-                        unionTypeTypes.types.length === 1 &&
-                        unionTypeTypes.types[0] === STATE_PROPERT_TYPES.ARRAY
-                    ) {
-                        const arrayTypes = type.types.filter(
-                            (t) => t.kind === ts.SyntaxKind.ArrayType
+        if (this.isArrayNode(type)) {
+            if (result.arrayElementType === undefined) {
+                const elementType = (type as ts.ArrayTypeNode).elementType;
+                result.arrayElementType = sh.trim(
+                    elementType.getFullText(srcFile) ?? "object"
+                );
+            }
+            result.types.push(STATE_PROPERT_TYPES.ARRAY);
+        } else if (this.isUniontypeNode(type)) {
+            if (type && ts.isUnionTypeNode(type)) {
+                const unionTypeTypes = this.resolveTypesOfUnionTypes(
+                    type,
+                    result,
+                    info
+                );
+                result.types.push(...unionTypeTypes.types);
+
+                if (
+                    unionTypeTypes.types.length === 1 &&
+                    unionTypeTypes.types[0] === STATE_PROPERT_TYPES.ARRAY
+                ) {
+                    const arrayTypes = type.types.filter(
+                        (t) => t.kind === ts.SyntaxKind.ArrayType
+                    );
+                    if (arrayTypes.length === 1) {
+                        const elementType = (arrayTypes[0] as ts.ArrayTypeNode)
+                            .elementType;
+                        result.arrayElementType = sh.trim(
+                            elementType.getFullText(srcFile) ?? "object"
                         );
-                        if (arrayTypes.length === 1) {
-                            const elementType = (
-                                arrayTypes[0] as ts.ArrayTypeNode
-                            ).elementType;
-                            result.arrayElementType = sh.trim(
-                                elementType.getFullText(srcFile) ?? "object"
-                            );
-                        }
                     }
+                }
 
-                    result.nullable =
-                        unionTypeTypes.nullable || result.nullable;
-                    result.undefineable =
-                        unionTypeTypes.undefineable || result.undefineable;
-                }
-                break;
-            default:
-                if (type) {
-                    this.printNode(type);
-                }
-                throw new Error(
-                    `Type for property "${result.name}" can not be resolved: ${
-                        type && type.kind ? ts.SyntaxKind[type.kind] : type
-                    }`
-                );
-            case undefined:
-                throw new Error(
-                    `No type has been found for property "${result.name}".`
-                );
-                break;
+                result.nullable = unionTypeTypes.nullable || result.nullable;
+                result.undefineable =
+                    unionTypeTypes.undefineable || result.undefineable;
+            }
+        } else if (type) {
+            const propType = this.resolveTypeType(type, result, info);
+            result.types.push(propType);
+            switch (propType) {
+                case STATE_PROPERT_TYPES.UNDEFINED:
+                    result.undefineable = true;
+                    break;
+                case STATE_PROPERT_TYPES.NULL:
+                    result.nullable = true;
+                    break;
+            }
+        } else {
+            throw new Error(
+                `No type has been found for property "${result.name}".`
+            );
         }
         return result;
     }
@@ -317,61 +296,127 @@ export class StateAnalyzer {
     ): UnionTypeTypes {
         const result: UnionTypeTypes = { types: [] };
         for (const ut of unionTypeNode.types) {
-            switch (ut.kind) {
-                case ts.SyntaxKind.TypeAliasDeclaration:
-                    if (this.options.typeAliasesAsObject) {
-                        result.types.push(STATE_PROPERT_TYPES.OBJECT);
-                    } else {
-                        throw new Error(
-                            `Inner type for unionType for property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}" is typeAlias and will  not be resolved - you may set it to resolve typeliterals always to objects by passing --typeAliasesAsObject.`
-                        );
-                    }
-                    break;
-                case ts.SyntaxKind.LiteralType:
-                    if (this.options.literalTypesAsObject) {
-                        result.types.push(STATE_PROPERT_TYPES.OBJECT);
-                    } else {
-                        throw new Error(
-                            `Inner type for unionType for property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}" is literaltype and will  not be resolved - you may set it to resolve typeliterals always to objects by passing --literalTypesAsObject.`
-                        );
-                    }
-                    break;
-                case ts.SyntaxKind.TypeReference:
-                    result.types.push(STATE_PROPERT_TYPES.OBJECT);
-                    break;
-                case ts.SyntaxKind.ArrayType:
-                    result.types.push(STATE_PROPERT_TYPES.ARRAY);
-                    break;
-                case ts.SyntaxKind.BooleanKeyword:
-                    result.types.push(STATE_PROPERT_TYPES.BOOLEAN);
-                    break;
-                case ts.SyntaxKind.NumberKeyword:
-                    result.types.push(STATE_PROPERT_TYPES.NUMBER);
-                    break;
-                case ts.SyntaxKind.StringKeyword:
-                    result.types.push(STATE_PROPERT_TYPES.STRING);
-                    break;
-                case ts.SyntaxKind.UndefinedKeyword:
+            const type = this.resolveTypeType(ut, statePropertyInfo, info);
+            result.types.push(type);
+            switch (type) {
+                case STATE_PROPERT_TYPES.UNDEFINED:
                     result.undefineable = true;
                     break;
-                case ts.SyntaxKind.NullKeyword:
+                case STATE_PROPERT_TYPES.NULL:
                     result.nullable = true;
                     break;
-                default:
-                    if (ut) {
-                        this.printNode(ut);
-                    }
+            }
+        }
+        return result;
+    }
+
+    resolveTypeType(
+        ut: ts.TypeNode,
+        statePropertyInfo?: StatePropertyInfo,
+        info?: StateInterfaceInfo
+    ): STATE_PROPERT_TYPES {
+        switch (ut.kind) {
+            case ts.SyntaxKind.LiteralType:
+                if (this.options.literalTypesAsObject) {
+                    return this.resolveLiteralType(
+                        (ut as ts.LiteralTypeNode).literal,
+                        statePropertyInfo,
+                        info
+                    );
+                } else {
                     throw new Error(
                         `Inner type for unionType for property "${
                             statePropertyInfo?.name
                         }" in State for feature "${
                             info?.featureData.featureName
-                        }" can not be resolved: ${
-                            ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
-                        }`
+                        }" is literaltype and will not be resolved.
+You may set it to resolve typeliterals always to objects by passing --literalTypesAsObject. (Content ${JSON.stringify(
+                            ut
+                        )})`
                     );
-            }
+                }
+                break;
+            case ts.SyntaxKind.TypeReference:
+                return STATE_PROPERT_TYPES.OBJECT;
+                break;
+            case ts.SyntaxKind.ArrayType:
+                return STATE_PROPERT_TYPES.ARRAY;
+                break;
+            case ts.SyntaxKind.BooleanKeyword:
+                return STATE_PROPERT_TYPES.BOOLEAN;
+                break;
+            case ts.SyntaxKind.NumberKeyword:
+                return STATE_PROPERT_TYPES.NUMBER;
+                break;
+            case ts.SyntaxKind.StringKeyword:
+                return STATE_PROPERT_TYPES.STRING;
+                break;
+            case ts.SyntaxKind.UndefinedKeyword:
+                return STATE_PROPERT_TYPES.UNDEFINED;
+                break;
+            case ts.SyntaxKind.NullKeyword:
+                return STATE_PROPERT_TYPES.NULL;
+                break;
+            case ts.SyntaxKind.ArrayType:
+                throw new Error(
+                    `No array type may be placed in property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}".
+ Are you trying to nest arrays - this is not supported yet?`
+                );
+            case ts.SyntaxKind.UnionType:
+                throw new Error(
+                    `No array type may be placed in property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}".
+ Are you trying to construct fascinating types?`
+                );
+            default:
+                if (ut) {
+                    this.printNode(ut);
+                }
+                throw new Error(
+                    `Inner type for unionType for property "${
+                        statePropertyInfo?.name
+                    }" in State for feature "${
+                        info?.featureData.featureName
+                    }" can not be resolved: ${
+                        ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
+                    }`
+                );
         }
-        return result;
+    }
+
+    resolveLiteralType(
+        ut: ts.LiteralTypeNode["literal"],
+        statePropertyInfo?: StatePropertyInfo,
+        info?: StateInterfaceInfo
+    ): STATE_PROPERT_TYPES {
+        switch (ut.kind) {
+            case ts.SyntaxKind.NullKeyword:
+                return STATE_PROPERT_TYPES.NULL;
+            // case ts.SyntaxKind.TrueKeyword:
+            //     return STATE_PROPERT_TYPES.FALSE;
+            // case ts.SyntaxKind.FalseKeyword:
+            //     return STATE_PROPERT_TYPES.TRUE;
+
+            default:
+                if (ut) {
+                    this.printNode(ut);
+                }
+                throw new Error(
+                    `Inner type for literal node for property "${
+                        statePropertyInfo?.name
+                    }" in State for feature "${
+                        info?.featureData.featureName
+                    }" can not be resolved: ${
+                        ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
+                    }`
+                );
+        }
+    }
+
+    isArrayNode(ut: ts.TypeNode | undefined): ut is ts.ArrayTypeNode {
+        return typeof ut === "object" && ut.kind === ts.SyntaxKind.ArrayType;
+    }
+
+    isUniontypeNode(ut: ts.TypeNode | undefined): ut is ts.UnionTypeNode {
+        return typeof ut === "object" && ut.kind === ts.SyntaxKind.UnionType;
     }
 }

@@ -28,4 +28,9 @@ export enum STATE_PROPERT_TYPES {
     BOOLEAN,
     OBJECT,
     ARRAY,
+    NULL,
+    UNDEFINED,
+    // maybe latre for literals?
+    // TRUE,
+    // FALSE,
 }

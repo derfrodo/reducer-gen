@@ -23,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generateReducer": "reducer-gen --loglevel info --createReducerContext --addBubbleFlagForActions",
+    "generateReducer": "reducer-gen --loglevel info --createReducerContext --addBubbleFlagForActions --literalTypesAsObject",
     "linkReducerGen": "npm link ../../lib/"
   },
   "eslintConfig": {

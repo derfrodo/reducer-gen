@@ -49,10 +49,9 @@ const getGeneratorOptionsFromArgs = (
 };
 const getAnalyzerOptionsFromArgs = (argv: CliArgs): StateAnalyzerOptions => {
     // eslint-disable-next-line prettier/prettier
-    const { srcFolder, literalTypesAsObject, typeAliasesAsObject } = argv;
+    const { srcFolder, literalTypesAsObject } = argv;
     const result: StateAnalyzerOptions = {
         srcFolder,
-        typeAliasesAsObject: typeAliasesAsObject,
         literalTypesAsObject,
     };
     return result;

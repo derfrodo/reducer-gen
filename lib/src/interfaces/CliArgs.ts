@@ -18,5 +18,4 @@ export interface CliArgs {
     decoupleStateChangedCallbackByTimeout: boolean;
 
     literalTypesAsObject: boolean;
-    typeAliasesAsObject: boolean;
 }
