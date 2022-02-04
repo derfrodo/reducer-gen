@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.2.24
+- Change typeliteral to literaltype => literalTypesAsObject
+
 ## Version 0.2.23
 - Added Parameter for mapping type literal to object: typeLiteralsAsObject: boolean;
 - Added Parameter for mapping type alias to object: typeAliasesAsObject: boolean;
