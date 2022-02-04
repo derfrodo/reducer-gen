@@ -254,6 +254,7 @@ export default State;
                         [
                             ts.SyntaxKind.TypeReference,
                             ts.SyntaxKind.ArrayType,
+                            ts.SyntaxKind.UnionType,
                             ts.SyntaxKind.BooleanKeyword,
                             ts.SyntaxKind.NumberKeyword,
                             ts.SyntaxKind.StringKeyword,
@@ -305,7 +306,7 @@ export default State;
 
                     // assert
                     expect(result).toThrowError(
-                        /Inner type for unionType can not be resolved.*/
+                        /Inner type for unionType for property \"undefined\" in State for.*/
                     );
                 });
             }

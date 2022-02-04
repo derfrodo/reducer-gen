@@ -272,13 +272,15 @@ export class StateAnalyzer {
             }
         } else if (type) {
             const propType = this.resolveTypeType(type, result, info);
-            result.types.push(propType);
             switch (propType) {
                 case STATE_PROPERT_TYPES.UNDEFINED:
                     result.undefineable = true;
                     break;
                 case STATE_PROPERT_TYPES.NULL:
                     result.nullable = true;
+                    break;
+                default:
+                    result.types.push(propType);
                     break;
             }
         } else {
@@ -297,13 +299,15 @@ export class StateAnalyzer {
         const result: UnionTypeTypes = { types: [] };
         for (const ut of unionTypeNode.types) {
             const type = this.resolveTypeType(ut, statePropertyInfo, info);
-            result.types.push(type);
             switch (type) {
                 case STATE_PROPERT_TYPES.UNDEFINED:
                     result.undefineable = true;
                     break;
                 case STATE_PROPERT_TYPES.NULL:
                     result.nullable = true;
+                    break;
+                default:
+                    result.types.push(type);
                     break;
             }
         }
@@ -364,7 +368,7 @@ You may set it to resolve typeliterals always to objects by passing --literalTyp
                 );
             case ts.SyntaxKind.UnionType:
                 throw new Error(
-                    `No array type may be placed in property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}".
+                    `No union type may be placed in property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}".
  Are you trying to construct fascinating types?`
                 );
             default:
