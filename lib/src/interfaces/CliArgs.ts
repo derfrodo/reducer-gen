@@ -3,6 +3,8 @@ import { LogLevelDesc } from "loglevel";
 export interface CliArgs {
     loglevel: LogLevelDesc;
     srcFolder: string;
+    stateFilesPattern: string[];
+
     filesPrefix: string;
     filesSuffix: string;
     mainFilesSuffix: string;
@@ -17,5 +19,5 @@ export interface CliArgs {
     generateReactNativeHybridHooks: boolean;
     decoupleStateChangedCallbackByTimeout: boolean;
 
-    literalTypesAsObject: boolean;
+    analyseLiteralTypes: boolean;
 }

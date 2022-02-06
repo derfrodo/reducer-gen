@@ -29,6 +29,10 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
         default: "info",
     },
     srcFolder: { demandOption: false, default: "./src" },
+    stateFilesPattern: {
+        demandOption: false,
+        default: ["/redux/state.ts", "/reducer/state.ts"],
+    },
 
     filesSuffix: { demandOption: false, default: ".base.generated" },
     filesPrefix: { demandOption: false, default: "" },
@@ -43,5 +47,9 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
     generateWebAppHybridHooks: { boolean: true, default: false },
     generateReactNativeHybridHooks: { boolean: true, default: false },
     decoupleStateChangedCallbackByTimeout: { boolean: true, default: false },
-    literalTypesAsObject: { boolean: true, default: false },
+    analyseLiteralTypes: {
+        boolean: true,
+        default: false,
+        alias: ["literalTypesAsObject"],
+    },
 };

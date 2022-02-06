@@ -49,10 +49,10 @@ const getGeneratorOptionsFromArgs = (
 };
 const getAnalyzerOptionsFromArgs = (argv: CliArgs): StateAnalyzerOptions => {
     // eslint-disable-next-line prettier/prettier
-    const { srcFolder, literalTypesAsObject } = argv;
+    const { srcFolder, analyseLiteralTypes: literalTypesAsObject } = argv;
     const result: StateAnalyzerOptions = {
         srcFolder,
-        literalTypesAsObject,
+        analyseLiteralTypes: literalTypesAsObject,
     };
     return result;
 };
@@ -117,24 +117,33 @@ export const generate = async (argv: CliArgs): Promise<void> => {
     );
     await codeGenerator.initialize();
     log.debug(`Seraching for state files in "${argv.srcFolder}"`);
-    const stateFilePaths = [
-        // redux, but not reducers
-        ...(await new FileSystemHelper().findFiles(
-            argv.srcFolder,
-            "/redux/state.ts",
-            {
-                includeNested: true,
-            }
-        )),
-        // non redux, but reducers
-        ...(await new FileSystemHelper().findFiles(
-            argv.srcFolder,
-            "/reducer/state.ts",
-            {
-                includeNested: true,
-            }
-        )),
-    ];
+    const stateFilePaths = (
+        await Promise.all(
+            argv.stateFilesPattern.map((p) =>
+                new FileSystemHelper().findFiles(argv.srcFolder, p, {
+                    includeNested: true,
+                })
+            )
+        )
+    ).flat();
+    //  [
+    //     // redux, but not reducers
+    //     ...(await new FileSystemHelper().findFiles(
+    //         argv.srcFolder,
+    //         "/redux/state.ts",
+    //         {
+    //             includeNested: true,
+    //         }
+    //     )),
+    //     // non redux, but reducers
+    //     ...(await new FileSystemHelper().findFiles(
+    //         argv.srcFolder,
+    //         "/reducer/state.ts",
+    //         {
+    //             includeNested: true,
+    //         }
+    //     )),
+    // ];
     log.debug("State files resolved: ", JSON.stringify(stateFilePaths));
 
     const featureFSData: FeatureStateDataObject[] =

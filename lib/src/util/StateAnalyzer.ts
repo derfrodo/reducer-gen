@@ -321,7 +321,7 @@ export class StateAnalyzer {
     ): STATE_PROPERT_TYPES {
         switch (ut.kind) {
             case ts.SyntaxKind.LiteralType:
-                if (this.options.literalTypesAsObject) {
+                if (this.options.analyseLiteralTypes) {
                     return this.resolveLiteralType(
                         (ut as ts.LiteralTypeNode).literal,
                         statePropertyInfo,
@@ -334,7 +334,7 @@ export class StateAnalyzer {
                         }" in State for feature "${
                             info?.featureData.featureName
                         }" is literaltype and will not be resolved.
-You may set it to resolve typeliterals always to objects by passing --literalTypesAsObject. (Content ${JSON.stringify(
+You may set it to resolve typeliterals always to objects by passing --analyseLiteralTypes. (Content ${JSON.stringify(
                             ut
                         )})`
                     );

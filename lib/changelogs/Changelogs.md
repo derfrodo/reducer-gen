@@ -1,4 +1,7 @@
 # Changelog 
+## Version 0.2.27
+- rename parameter literalTypesAsObject to analyseLiteralTypes
+- added parameter "--stateFilesPattern" for search pattern of state files (default:  ["/redux/state.ts", "/reducer/state.ts"])
 
 ## Version 0.2.26
 - FIX: unittests and errors found by other automated tests <3
