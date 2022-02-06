@@ -9,6 +9,12 @@ export class StateService {
         doBindPrototype(this, StateService.prototype);
     }
 
+    /**
+     * Returns initial value for given property info.
+     * Returns first type with known init value (e.g. for union types like string|number it will be "")
+     * @param info
+     * @returns
+     */
     getInitialPropertyValue(info: StatePropertyInfo): string {
         const { nullable, undefineable, types } = info;
         if (undefineable) {
@@ -17,17 +23,21 @@ export class StateService {
         if (nullable) {
             return "null";
         }
-        if (types.indexOf(STATE_PROPERT_TYPES.ARRAY) >= 0) {
-            return "[]";
-        }
-        if (types.indexOf(STATE_PROPERT_TYPES.BOOLEAN) >= 0) {
-            return "false";
-        }
-        if (types.indexOf(STATE_PROPERT_TYPES.NUMBER) >= 0) {
-            return "0";
-        }
-        if (types.indexOf(STATE_PROPERT_TYPES.STRING) >= 0) {
-            return `""`;
+        for (const type of types) {
+            switch (type) {
+                case STATE_PROPERT_TYPES.ARRAY: {
+                    return "[]";
+                }
+                case STATE_PROPERT_TYPES.BOOLEAN: {
+                    return "false";
+                }
+                case STATE_PROPERT_TYPES.NUMBER: {
+                    return "0";
+                }
+                case STATE_PROPERT_TYPES.STRING: {
+                    return `""`;
+                }
+            }
         }
         throw new Error(
             `Failed to resolve initial value for property ${

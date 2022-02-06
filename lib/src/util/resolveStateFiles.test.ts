@@ -5,7 +5,7 @@ import { resolveStateFiles } from "./resolveStateFiles";
 describe("resolveStateFiles tests", () => {
     it("Integration: resolveStateFiles uses filesystem helper", async () => {
         const cliArgs: CliArgs = {
-            stateFilesPattern: ["state.ts"],
+            stateFilesPattern: ["simpleState/reducer/state.ts"],
             srcFolder: "./testData",
         } as CliArgs;
 
