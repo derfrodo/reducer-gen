@@ -74,4 +74,69 @@ describe("ReduxModuleNamingHelper tests", () => {
             expect(result.indexOf(overwriteWarning)).toBeLessThan(0);
         });
     });
+
+    describe("ReduxModuleNamingHelper.getFeatureName", () => {
+        it("ReduxModuleNamingHelper.getFeatureName returns name of feature", async () => {
+            // arrange:
+            const testoptions: ReduxModuleNamingHelperOptions = {
+                addFeatureAsActionPrefix: true,
+            };
+
+            const clazz = new ReduxModuleNamingHelper(testoptions, undefined);
+
+            // act
+            const result = clazz.getFeatureName({
+                featureData: { featureName: "TESTFEATURE" } as any,
+            } as any);
+
+            // assert
+            expect(result).toBe("TESTFEATURE");
+        });
+    });
+    describe("ReduxModuleNamingHelper.getActionStrings", () => {
+        it("ReduxModuleNamingHelper.getActionStrings action strings with prefix if option is true", async () => {
+            // arrange:
+            const testoptions: ReduxModuleNamingHelperOptions = {
+                addFeatureAsActionPrefix: true,
+            };
+
+            const clazz = new ReduxModuleNamingHelper(testoptions, undefined);
+
+            // act
+            const result = clazz.getActionStrings({
+                stateProperties: [
+                    { name: "Testp1" },
+                    { name: "Testp2" },
+                ] as any,
+                featureData: { featureName: "TESTFEATURE" } as any,
+            } as any);
+
+            // assert
+            expect(result).toEqual([
+                "TESTFEATURE_SET_TESTP1",
+                "TESTFEATURE_SET_TESTP2",
+            ]);
+        });
+
+        it("ReduxModuleNamingHelper.getActionStrings action strings without prefix if option is false", async () => {
+            // arrange:
+            const testoptions: ReduxModuleNamingHelperOptions = {
+                addFeatureAsActionPrefix: false,
+            };
+
+            const clazz = new ReduxModuleNamingHelper(testoptions, undefined);
+
+            // act
+            const result = clazz.getActionStrings({
+                stateProperties: [
+                    { name: "Testp1" },
+                    { name: "Testp2" },
+                ] as any,
+                featureData: { featureName: "TESTFEATURE" } as any,
+            } as any);
+
+            // assert
+            expect(result).toEqual(["SET_TESTP1", "SET_TESTP2"]);
+        });
+    });
 });
