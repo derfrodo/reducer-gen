@@ -1,10 +1,10 @@
+import { StringHelper } from "@derfrodo/frodo-s-little-helpers";
+import { ArrayActionEnumValues } from "../interfaces/ArrayActionEnumValues";
+import { ReduxModuleNamingHelperOptions } from "../interfaces/ReduxModuleNamingHelperOptions";
 import {
     StateInterfaceInfo,
     StatePropertyInfo,
 } from "../interfaces/StateInterfaceInfo";
-import { ReduxModuleNamingHelperOptions } from "../interfaces/ReduxModuleNamingHelperOptions";
-import { StringHelper } from "@derfrodo/frodo-s-little-helpers";
-import { ArrayActionEnumValues } from "../interfaces/ArrayActionEnumValues";
 
 export class ReduxModuleNamingHelper {
     private options: ReduxModuleNamingHelperOptions;
@@ -30,16 +30,14 @@ export class ReduxModuleNamingHelper {
         this.getFeatureName = this.getFeatureName.bind(this);
         this.getActionStrings = this.getActionStrings.bind(this);
         this.getActionString = this.getActionString.bind(this);
-        this.getGetDefaultStateMethodName = this.getGetDefaultStateMethodName.bind(
-            this
-        );
+        this.getGetDefaultStateMethodName =
+            this.getGetDefaultStateMethodName.bind(this);
         this.getReducerMethodName = this.getReducerMethodName.bind(this);
         this.getActionEnumName = this.getActionEnumName.bind(this);
         this.getActionCreatorsName = this.getActionCreatorsName.bind(this);
         this.getReducerActionName = this.getReducerActionName.bind(this);
-        this.getReducerActionTypeGuardMethodName = this.getReducerActionTypeGuardMethodName.bind(
-            this
-        );
+        this.getReducerActionTypeGuardMethodName =
+            this.getReducerActionTypeGuardMethodName.bind(this);
     }
 
     addGeneratedHeader(content: string, omitDoNotOverwrite = false): string {

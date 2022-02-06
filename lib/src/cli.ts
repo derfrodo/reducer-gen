@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 import yargs = require("yargs");
-import type { ArgsV } from "./interfaces/ArgsV";
-import generate from "./index";
 import "loglevel";
-import { ArgsOptions } from "./args/ArgsOptions";
 import log from "loglevel";
+import { ArgsOptions } from "./args/ArgsOptions";
+import generate from "./index";
+import type { ArgsV } from "./interfaces/ArgsV";
 
-const argv: ArgsV = (yargs.options(ArgsOptions).argv as unknown) as ArgsV;
+const argv: ArgsV = yargs.options(ArgsOptions).argv as ArgsV;
 log.setDefaultLevel(argv.loglevel);
 log.setLevel(argv.loglevel);
 
