@@ -1,6 +1,6 @@
 import {
     StatePropertyInfo,
-    STATE_PROPERT_TYPES
+    STATE_PROPERT_TYPES,
 } from "../../interfaces/StateInterfaceInfo";
 import { StateService } from "./StateService";
 
@@ -22,10 +22,18 @@ describe("StateService tests", () => {
                 [STATE_PROPERT_TYPES.BOOLEAN, STATE_PROPERT_TYPES.NUMBER],
                 "false",
             ],
+            [
+                [
+                    STATE_PROPERT_TYPES.OBJECT,
+                    STATE_PROPERT_TYPES.ARRAY,
+                    STATE_PROPERT_TYPES.NUMBER,
+                ],
+                "[]",
+            ],
         ])(
             "StateService.getInitialPropertyValue tests for types %s",
             (types, expected) => {
-                it(`when no null or undefined then getInitialPropertyValue returns "${expected}"`, async () => {
+                it(`when no null or undefined then getInitialPropertyValue returns "${expected}" - takes first type over second`, async () => {
                     // arrange:
                     const data: StatePropertyInfo = {
                         name: "testprop",
