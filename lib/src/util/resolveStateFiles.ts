@@ -2,7 +2,7 @@ import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import log from "loglevel";
 import { CliArgs } from "../interfaces/CliArgs";
 
-export async function resolveStateFiles(argv: CliArgs) {
+export async function resolveStateFiles(argv: CliArgs): Promise<string[]> {
     const stateFilePaths = (
         await Promise.all(
             argv.stateFilesPattern.map((p) =>
