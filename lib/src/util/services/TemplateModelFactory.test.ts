@@ -513,8 +513,6 @@ describe("TemplateModelFactory tests", () => {
 
         it("TemplateModelFactory.addLevelToImportClause ignores absolute path", async () => {
             // arrange:
-            console.log(typeof ReduxModuleNamingHelper);
-
             const mockNamingHelper = new ReduxModuleNamingHelper(
                 getDefaultReduxModuleNamingHelperOptions(),
                 null
