@@ -113,7 +113,7 @@ describe("StateService tests", () => {
             }
         );
 
-        it("StateService.getInitialPropertyValue returns nothing", async () => {
+        it("StateService.getInitialPropertyValue throws for unknown types", async () => {
             // arrange:
             const data: StatePropertyInfo = {
                 name: "testprop",

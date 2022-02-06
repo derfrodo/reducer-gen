@@ -25,6 +25,12 @@ export class StateService {
         }
         for (const type of types) {
             switch (type) {
+                case STATE_PROPERT_TYPES.NULL: {
+                    return "null";
+                }
+                case STATE_PROPERT_TYPES.UNDEFINED: {
+                    return "undefined";
+                }
                 case STATE_PROPERT_TYPES.ARRAY: {
                     return "[]";
                 }
