@@ -339,28 +339,20 @@ You may set it to resolve typeliterals always to objects by passing --analyseLit
                         )})`
                     );
                 }
-                break;
             case ts.SyntaxKind.TypeReference:
                 return STATE_PROPERT_TYPES.OBJECT;
-                break;
             case ts.SyntaxKind.ArrayType:
                 return STATE_PROPERT_TYPES.ARRAY;
-                break;
             case ts.SyntaxKind.BooleanKeyword:
                 return STATE_PROPERT_TYPES.BOOLEAN;
-                break;
             case ts.SyntaxKind.NumberKeyword:
                 return STATE_PROPERT_TYPES.NUMBER;
-                break;
             case ts.SyntaxKind.StringKeyword:
                 return STATE_PROPERT_TYPES.STRING;
-                break;
             case ts.SyntaxKind.UndefinedKeyword:
                 return STATE_PROPERT_TYPES.UNDEFINED;
-                break;
             case ts.SyntaxKind.NullKeyword:
                 return STATE_PROPERT_TYPES.NULL;
-                break;
             case ts.SyntaxKind.ArrayType:
                 throw new Error(
                     `No array type may be placed in property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}".
