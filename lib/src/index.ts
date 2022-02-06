@@ -20,6 +20,7 @@ import { ReduxCodeGenerator } from "./util/ReduxCodeGenerator";
 import { ReduxModuleNamingHelper } from "./util/ReduxModuleNamingHelper";
 import { ReduxModulFileGenerator } from "./util/ReduxModulFileGenerator";
 import { ReduxModulFileService } from "./util/ReduxModulFileService";
+import { resolveStateFiles } from "./util/resolveStateFiles";
 import { ReactNativeAppHooksCodesGenerator } from "./util/services/ReactNativeAppHooksCodesGenerator";
 import { SyncStateActionCodesGenerator } from "./util/services/SyncStateActionCodesGenerator";
 import { WebAppHooksCodesGeneratorGenerator } from "./util/services/WebAppHooksCodesGenerator";
@@ -28,7 +29,6 @@ import { StateAnalyzer } from "./util/StateAnalyzer";
 const getGeneratorOptionsFromArgs = (
     argv: CliArgs
 ): ReduxCodeGeneratorOptions => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {
         createReducerContext,
         addBubbleFlagForActions,
@@ -48,7 +48,6 @@ const getGeneratorOptionsFromArgs = (
     return result;
 };
 const getAnalyzerOptionsFromArgs = (argv: CliArgs): StateAnalyzerOptions => {
-    // eslint-disable-next-line prettier/prettier
     const { srcFolder, analyseLiteralTypes: literalTypesAsObject } = argv;
     const result: StateAnalyzerOptions = {
         srcFolder,
@@ -59,8 +58,7 @@ const getAnalyzerOptionsFromArgs = (argv: CliArgs): StateAnalyzerOptions => {
 const getFileGeneratorOptionsFromArgs = (
     argv: CliArgs
 ): ReduxModulFileGeneratorOptions => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { filesSuffix, filesPrefix, createReducerContext } = argv;
+    const { createReducerContext } = argv;
     const result: ReduxModulFileGeneratorOptions = {
         createReducerContext: createReducerContext,
     };
@@ -117,34 +115,7 @@ export const generate = async (argv: CliArgs): Promise<void> => {
     );
     await codeGenerator.initialize();
     log.debug(`Seraching for state files in "${argv.srcFolder}"`);
-    const stateFilePaths = (
-        await Promise.all(
-            argv.stateFilesPattern.map((p) =>
-                new FileSystemHelper().findFiles(argv.srcFolder, p, {
-                    includeNested: true,
-                })
-            )
-        )
-    ).flat();
-    //  [
-    //     // redux, but not reducers
-    //     ...(await new FileSystemHelper().findFiles(
-    //         argv.srcFolder,
-    //         "/redux/state.ts",
-    //         {
-    //             includeNested: true,
-    //         }
-    //     )),
-    //     // non redux, but reducers
-    //     ...(await new FileSystemHelper().findFiles(
-    //         argv.srcFolder,
-    //         "/reducer/state.ts",
-    //         {
-    //             includeNested: true,
-    //         }
-    //     )),
-    // ];
-    log.debug("State files resolved: ", JSON.stringify(stateFilePaths));
+    const stateFilePaths = await resolveStateFiles(argv);
 
     const featureFSData: FeatureStateDataObject[] =
         await stateAnalyzer.createFeatureStateDataObjects(stateFilePaths);
