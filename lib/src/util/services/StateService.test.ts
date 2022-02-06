@@ -113,6 +113,27 @@ describe("StateService tests", () => {
             }
         );
 
+        it("StateService.getInitialPropertyValue throws for types which can not be initialized reasonably", async () => {
+            // arrange:
+            const data: StatePropertyInfo = {
+                name: "testprop",
+                nullable: false,
+                undefineable: false,
+                types: [STATE_PROPERT_TYPES.OBJECT],
+                typesText: "unknown",
+                arrayElementType: "unknown",
+            };
+
+            const uut = new StateService();
+
+            // act
+            const result = (): string => uut.getInitialPropertyValue(data);
+
+            // assert
+            expect(result).toThrowError(
+                /Failed to resolve initial value for property testprop/
+            );
+        });
         it("StateService.getInitialPropertyValue throws for unknown types", async () => {
             // arrange:
             const data: StatePropertyInfo = {
