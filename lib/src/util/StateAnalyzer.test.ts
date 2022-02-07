@@ -650,7 +650,7 @@ export default State;
         describe.each<[ts.LiteralTypeNode["literal"]]>([
             [ts.factory.createTrue()],
             [ts.factory.createFalse()],
-            [ts.factory.createPrefixUnaryExpression()],
+            [{ kind: ts.SyntaxKind.PrefixUnaryExpression } as any],
         ])("resolveLiteralType throws on %s as literal", (given) => {
             it(`resolveLiteralType throws when ${
                 ts.SyntaxKind[given.kind]
