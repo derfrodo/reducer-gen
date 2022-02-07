@@ -619,4 +619,97 @@ export default State;
             }
         );
     });
+
+    describe("StateAnalyzer resolveLiteralType tests", () => {
+        it("StateAnalyzer.resolveLiteralType base test", async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                ...getDefaultTestGeneratorOptions(),
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const typeNode: ts.LiteralTypeNode["literal"] =
+                ts.factory.createNull();
+
+            // act
+            const result = uut.resolveLiteralType(typeNode);
+
+            // assert
+            expect(result).toEqual(STATE_PROPERT_TYPES.NULL);
+        });
+        describe.each<[ts.LiteralTypeNode["literal"]]>([
+            [ts.factory.createTrue()],
+            [ts.factory.createFalse()],
+            [ts.factory.createPrefixUnaryExpression()],
+        ])("resolveLiteralType throws on %s as literal", (given) => {
+            it(`resolveLiteralType throws when ${
+                ts.SyntaxKind[given.kind]
+            } is passed`, async () => {
+                // arrange:
+                const options: StateAnalyzerOptions = {
+                    ...getDefaultTestGeneratorOptions(),
+                    srcFolder: "Fakefolder",
+                };
+                const fsMock = getFileSystemHelperMock();
+                fsMock.mock.readFile.mockImplementation(() => {
+                    return Promise.resolve("");
+                });
+
+                const uut = new StateAnalyzer(
+                    options,
+                    fsMock.service,
+                    new StringHelper()
+                );
+
+                const typeNode: ts.LiteralTypeNode["literal"] = given;
+
+                // act
+                const result = () => uut.resolveLiteralType(typeNode);
+
+                // assert
+                expect(result).toThrowError(
+                    /Inner type for literal node for property /
+                );
+            });
+        });
+        describe.each<[ts.LiteralTypeNode["literal"], STATE_PROPERT_TYPES]>([
+            [ts.factory.createNull(), STATE_PROPERT_TYPES.NULL],
+        ])("resolveLiteralType resolves %s as literal", (given, expected) => {
+            it(`resolveLiteralType resolves to ${expected}`, async () => {
+                // arrange:
+                const options: StateAnalyzerOptions = {
+                    ...getDefaultTestGeneratorOptions(),
+                    srcFolder: "Fakefolder",
+                };
+                const fsMock = getFileSystemHelperMock();
+                fsMock.mock.readFile.mockImplementation(() => {
+                    return Promise.resolve("");
+                });
+
+                const uut = new StateAnalyzer(
+                    options,
+                    fsMock.service,
+                    new StringHelper()
+                );
+
+                const typeNode: ts.LiteralTypeNode["literal"] = given;
+
+                // act
+                const result = uut.resolveLiteralType(typeNode);
+
+                // assert
+                expect(result).toEqual(expected);
+            });
+        });
+    });
 });
