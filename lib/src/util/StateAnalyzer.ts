@@ -353,11 +353,12 @@ You may set it to resolve typeliterals always to objects by passing --analyseLit
                 return STATE_PROPERT_TYPES.UNDEFINED;
             case ts.SyntaxKind.NullKeyword:
                 return STATE_PROPERT_TYPES.NULL;
-            case ts.SyntaxKind.ArrayType:
-                throw new Error(
-                    `No array type may be placed in property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}".
- Are you trying to nest arrays - this is not supported yet?`
-                );
+            // Actually it may have an array - see above ;)s
+            //             case ts.SyntaxKind.ArrayType:
+            //                 throw new Error(
+            //                     `No array type may be placed in property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}".
+            //  Are you trying to nest arrays - this is not supported yet?`
+            //                 );
             case ts.SyntaxKind.UnionType:
                 throw new Error(
                     `No union type may be placed in property "${statePropertyInfo?.name}" in State for feature "${info?.featureData.featureName}".

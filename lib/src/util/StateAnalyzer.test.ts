@@ -712,4 +712,72 @@ export default State;
             });
         });
     });
+
+    describe("StateAnalyzer resolveTypeType tests", () => {
+        it(`resolveTypeType throws when uniontype is passed`, async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                ...getDefaultTestGeneratorOptions(),
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const type = ts.factory.createUnionTypeNode([
+                ts.factory.createKeywordTypeNode(ts.SyntaxKind.BooleanKeyword),
+            ]);
+            // act
+            const result = () => uut.resolveTypeType(type);
+
+            // assert
+            expect(result).toThrowError(
+                /No union type may be placed in property /
+            );
+        });
+
+        describe.each<[ts.TypeNode, STATE_PROPERT_TYPES]>([
+            [
+                ts.factory.createArrayTypeNode(
+                    ts.factory.createKeywordTypeNode(
+                        ts.SyntaxKind.BooleanKeyword
+                    )
+                ),
+                STATE_PROPERT_TYPES.ARRAY,
+            ],
+        ])("resolveTypeType resolves on %s", (given, expected) => {
+            it(`resolveTypeType resolves when ${
+                ts.SyntaxKind[given.kind]
+            } is passed`, async () => {
+                // arrange:
+                const options: StateAnalyzerOptions = {
+                    ...getDefaultTestGeneratorOptions(),
+                    srcFolder: "Fakefolder",
+                };
+                const fsMock = getFileSystemHelperMock();
+                fsMock.mock.readFile.mockImplementation(() => {
+                    return Promise.resolve("");
+                });
+
+                const uut = new StateAnalyzer(
+                    options,
+                    fsMock.service,
+                    new StringHelper()
+                );
+
+                // act
+                const result = uut.resolveTypeType(given);
+
+                // assert
+                expect(result).toBe(expected);
+            });
+        });
+    });
 });
