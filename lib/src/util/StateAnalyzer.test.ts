@@ -30,10 +30,11 @@ export const getFileSystemHelperMock = (): {
     return createMockService(mock);
 };
 
-const getDefaultTestGeneratorOptions = (): ReduxCodeGeneratorOptions => {
+const getDefaultTestGeneratorOptions = (): StateAnalyzerOptions => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const result: ReduxCodeGeneratorOptions = {
-        createReducerContext: false,
+    const result: StateAnalyzerOptions = {
+        analyseLiteralTypes: false,
+        srcFolder: "TESTFOLDER",
     };
     return result;
 };
@@ -741,6 +742,61 @@ export default State;
             expect(result).toThrowError(
                 /No union type may be placed in property /
             );
+        });
+
+        it(`resolveTypeType throws when literalType is passed and analysing literals is set to false`, async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                analyseLiteralTypes: false,
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const type = ts.factory.createLiteralTypeNode(
+                ts.factory.createNull()
+            );
+            // act
+            const result = () => uut.resolveTypeType(type);
+
+            // assert
+            expect(result).toThrowError(
+                /Inner type for unionType for property \"undefined\" in State for feature \"undefined\" is literaltype and will not be resolved./
+            );
+        });
+        it(`resolveTypeType resolves when literalType is passed and analysing literals is set to true`, async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                analyseLiteralTypes: true,
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const type = ts.factory.createLiteralTypeNode(
+                ts.factory.createNull()
+            );
+            // act
+            const result = uut.resolveTypeType(type);
+
+            // assert
+            expect(result).toBe(STATE_PROPERT_TYPES.NULL);
         });
 
         describe.each<[ts.TypeNode, STATE_PROPERT_TYPES]>([
