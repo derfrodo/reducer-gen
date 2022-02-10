@@ -81,7 +81,7 @@ export class StateAnalyzer {
         const { pathExists, isFile } = this.fsHelper;
         const exists = await pathExists(filePath);
 
-        if (exists && !isFile(filePath)) {
+        if (exists && !(await isFile(filePath))) {
             throw new Error(`Expected file at "${filePath}".`);
         }
 

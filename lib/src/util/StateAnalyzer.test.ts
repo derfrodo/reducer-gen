@@ -1,6 +1,6 @@
 import { StringHelper } from "@derfrodo/frodo-s-little-helpers/dist";
 import FileSystemHelper from "@derfrodo/frodo-s-little-helpers/dist/util/FileSystemHelper";
-import ts from "typescript";
+import ts, { isAwaitExpression, updateInterfaceDeclaration } from "typescript";
 import type { ReduxCodeGeneratorOptions } from "../interfaces/ReduxCodeGeneratorOptions";
 import { StateAnalyzerOptions } from "../interfaces/StateAnalyzerOptions";
 import { STATE_PROPERT_TYPES } from "../interfaces/StateInterfaceInfo";
@@ -834,6 +834,125 @@ export default State;
                 // assert
                 expect(result).toBe(expected);
             });
+        });
+    });
+
+    describe("StateAnalyzer createFeatureStateDataObjects tests", () => {
+        it("StateAnalyzer.createFeatureStateDataObjects base test", async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                ...getDefaultTestGeneratorOptions(),
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const typeNode: ts.LiteralTypeNode["literal"] =
+                ts.factory.createNull();
+
+            // act
+            const result = await uut.createFeatureStateDataObjects([
+                "testpath",
+            ]);
+
+            // assert
+            expect(result).toEqual([
+                {
+                    featureName: undefined,
+                    folderToFeatureReducer: undefined,
+                    pathToStateFile: "testpath",
+                    indexFile: {
+                        fileExists: undefined,
+                        filePath: undefined,
+                    },
+                },
+            ]);
+        });
+    });
+
+    describe("StateAnalyzer getFeatureModuleFileInfoForFile tests", () => {
+        it("StateAnalyzer.getFeatureModuleFileInfoForFile base test", async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                ...getDefaultTestGeneratorOptions(),
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            fsMock.mock.pathExists.mockImplementation(() => {
+                return Promise.resolve(true);
+            });
+            fsMock.mock.isFile.mockImplementation(() => {
+                return Promise.resolve(true);
+            });
+            fsMock.mock.combinePath.mockImplementation((...ps) => {
+                return ps.join(", ");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            // act
+            const result = await uut.getFeatureModuleFileInfoForFile(
+                "testpath"
+            );
+
+            // assert
+            expect(result).toEqual({
+                fileExists: true,
+                filePath: "testpath",
+            });
+        });
+
+        it("StateAnalyzer.getFeatureModuleFileInfoForFile throws if file exists but is no file", async () => {
+            // arrange:
+            const options: StateAnalyzerOptions = {
+                ...getDefaultTestGeneratorOptions(),
+                srcFolder: "Fakefolder",
+            };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve("");
+            });
+
+            fsMock.mock.pathExists.mockImplementation(() => {
+                return Promise.resolve(true);
+            });
+            fsMock.mock.isFile.mockImplementation(() => {
+                return Promise.resolve(false);
+            });
+            fsMock.mock.combinePath.mockImplementation((...ps) => {
+                return ps.join(", ");
+            });
+
+            const uut = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            // act
+            const result = () =>
+                uut.getFeatureModuleFileInfoForFile("testpath");
+
+            // assert
+            expect(result).rejects.toEqual(
+                new Error('Expected file at "testpath".')
+            );
         });
     });
 });
