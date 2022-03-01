@@ -12,6 +12,11 @@ npm install --save-dev @derfrodo/reducer-gen
 
 Installation guides will follow (hopefully soon)
 
+
+## Video
+
+You may want to have a glance at this [video on Youtube](https://youtu.be/OyKXr7mQXZg). Unfortunatelly, it is currently only available in German language. I may come up with some i18n in subtitles or even in audio if I dare to speak English publicly some time.
+
 ## Migration from 0.1.x to 0.2.x
 
 ### Actions modules and variables has been renamed to be "actions" instead of "action".
