@@ -17,17 +17,6 @@ Installation guides will follow (hopefully soon)
 
 You may want to have a glance at this [video on Youtube](https://youtu.be/OyKXr7mQXZg). Unfortunatelly, it is currently only available in German language. I may come up with some i18n in subtitles or even in audio if I dare to speak English publicly some time.
 
-## Migration from 0.1.x to 0.2.x
-
-### Actions modules and variables has been renamed to be "actions" instead of "action".
-
-You may have to adjust file names for extended actions to match this requirements. Also you will need to rename your extended actions themselves.
-Imports may break (do not worry: Just change "actions" in the generated documents to "action" and perform the renaming with typescript. Everything should follow this renaming, then 😊 )
-
-### extended Reducers are expected to be exported as named exports
-
-just add `export` to your extended reducer constant
-
 ## Quick Start
 
 call via package.json script:
@@ -95,6 +84,17 @@ _in cli_
 ];
 ```
 
+## Migration from 0.1.x to 0.2.x
+
+### Actions modules and variables has been renamed to be "actions" instead of "action".
+
+You may have to adjust file names for extended actions to match this requirements. Also you will need to rename your extended actions themselves.
+Imports may break (do not worry: Just change "actions" in the generated documents to "action" and perform the renaming with typescript. Everything should follow this renaming, then 😊 )
+
+### extended Reducers are expected to be exported as named exports
+
+just add `export` to your extended reducer constant
+
 ## For me ;)
 
 @frodo: npm publish --access public
@@ -103,6 +103,8 @@ _in cli_
 
 In case you have some spare time to invest it into this project: There are some things, we may accomplish in this library still. 😎
 
+- [ ] Add some kind of toggle mechanic for boolean values (action "TOGGLE_PROP")
+- [ ] Add option to pass reducer function as value in action similar to modify state function of [```useState```](https://reactjs.org/docs/hooks-state.html) hook (action.next would be (prev:T, prevState:State)=>T )
 - [ ] Allow templates to be passed
   - Templates (handlebar syntax) should be able to be passed to this generator, so we may generate also code for other languages
 - [ ] create "useStatish" hooks
