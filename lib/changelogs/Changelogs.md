@@ -1,5 +1,9 @@
 # Changelog 
 
+## Version 0.2.29
+- add content to readme
+- performed ```npm audit fix```
+
 ## Version 0.2.28
 - even more testing
 
