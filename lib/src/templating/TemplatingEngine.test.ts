@@ -444,14 +444,18 @@ export default extendedTestReducer;
                 expect(result.replace(/\r\n/g, "\n"))
                     .toBe(`import { TESTSTATE } from "./../state";
 import { getTestStateDefault } from "./../defaultState.base.generated";
-import { MAIN_REDUCERACTIONS } from "./../reducerActions/reducerActions.main.generated";
 import { baseTestReducer } from "./reducer.base.generated";
 import { extendedTestReducer } from "./reducer.extended";
 import { isBaseTestReducer } from "./../reducerActions/reducerActions.base.generated";
+import { isMainTestReducer } from "./../reducerActions/reducerActions.main.generated";
 
-export const mainTestReducer = (state: TESTSTATE = getTestStateDefault(), action:  MAIN_REDUCERACTIONS): TESTSTATE => {
+export const mainTestReducer = (state: TESTSTATE = getTestStateDefault(), action: any): TESTSTATE => {
     // Note: Generator may be extended to inversify this order => Just talk to me ;)
     // return extendedTestReducer((isBaseTestReducer(action) ? baseTestReducer(state, action) : state), action);
+
+    if (!isMainTestReducer(action)) {
+        return state;
+    }
 
     return (isBaseTestReducer(action) ? baseTestReducer(extendedTestReducer(state, action), action) : extendedTestReducer(state, action));
 };

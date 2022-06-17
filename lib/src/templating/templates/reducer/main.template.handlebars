@@ -1,13 +1,17 @@
 import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
 import { {{state.getDefaultStateMethodName}} } from "./../{{moduleNames.base.defaultState}}";
-import { {{reducerActions.mainReducerActionsName}} } from "./../reducerActions/{{moduleNames.main.reducerActions}}";
 import { {{reducer.baseReducerName}} } from "./{{moduleNames.base.reducer}}";
 import { {{reducer.extendedReducerName}} } from "./{{moduleNames.extended.reducer}}";
 import { {{reducerActions.baseReducerTypeguard}} } from "./../reducerActions/{{moduleNames.base.reducerActions}}";
+import { {{reducerActions.mainReducerTypeguard}} } from "./../reducerActions/{{moduleNames.main.reducerActions}}";
 
-export const {{reducer.mainReducerName}} = (state: {{state.stateName}} = {{state.getDefaultStateMethodName}}(), action:  {{reducerActions.mainReducerActionsName}}): {{state.stateName}} => {
+export const {{reducer.mainReducerName}} = (state: {{state.stateName}} = {{state.getDefaultStateMethodName}}(), action: any): {{state.stateName}} => {
     // Note: Generator may be extended to inversify this order => Just talk to me ;)
     // return {{reducer.extendedReducerName}}(({{reducerActions.baseReducerTypeguard}}(action) ? {{reducer.baseReducerName}}(state, action) : state), action);
+
+    if (!{{reducerActions.mainReducerTypeguard}}(action)) {
+        return state;
+    }
 
     return ({{reducerActions.baseReducerTypeguard}}(action) ? {{reducer.baseReducerName}}({{reducer.extendedReducerName}}(state, action), action) : {{reducer.extendedReducerName}}(state, action));
 };
