@@ -101,7 +101,7 @@ just add `export` to your extended reducer constant
 
 ### Make things faster thanks to CI/CD
 Do you know, that you have already created a pipeline to prepare the package for you?
-Just navigate to (https://github.com/derfrodo/reducer-gen/actions/workflows/createPublishableBundle.yml)[https://github.com/derfrodo/reducer-gen/actions/workflows/createPublishableBundle.yml] and download the latest package.
+Just navigate to [the actions in github](https://github.com/derfrodo/reducer-gen/actions/workflows/createPublishableBundle.yml) and download the latest package.
 
 Afterwards you can publish the contend just by entering 
 
