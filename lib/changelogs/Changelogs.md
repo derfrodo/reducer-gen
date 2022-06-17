@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.2.30
+- change reducer logic in template, so that action type is checked before calling base or extended reducers
+
 ## Version 0.2.29
 - add content to readme
 - performed ```npm audit fix```
