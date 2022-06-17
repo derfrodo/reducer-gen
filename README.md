@@ -99,6 +99,24 @@ just add `export` to your extended reducer constant
 
 @frodo: npm publish --access public
 
+### Make things faster thanks to CI/CD
+Do you know, that you have already created a pipeline to prepare the package for you?
+Just navigate to (https://github.com/derfrodo/reducer-gen/actions/workflows/createPublishableBundle.yml)[https://github.com/derfrodo/reducer-gen/actions/workflows/createPublishableBundle.yml] and download the latest package.
+
+Afterwards you can publish the contend just by entering 
+
+``` bash
+npm publish --access public --tag beta
+```
+
+for publishing the downloaded version as beta, or 
+
+``` bash
+npm publish --access public
+```
+
+for publishing the downloaded version as stable. 🎉
+
 ## Roadmap / Todos
 
 In case you have some spare time to invest it into this project: There are some things, we may accomplish in this library still. 😎
