@@ -34,7 +34,7 @@ jobs:
           | sed 's/[",]//g' \
           | sed -e 's/[[:space:]]*$//')
 
-        echo "Package version is '$PACKAGE_VERSION'"
+        echo "Build reducer gen for version '$PACKAGE_VERSION'"
         echo "::set-output name=version::$PACKAGE_VERSION"
       id: read_package_version
 
