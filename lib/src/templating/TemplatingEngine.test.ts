@@ -1045,7 +1045,9 @@ export const useTestFeatureStatePropertyChangedEffect = <
  * Use this method if you want to get a single property from state and a callback function for updating it of TestFeature
  * @param propertyName property of state
  */
-export function useDirectTestFeatureProperty<T extends keyof TESTSTATE>(propertyName: T) {
+export function useDirectTestFeatureProperty<
+    T extends keyof TESTSTATE
+>(propertyName: T): [TESTSTATE[T], (next: TESTSTATE[T]) => void] {
     const dispatch = useTestFeatureReducerContextDispatch();
     const value = useDirectTestFeaturePropertyValue(propertyName);
 
@@ -1079,7 +1081,9 @@ export function useDirectTestFeatureProperty<T extends keyof TESTSTATE>(property
  * Use this method if you want to get only a single property from state of TestFeature
  * @param propertyName property of state
  */
-export function useDirectTestFeaturePropertyValue<T extends keyof TESTSTATE>(propertyName: T) {
+export function useDirectTestFeaturePropertyValue<
+    T extends keyof TESTSTATE
+>(propertyName: T): TESTSTATE[T] {
     const state = useTestFeatureReducerContextState();
     return state[propertyName];
 };

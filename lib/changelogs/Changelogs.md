@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.3.2-beta:
+- Better types 
+
 ## Version 0.3.1-beta:
 - Fix compile errors due to template 
 

@@ -3,7 +3,9 @@
  * Use this method if you want to get a single property from state and a callback function for updating it of {{featureName.pascalCase}}
  * @param propertyName property of state
  */
-export function useDirect{{featureName.pascalCase}}Property<T extends keyof {{state.stateName}}>(propertyName: T) {
+export function useDirect{{featureName.pascalCase}}Property<
+    T extends keyof {{state.stateName}}
+>(propertyName: T): [{{state.stateName}}[T], (next: {{state.stateName}}[T]) => void] {
     const dispatch = use{{featureName.pascalCase}}ReducerContextDispatch();
     const value = useDirect{{featureName.pascalCase}}PropertyValue(propertyName);
 
@@ -32,7 +34,9 @@ export function useDirect{{featureName.pascalCase}}Property<T extends keyof {{st
  * Use this method if you want to get only a single property from state of {{featureName.pascalCase}}
  * @param propertyName property of state
  */
-export function useDirect{{featureName.pascalCase}}PropertyValue<T extends keyof {{state.stateName}}>(propertyName: T) {
+export function useDirect{{featureName.pascalCase}}PropertyValue<
+    T extends keyof {{state.stateName}}
+>(propertyName: T): {{state.stateName}}[T] {
     const state = use{{featureName.pascalCase}}ReducerContextState();
     return state[propertyName];
 };
