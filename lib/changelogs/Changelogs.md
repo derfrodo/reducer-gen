@@ -1,5 +1,9 @@
 # Changelog 
 
+## Version 0.3.0-beta:
+- Add new hook "useDirectPropertyValue". Use it by passing ```--createContextDirectPropertyHooks``` to cli
+- Since this is a cool thing, minor has been raised to .3 🎉
+
 ## Version 0.2.37-beta:
 - Fix compile errors due to template 
 
