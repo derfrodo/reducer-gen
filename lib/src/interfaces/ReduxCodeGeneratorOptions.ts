@@ -1,4 +1,5 @@
 export interface ReduxCodeGeneratorOptions {
+    createContextDirectPropertyHooks: boolean;
     createReducerContext: boolean;
     addBubbleFlagForActions?: boolean;
     addArrayFunctions: boolean;
@@ -8,6 +9,7 @@ export interface ReduxCodeGeneratorOptions {
 export const getDefaultReduxCodeGeneratorOptions: (
     presets?: Partial<ReduxCodeGeneratorOptions>
 ) => ReduxCodeGeneratorOptions = (presets) => ({
+    createContextDirectPropertyHooks: false,
     createReducerContext: false,
     addBubbleFlagForActions: false,
     addArrayFunctions: false,

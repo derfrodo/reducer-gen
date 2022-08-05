@@ -11,6 +11,8 @@ export interface CliArgs {
     mainFilesPrefix: string;
 
     createReducerContext: boolean;
+    createContextDirectPropertyHooks: boolean;
+
     addBubbleFlagForActions: boolean;
     addArrayFunctions: boolean;
 

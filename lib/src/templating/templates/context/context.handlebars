@@ -3,6 +3,9 @@ import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state
 import { {{reducer.mainReducerName}} } from "./reducer/{{moduleNames.main.reducer}}";
 import { {{state.getDefaultStateMethodName}} } from "./{{moduleNames.base.defaultState}}";
 import { {{reducerActions.mainReducerActionsName}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
+{{#if options.createContextDirectPropertyHooks}}
+import { {{actionCreators.mainActionCreatorsName}} } from "./actionCreators/{{moduleNames.main.actionCreators}}";
+{{/if}}
 
 export type On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled = (action: {{reducerActions.mainReducerActionsName}}) => void;
 
@@ -31,3 +34,4 @@ export const State{{featureName.pascalCase}}ReducerContext = React.createContext
 {{>reducerContextProvider}}
 {{>useReducerContextHooks}}
 {{>useStateChangedEffectHooks}}
+{{#if options.createContextDirectPropertyHooks}}{{>useDirectProperty}}{{/if}}

@@ -787,6 +787,7 @@ describe("TemplateModelFactory tests", () => {
                     addArrayFunctions: false,
                     addBubbleFlagForActions: false,
                     createReducerContext: false,
+                    createContextDirectPropertyHooks: false,
                     decoupleStateChangedCallbackByTimeout: false,
                 },
                 reducer: {

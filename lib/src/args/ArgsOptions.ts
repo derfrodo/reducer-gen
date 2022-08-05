@@ -39,6 +39,7 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
     mainFilesSuffix: { demandOption: false, default: ".main.generated" },
     mainFilesPrefix: { demandOption: false, default: "" },
 
+    createContextDirectPropertyHooks: { boolean: true, default: false },
     createReducerContext: { boolean: true, default: false },
     addBubbleFlagForActions: { boolean: true, default: true },
     addArrayFunctions: { boolean: true, default: true },
