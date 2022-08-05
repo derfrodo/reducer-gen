@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.2.36-beta:
+- Formattings 
+
 ## Version 0.2.35-beta:
 - Fix compile errors due to template 
 
@@ -8,6 +11,9 @@
 
 ## Version 0.2.33-beta:
 - Add new hook "useDirectProperty". Use it by passing ```--createContextDirectPropertyHooks``` to cli
+
+## Version 0.2.33:
+- Just full version
 
 ## Version 0.2.32-beta
 - unknown over any in template

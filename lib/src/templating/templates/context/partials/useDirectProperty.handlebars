@@ -3,15 +3,17 @@
  * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
  * @param callback callback which will be called dispatch gets called
  */
-export function useDirect{{featureName.pascalCase}}Property<T extends  keyof {{state.stateName}}>(propertyName: T) {
+export function useDirect{{featureName.pascalCase}}Property<T extends keyof {{state.stateName}}>(propertyName: T) {
     const { state, dispatch } = use{{featureName.pascalCase}}ReducerContext();
 
     switch (propertyName) {
 {{#each state.properties}}
         case "{{name}}":
+            const setProperty = 
+                (next: {{../state.stateName}}["{{name}}"]) => 
+                    dispatch({{../actionCreators.mainActionCreatorsName}}.set{{namePascalCase}}(next))
             return [
                 state[propertyName],
-                (next: {{../state.stateName}}["{{name}}"])=> dispatch({{../actionCreators.mainActionCreatorsName}}.set{{namePascalCase}}(next))
             ]
 {{/each}}
         default:
