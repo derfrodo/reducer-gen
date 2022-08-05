@@ -47,6 +47,7 @@ export function useDirect{{../featureName.pascalCase}}PropertySetProperty<
     T extends keyof {{../state.stateName}}
 >(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}SetPropertyHandler<"{{name}}"> : never;
 {{/each}}
+
 /**
  * Use this method if you want a callback function for updating a single property of {{featureName.pascalCase}}
  * @param propertyName property of state

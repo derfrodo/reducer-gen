@@ -1,5 +1,9 @@
 # Changelog 
 
+## Version 0.3.6-beta:
+- Better types ...
+- Add typeguard for State property => Not used yet
+
 ## Version 0.3.2-beta:
 - Better types 
 
