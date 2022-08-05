@@ -24,6 +24,20 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     
+    - name: Read package version
+      run: |
+        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
+        PACKAGE_VERSION=$(cat lib/package.json \
+          | grep version \
+          | head -1 \
+          | awk -F: '{ print $2 }' \
+          | sed 's/[",]//g' \
+          | sed -e's/[[:space:]]*$//')
+
+        echo "Package version is '$PACKAGE_VERSION'"
+        echo "::set-output name=version::$PACKAGE_VERSION"
+      id: read_package_version
+
     - name: perform installation (npm ci)
       shell: bash
       run: cd lib && npm ci
@@ -61,19 +75,6 @@ jobs:
     #   with:
     #     name: code-node-${{ matrix.node-version }}
     #     path: "archive-node-${{ matrix.node-version }}.zip"
-
-    - name: Read package version
-      run: |
-        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
-        PACKAGE_VERSION=$(cat lib/package.json \
-          | grep version \
-          | head -1 \
-          | awk -F: '{ print $2 }' \
-          | sed 's/[",]//g' \
-          | sed -e's/[[:space:]]*$//')
-
-        echo "::set-output name=version::$PACKAGE_VERSION"
-      id: read_package_version
 
     - name: Archive code 
       uses: actions/upload-artifact@v2
