@@ -1050,21 +1050,25 @@ export function useDirectTestFeatureProperty<T extends keyof TESTSTATE>(property
 
     switch (propertyName) {
         case "prop1":
-            const setProperty =
-                (next: TESTSTATE["prop1"]) =>
-                    dispatch(CREATOR_MAIN.setProp1(next))
-            return [
-                state[propertyName],
-                setProperty
-            ]
+            {
+                const setProperty =
+                    (next: TESTSTATE["prop1"]) =>
+                        dispatch(CREATOR_MAIN.setProp1(next))
+                return [
+                    state[propertyName],
+                    setProperty
+                ]
+            }
         case "prop2":
-            const setProperty =
-                (next: TESTSTATE["prop2"]) =>
-                    dispatch(CREATOR_MAIN.setProp2(next))
-            return [
-                state[propertyName],
-                setProperty
-            ]
+            {
+                const setProperty =
+                    (next: TESTSTATE["prop2"]) =>
+                        dispatch(CREATOR_MAIN.setProp2(next))
+                return [
+                    state[propertyName],
+                    setProperty
+                ]
+            }
         default:
             throw new Error(\`Unknown property. No property with name "$\{propertyName\}" has been registered for state of feature "$TestFeature".\`);
     }

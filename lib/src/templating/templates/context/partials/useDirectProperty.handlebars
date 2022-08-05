@@ -9,13 +9,15 @@ export function useDirect{{featureName.pascalCase}}Property<T extends keyof {{st
     switch (propertyName) {
 {{#each state.properties}}
         case "{{name}}":
-            const setProperty =
-                (next: {{../state.stateName}}["{{name}}"]) =>
-                    dispatch({{../actionCreators.mainActionCreatorsName}}.set{{namePascalCase}}(next))
-            return [
-                state[propertyName],
-                setProperty
-            ]
+            {
+                const setProperty =
+                    (next: {{../state.stateName}}["{{name}}"]) =>
+                        dispatch({{../actionCreators.mainActionCreatorsName}}.set{{namePascalCase}}(next))
+                return [
+                    state[propertyName],
+                    setProperty
+                ]
+            }
 {{/each}}
         default:
             throw new Error(`Unknown property. No property with name "${propertyName}" has been registered for state of feature "${{{featureName.pascalCase}}}".`);

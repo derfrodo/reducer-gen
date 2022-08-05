@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.2.37-beta:
+- Fix compile errors due to template 
+
 ## Version 0.2.36-beta:
 - Formattings 
 
