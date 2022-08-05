@@ -32,7 +32,7 @@ jobs:
           | head -1 \
           | awk -F: '{ print $2 }' \
           | sed 's/[",]//g' \
-          | sed -e's/[[:space:]]*$//')
+          | sed -e 's/[[:space:]]*$//')
 
         echo "Package version is '$PACKAGE_VERSION'"
         echo "::set-output name=version::$PACKAGE_VERSION"
