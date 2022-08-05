@@ -70,6 +70,7 @@ jobs:
           | head -1 \
           | awk -F: '{ print $2 }' \
           | sed 's/[",]//g')
+          | sed 's/[[:space:]]*$//'
 
         echo "::set-output name=version::$PACKAGE_VERSION"
       id: read_package_version
