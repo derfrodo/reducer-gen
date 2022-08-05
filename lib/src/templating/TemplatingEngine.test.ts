@@ -1043,8 +1043,8 @@ export const useTestFeatureStatePropertyChangedEffect = <
 export type TestFeatureSetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
 export type TestFeaturePropertyTuple<T extends keyof State> = [State[T], TestFeatureSetPropertyHandler<T>]
 
-export function useDirectPropertySetProperty(propertyName: "prop1"): SetPropertyHandler<"prop1">;
-export function useDirectPropertySetProperty(propertyName: "prop2"): SetPropertyHandler<"prop2">;
+export function useDirectTestFeatureProperty(propertyName: "prop1"): TestFeaturePropertyTuple<"prop1">;
+export function useDirectTestFeatureProperty(propertyName: "prop2"): TestFeaturePropertyTuple<"prop2">;
 
 /**
  * Use this method if you want to get a single property from state and a callback function for updating it of TestFeature
@@ -1052,7 +1052,7 @@ export function useDirectPropertySetProperty(propertyName: "prop2"): SetProperty
  */
 export function useDirectTestFeatureProperty<
     T extends keyof TESTSTATE
->(propertyName: T): [TESTSTATE[T], (next: TESTSTATE[T]) => void] {
+>(propertyName: T) {
     const dispatch = useTestFeatureReducerContextDispatch();
     const value = useDirectTestFeaturePropertyValue(propertyName);
     const setProperty = useDirectTestFeaturePropertySetProperty(propertyName);
@@ -1070,15 +1070,15 @@ export function useDirectTestFeaturePropertyValue<
     return state[propertyName];
 };
 
-export function useDirectPropertySetProperty(propertyName: "prop1"): SetPropertyHandler<"prop1">;
-export function useDirectPropertySetProperty(propertyName: "prop2"): SetPropertyHandler<"prop2">;
+export function useDirectTestFeaturePropertySetProperty(propertyName: "prop1"): TestFeatureSetPropertyHandler<"prop1">;
+export function useDirectTestFeaturePropertySetProperty(propertyName: "prop2"): TestFeatureSetPropertyHandler<"prop2">;
 /**
  * Use this method if you want a callback function for updating a single property of TestFeature
  * @param propertyName property of state
  */
 export function useDirectTestFeaturePropertySetProperty<
     T extends keyof TESTSTATE
->(propertyName: T): TestFeatureSetPropertyHandler {
+>(propertyName: T) {
     const dispatch = useTestFeatureReducerContextDispatch();
 
     return useMemo(() => {

@@ -2,7 +2,7 @@ export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof State> 
 export type {{featureName.pascalCase}}PropertyTuple<T extends keyof State> = [State[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
 
 {{#each state.properties}}
-export function useDirect{{featureName.pascalCase}}PropertySetProperty(propertyName: "{{name}}"): SetPropertyHandler<"{{name}}">;
+export function useDirect{{../featureName.pascalCase}}Property(propertyName: "{{name}}"): {{../featureName.pascalCase}}PropertyTuple<"{{name}}">;
 {{/each}}
 
 /**
@@ -11,7 +11,7 @@ export function useDirect{{featureName.pascalCase}}PropertySetProperty(propertyN
  */
 export function useDirect{{featureName.pascalCase}}Property<
     T extends keyof {{state.stateName}}
->(propertyName: T): [{{state.stateName}}[T], (next: {{state.stateName}}[T]) => void] {
+>(propertyName: T) {
     const dispatch = use{{featureName.pascalCase}}ReducerContextDispatch();
     const value = useDirect{{featureName.pascalCase}}PropertyValue(propertyName);
     const setProperty = useDirect{{featureName.pascalCase}}PropertySetProperty(propertyName);
@@ -30,7 +30,7 @@ export function useDirect{{featureName.pascalCase}}PropertyValue<
 };
 
 {{#each state.properties}}
-export function useDirect{{featureName.pascalCase}}PropertySetProperty(propertyName: "{{name}}"): SetPropertyHandler<"{{name}}">;
+export function useDirect{{../featureName.pascalCase}}PropertySetProperty(propertyName: "{{name}}"): {{../featureName.pascalCase}}SetPropertyHandler<"{{name}}">;
 {{/each}}
 /**
  * Use this method if you want a callback function for updating a single property of {{featureName.pascalCase}}
@@ -38,7 +38,7 @@ export function useDirect{{featureName.pascalCase}}PropertySetProperty(propertyN
  */
 export function useDirect{{featureName.pascalCase}}PropertySetProperty<
     T extends keyof {{state.stateName}}
->(propertyName: T): {{featureName.pascalCase}}SetPropertyHandler {
+>(propertyName: T) {
     const dispatch = use{{featureName.pascalCase}}ReducerContextDispatch();
 
     return useMemo(() => {
