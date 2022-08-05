@@ -50,17 +50,17 @@ jobs:
 #        name: code-node-${{ matrix.node-version }}
 #        path: "lib/*"
         
-    - name: create ZIP archive
-      shell: bash
-      run: |
-        cd lib
-        zip -r "../archive-node-${{ matrix.node-version }}.zip" "."
+    # - name: create ZIP archive
+    #   shell: bash
+    #   run: |
+    #     cd lib
+    #     zip -r "../archive-node-${{ matrix.node-version }}.zip" "."
 
-    - name: Archive code 
-      uses: actions/upload-artifact@v2
-      with:
-        name: code-node-${{ matrix.node-version }}
-        path: "archive-node-${{ matrix.node-version }}.zip"
+    # - name: Archive code 
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: code-node-${{ matrix.node-version }}
+    #     path: "archive-node-${{ matrix.node-version }}.zip"
 
     - name: Read package version
       run: |
@@ -77,5 +77,5 @@ jobs:
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: node-${{ matrix.node-version }}-version-${{ steps.read_package_version.outputs.version }}-run-${{ github.run.id }}
+        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run.id }}
         path: "lib"
