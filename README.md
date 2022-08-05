@@ -51,6 +51,8 @@ _in cli_
 - mainFilesSuffix (default: ".main.generated" )
 - mainFilesPrefix (default: "" )
 - createReducerContext (default: false)
+- createContextDirectPropertyHooks (default: false)
+  - will only be usefull if *createReducerContext* is also set to *true*
 - addArrayFunctions (default: true)
 - addBubbleFlagForActions (default: true)
 - decoupleStateChangedCallbackByTimeout (default: false)

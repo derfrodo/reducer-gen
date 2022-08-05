@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.2.34-beta:
+- Extend readme 
+
 ## Version 0.2.33-beta:
 - Add new hook "useDirectProperty". Use it by passing ```--createContextDirectPropertyHooks``` to cli
 
