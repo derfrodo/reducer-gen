@@ -80,5 +80,5 @@ jobs:
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run.id }}
+        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run-id }}
         path: "lib"
