@@ -1040,6 +1040,11 @@ export const useTestFeatureStatePropertyChangedEffect = <
 
     useTestFeatureStateChangedEffect(changedCallback);
 };
+export type TestFeatureSetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
+export type TestFeaturePropertyTuple<T extends keyof State> = [State[T], TestFeatureSetPropertyHandler<T>]
+
+export function useDirectPropertySetProperty(propertyName: "prop1"): SetPropertyHandler<"prop1">;
+export function useDirectPropertySetProperty(propertyName: "prop2"): SetPropertyHandler<"prop2">;
 
 /**
  * Use this method if you want to get a single property from state and a callback function for updating it of TestFeature
@@ -1050,8 +1055,33 @@ export function useDirectTestFeatureProperty<
 >(propertyName: T): [TESTSTATE[T], (next: TESTSTATE[T]) => void] {
     const dispatch = useTestFeatureReducerContextDispatch();
     const value = useDirectTestFeaturePropertyValue(propertyName);
+    const setProperty = useDirectTestFeaturePropertySetProperty(propertyName);
+    return useMemo(() => [value, setProperty], [value, setProperty]);
+};
 
-    const setProperty = useMemo(() => {
+/**
+ * Use this method if you want to get only a single property from state of TestFeature
+ * @param propertyName property of state
+ */
+export function useDirectTestFeaturePropertyValue<
+    T extends keyof TESTSTATE
+>(propertyName: T): TESTSTATE[T] {
+    const state = useTestFeatureReducerContextState();
+    return state[propertyName];
+};
+
+export function useDirectPropertySetProperty(propertyName: "prop1"): SetPropertyHandler<"prop1">;
+export function useDirectPropertySetProperty(propertyName: "prop2"): SetPropertyHandler<"prop2">;
+/**
+ * Use this method if you want a callback function for updating a single property of TestFeature
+ * @param propertyName property of state
+ */
+export function useDirectTestFeaturePropertySetProperty<
+    T extends keyof TESTSTATE
+>(propertyName: T): TestFeatureSetPropertyHandler {
+    const dispatch = useTestFeatureReducerContextDispatch();
+
+    return useMemo(() => {
         switch (propertyName) {
             case "prop1":
                 return (next: TESTSTATE["prop1"]) =>
@@ -1073,19 +1103,6 @@ export function useDirectTestFeatureProperty<
                 );
         }
     }, [dispatch, propertyName]);
-
-    return useMemo(() => [value, setProperty], [value, setProperty]);
-};
-
-/**
- * Use this method if you want to get only a single property from state of TestFeature
- * @param propertyName property of state
- */
-export function useDirectTestFeaturePropertyValue<
-    T extends keyof TESTSTATE
->(propertyName: T): TESTSTATE[T] {
-    const state = useTestFeatureReducerContextState();
-    return state[propertyName];
 };
 `);
             });

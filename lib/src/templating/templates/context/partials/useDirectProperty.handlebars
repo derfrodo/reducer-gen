@@ -1,3 +1,9 @@
+export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
+export type {{featureName.pascalCase}}PropertyTuple<T extends keyof State> = [State[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
+
+{{#each state.properties}}
+export function useDirect{{featureName.pascalCase}}PropertySetProperty(propertyName: "{{name}}"): SetPropertyHandler<"{{name}}">;
+{{/each}}
 
 /**
  * Use this method if you want to get a single property from state and a callback function for updating it of {{featureName.pascalCase}}
@@ -8,8 +14,34 @@ export function useDirect{{featureName.pascalCase}}Property<
 >(propertyName: T): [{{state.stateName}}[T], (next: {{state.stateName}}[T]) => void] {
     const dispatch = use{{featureName.pascalCase}}ReducerContextDispatch();
     const value = useDirect{{featureName.pascalCase}}PropertyValue(propertyName);
+    const setProperty = useDirect{{featureName.pascalCase}}PropertySetProperty(propertyName);
+    return useMemo(() => [value, setProperty], [value, setProperty]);
+};
 
-    const setProperty = useMemo(() => {
+/**
+ * Use this method if you want to get only a single property from state of {{featureName.pascalCase}}
+ * @param propertyName property of state
+ */
+export function useDirect{{featureName.pascalCase}}PropertyValue<
+    T extends keyof {{state.stateName}}
+>(propertyName: T): {{state.stateName}}[T] {
+    const state = use{{featureName.pascalCase}}ReducerContextState();
+    return state[propertyName];
+};
+
+{{#each state.properties}}
+export function useDirect{{featureName.pascalCase}}PropertySetProperty(propertyName: "{{name}}"): SetPropertyHandler<"{{name}}">;
+{{/each}}
+/**
+ * Use this method if you want a callback function for updating a single property of {{featureName.pascalCase}}
+ * @param propertyName property of state
+ */
+export function useDirect{{featureName.pascalCase}}PropertySetProperty<
+    T extends keyof {{state.stateName}}
+>(propertyName: T): {{featureName.pascalCase}}SetPropertyHandler {
+    const dispatch = use{{featureName.pascalCase}}ReducerContextDispatch();
+
+    return useMemo(() => {
         switch (propertyName) {
     {{#each state.properties}}
             case "{{name}}":
@@ -26,17 +58,4 @@ export function useDirect{{featureName.pascalCase}}Property<
                 );
         }
     }, [dispatch, propertyName]);
-
-    return useMemo(() => [value, setProperty], [value, setProperty]);
-};
-
-/**
- * Use this method if you want to get only a single property from state of {{featureName.pascalCase}}
- * @param propertyName property of state
- */
-export function useDirect{{featureName.pascalCase}}PropertyValue<
-    T extends keyof {{state.stateName}}
->(propertyName: T): {{state.stateName}}[T] {
-    const state = use{{featureName.pascalCase}}ReducerContextState();
-    return state[propertyName];
 };
