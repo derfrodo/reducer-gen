@@ -5,6 +5,7 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
     const result: TemplateHandlebarModel = {
         options: {
             createReducerContext: true,
+            createContextDirectPropertyHooks: false,
             addBubbleFlagForActions: true,
             addArrayFunctions: true,
             decoupleStateChangedCallbackByTimeout: false,
