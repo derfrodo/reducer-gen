@@ -71,11 +71,11 @@ jobs:
           | awk -F: '{ print $2 }' \
           | sed 's/[",]//g')
 
-        echo "::set-output name=version::$(PACKAGE_VERSION)\n"
+        echo "::set-output name=version::$PACKAGE_VERSION"
       id: read_package_version
 
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: node-${{ matrix.node-version }}-version-${{ steps.read_package_version.outputs.version }}-run-${{ env.GITHUB_RUN_ID }}
+        name: node-${{ matrix.node-version }}-version-${{ steps.read_package_version.outputs.version }}-run-${{ github.run.id }}
         path: "lib"
