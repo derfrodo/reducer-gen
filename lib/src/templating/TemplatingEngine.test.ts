@@ -1042,36 +1042,46 @@ export const useTestFeatureStatePropertyChangedEffect = <
 };
 
 /**
- * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
- * @param callback callback which will be called dispatch gets called
+ * Use this method if you want to get a single property from state and a callback function for updating it of TestFeature
+ * @param propertyName property of state
  */
 export function useDirectTestFeatureProperty<T extends keyof TESTSTATE>(propertyName: T) {
-    const { state, dispatch } = useTestFeatureReducerContext();
+    const dispatch = useTestFeatureReducerContextDispatch();
+    const value = useDirectTestFeaturePropertyValue(propertyName);
 
-    switch (propertyName) {
-        case "prop1": {
-            const setProperty = (next: TESTSTATE["prop1"]) =>
-                dispatch(
-                    CREATOR_MAIN.setProp1(
-                        next
-                    )
+    const setProperty = useMemo(() => {
+        switch (propertyName) {
+            case "prop1":
+                return (next: TESTSTATE["prop1"]) =>
+                    dispatch(
+                        CREATOR_MAIN.setProp1(
+                            next
+                        )
+                    );
+            case "prop2":
+                return (next: TESTSTATE["prop2"]) =>
+                    dispatch(
+                        CREATOR_MAIN.setProp2(
+                            next
+                        )
+                    );
+            default:
+                throw new Error(
+                    \`Unknown property. No property with name "$\{propertyName\}" has been registered for state of feature "TestFeature".\`
                 );
-            return [state[propertyName], setProperty];
         }
-        case "prop2": {
-            const setProperty = (next: TESTSTATE["prop2"]) =>
-                dispatch(
-                    CREATOR_MAIN.setProp2(
-                        next
-                    )
-                );
-            return [state[propertyName], setProperty];
-        }
-        default:
-            throw new Error(
-                \`Unknown property. No property with name "$\{propertyName\}" has been registered for state of feature "$TestFeature".\`
-            );
-    }
+    }, [dispatch, propertyName]);
+
+    return useMemo(() => [value, setProperty], [value, setProperty]);
+};
+
+/**
+ * Use this method if you want to get only a single property from state of TestFeature
+ * @param propertyName property of state
+ */
+export function useDirectTestFeaturePropertyValue<T extends keyof TESTSTATE>(propertyName: T) {
+    const { state, dispatch } = useTestFeatureReducerContextState();
+    return state[propertyName];
 };
 `);
             });

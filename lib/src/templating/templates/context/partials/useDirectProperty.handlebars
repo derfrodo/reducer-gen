@@ -1,26 +1,38 @@
 
 /**
- * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
- * @param callback callback which will be called dispatch gets called
+ * Use this method if you want to get a single property from state and a callback function for updating it of {{featureName.pascalCase}}
+ * @param propertyName property of state
  */
 export function useDirect{{featureName.pascalCase}}Property<T extends keyof {{state.stateName}}>(propertyName: T) {
-    const { state, dispatch } = use{{featureName.pascalCase}}ReducerContext();
+    const dispatch = use{{featureName.pascalCase}}ReducerContextDispatch();
+    const value = useDirect{{featureName.pascalCase}}PropertyValue(propertyName);
 
-    switch (propertyName) {
-{{#each state.properties}}
-        case "{{name}}": {
-            const setProperty = (next: {{../state.stateName}}["{{name}}"]) =>
-                dispatch(
-                    {{../actionCreators.mainActionCreatorsName}}.set{{namePascalCase}}(
-                        next
-                    )
+    const setProperty = useMemo(() => {
+        switch (propertyName) {
+    {{#each state.properties}}
+            case "{{name}}":
+                return (next: {{../state.stateName}}["{{name}}"]) =>
+                    dispatch(
+                        {{../actionCreators.mainActionCreatorsName}}.set{{namePascalCase}}(
+                            next
+                        )
+                    );
+    {{/each}}
+            default:
+                throw new Error(
+                    `Unknown property. No property with name "${propertyName}" has been registered for state of feature "{{featureName.pascalCase}}".`
                 );
-            return [state[propertyName], setProperty];
         }
-{{/each}}
-        default:
-            throw new Error(
-                `Unknown property. No property with name "${propertyName}" has been registered for state of feature "${{{featureName.pascalCase}}}".`
-            );
-    }
+    }, [dispatch, propertyName]);
+
+    return useMemo(() => [value, setProperty], [value, setProperty]);
+};
+
+/**
+ * Use this method if you want to get only a single property from state of {{featureName.pascalCase}}
+ * @param propertyName property of state
+ */
+export function useDirect{{featureName.pascalCase}}PropertyValue<T extends keyof {{state.stateName}}>(propertyName: T) {
+    const { state, dispatch } = use{{featureName.pascalCase}}ReducerContextState();
+    return state[propertyName];
 };
