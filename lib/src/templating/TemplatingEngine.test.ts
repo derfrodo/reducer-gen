@@ -1040,6 +1040,19 @@ export const useTestFeatureStatePropertyChangedEffect = <
 
     useTestFeatureStateChangedEffect(changedCallback);
 };
+
+export function isKeyofState(propertyName: any): propertyName is keyof State {
+    return (
+        typeof propertyName === "string" ||
+        typeof propertyName === "number" ||
+        typeof propertyName === "symbol"
+        ) &&
+        (
+            propertyName === "prop1" ||
+            propertyName === "prop2"
+        )
+} 
+
 export type TestFeatureSetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
 export type TestFeaturePropertyTuple<T extends keyof State> = [State[T], TestFeatureSetPropertyHandler<T>]
 
@@ -1053,9 +1066,8 @@ export function useDirectTestFeatureProperty(propertyName: "prop2"): TestFeature
 export function useDirectTestFeatureProperty<
     T extends keyof TESTSTATE
 >(propertyName: T) {
-    const dispatch = useTestFeatureReducerContextDispatch();
     const value = useDirectTestFeaturePropertyValue(propertyName);
-    const setProperty = useDirectTestFeaturePropertySetProperty(propertyName);
+    const setProperty = useDirectTestFeaturePropertySetProperty(propertyName as any);
     return useMemo(() => [value, setProperty], [value, setProperty]);
 };
 

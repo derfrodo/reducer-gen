@@ -1,3 +1,15 @@
+
+export function isKeyof{{../featureName.pascalCase}}State(propertyName: any): propertyName is keyof State {
+    return (
+        typeof propertyName === "string" ||
+        typeof propertyName === "number" ||
+        typeof propertyName === "symbol"
+        ) &&
+        ({{#each state.properties}}
+            propertyName === "{{name}}"{{#unless @last}} ||{{/unless}}{{/each}}
+        )
+} 
+
 export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
 export type {{featureName.pascalCase}}PropertyTuple<T extends keyof State> = [State[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
 
@@ -12,9 +24,8 @@ export function useDirect{{../featureName.pascalCase}}Property(propertyName: "{{
 export function useDirect{{featureName.pascalCase}}Property<
     T extends keyof {{state.stateName}}
 >(propertyName: T) {
-    const dispatch = use{{featureName.pascalCase}}ReducerContextDispatch();
     const value = useDirect{{featureName.pascalCase}}PropertyValue(propertyName);
-    const setProperty = useDirect{{featureName.pascalCase}}PropertySetProperty(propertyName);
+    const setProperty = useDirect{{featureName.pascalCase}}PropertySetProperty(propertyName as any);
     return useMemo(() => [value, setProperty], [value, setProperty]);
 };
 
