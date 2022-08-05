@@ -1045,19 +1045,19 @@ export const useTestFeatureStatePropertyChangedEffect = <
  * Use this method if you want to react on dispatch calls (e.g. call additional methods or talk to a... frame?)
  * @param callback callback which will be called dispatch gets called
  */
-export const useDirectTestFeatureProperty = <T extends  keyof TESTSTATE>(propertyName: T) => {
+export function useDirectTestFeatureProperty<T extends  keyof TESTSTATE>(propertyName: T) {
     const { state, dispatch } = useTestFeatureReducerContext();
 
     switch (propertyName) {
         case "prop1":
             return [
                 state[propertyName],
-                (next: TESTSTATE[T])=> dispatch(CREATOR_MAIN.setProp1(next));
+                (next: TESTSTATE["prop1"])=> dispatch(CREATOR_MAIN.setProp1(next))
             ]
         case "prop2":
             return [
                 state[propertyName],
-                (next: TESTSTATE[T])=> dispatch(CREATOR_MAIN.setProp2(next));
+                (next: TESTSTATE["prop2"])=> dispatch(CREATOR_MAIN.setProp2(next))
             ]
         default:
             throw new Error(\`Unknown property. No property with name "$\{propertyName\}" has been registered for state of feature "$TestFeature".\`);

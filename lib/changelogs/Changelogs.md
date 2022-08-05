@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.2.35-beta:
+- Fix compile errors due to template 
+
 ## Version 0.2.34-beta:
 - Extend readme 
 
