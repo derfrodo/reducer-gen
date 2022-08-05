@@ -14,7 +14,9 @@ export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof State> 
 export type {{featureName.pascalCase}}PropertyTuple<T extends keyof State> = [State[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
 
 {{#each state.properties}}
-export function useDirect{{../featureName.pascalCase}}Property(propertyName: "{{name}}"): {{../featureName.pascalCase}}PropertyTuple<"{{name}}">;
+export function useDirect{{../featureName.pascalCase}}Property<
+    T extends keyof {{../state.stateName}}
+>(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}PropertyTuple<"{{name}}"> : never;
 {{/each}}
 
 /**
@@ -41,7 +43,9 @@ export function useDirect{{featureName.pascalCase}}PropertyValue<
 };
 
 {{#each state.properties}}
-export function useDirect{{../featureName.pascalCase}}PropertySetProperty(propertyName: "{{name}}"): {{../featureName.pascalCase}}SetPropertyHandler<"{{name}}">;
+export function useDirect{{../featureName.pascalCase}}PropertySetProperty<
+    T extends keyof {{../state.stateName}}
+>(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}SetPropertyHandler<"{{name}}"> : never;
 {{/each}}
 /**
  * Use this method if you want a callback function for updating a single property of {{featureName.pascalCase}}

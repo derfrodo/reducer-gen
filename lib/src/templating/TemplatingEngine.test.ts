@@ -1056,8 +1056,12 @@ export function isKeyofState(propertyName: any): propertyName is keyof State {
 export type TestFeatureSetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
 export type TestFeaturePropertyTuple<T extends keyof State> = [State[T], TestFeatureSetPropertyHandler<T>]
 
-export function useDirectTestFeatureProperty(propertyName: "prop1"): TestFeaturePropertyTuple<"prop1">;
-export function useDirectTestFeatureProperty(propertyName: "prop2"): TestFeaturePropertyTuple<"prop2">;
+export function useDirectTestFeatureProperty<
+    T extends keyof TESTSTATE
+>(propertyName: T): T extends "prop1" ? TestFeaturePropertyTuple<"prop1"> : never;
+export function useDirectTestFeatureProperty<
+    T extends keyof TESTSTATE
+>(propertyName: T): T extends "prop2" ? TestFeaturePropertyTuple<"prop2"> : never;
 
 /**
  * Use this method if you want to get a single property from state and a callback function for updating it of TestFeature
@@ -1082,8 +1086,13 @@ export function useDirectTestFeaturePropertyValue<
     return state[propertyName];
 };
 
-export function useDirectTestFeaturePropertySetProperty(propertyName: "prop1"): TestFeatureSetPropertyHandler<"prop1">;
-export function useDirectTestFeaturePropertySetProperty(propertyName: "prop2"): TestFeatureSetPropertyHandler<"prop2">;
+export function useDirectTestFeaturePropertySetProperty<
+    T extends keyof TESTSTATE
+>(propertyName: T): T extends "prop1" ? TestFeatureSetPropertyHandler<"prop1"> : never;
+export function useDirectTestFeaturePropertySetProperty<
+    T extends keyof TESTSTATE
+>(propertyName: T): T extends "prop2" ? TestFeatureSetPropertyHandler<"prop2"> : never;
+
 /**
  * Use this method if you want a callback function for updating a single property of TestFeature
  * @param propertyName property of state
