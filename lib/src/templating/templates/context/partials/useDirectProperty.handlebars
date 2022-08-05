@@ -33,6 +33,6 @@ export function useDirect{{featureName.pascalCase}}Property<T extends keyof {{st
  * @param propertyName property of state
  */
 export function useDirect{{featureName.pascalCase}}PropertyValue<T extends keyof {{state.stateName}}>(propertyName: T) {
-    const { state, dispatch } = use{{featureName.pascalCase}}ReducerContextState();
+    const state = use{{featureName.pascalCase}}ReducerContextState();
     return state[propertyName];
 };

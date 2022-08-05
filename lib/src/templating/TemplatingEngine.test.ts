@@ -829,7 +829,7 @@ export const useTestFeatureStatePropertyChangedEffect = <
                 // console.log(result);
                 // assert
                 expect(result.replace(/\r\n/g, "\n"))
-                    .toBe(`import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+                    .toBe(`import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { TESTSTATE } from "./state";
 import { mainTestReducer } from "./reducer/reducer.main.generated";
 import { getTestStateDefault } from "./defaultState.base.generated";
@@ -1080,7 +1080,7 @@ export function useDirectTestFeatureProperty<T extends keyof TESTSTATE>(property
  * @param propertyName property of state
  */
 export function useDirectTestFeaturePropertyValue<T extends keyof TESTSTATE>(propertyName: T) {
-    const { state, dispatch } = useTestFeatureReducerContextState();
+    const state = useTestFeatureReducerContextState();
     return state[propertyName];
 };
 `);
