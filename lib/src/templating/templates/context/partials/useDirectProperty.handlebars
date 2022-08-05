@@ -9,11 +9,12 @@ export function useDirect{{featureName.pascalCase}}Property<T extends keyof {{st
     switch (propertyName) {
 {{#each state.properties}}
         case "{{name}}":
-            const setProperty = 
-                (next: {{../state.stateName}}["{{name}}"]) => 
+            const setProperty =
+                (next: {{../state.stateName}}["{{name}}"]) =>
                     dispatch({{../actionCreators.mainActionCreatorsName}}.set{{namePascalCase}}(next))
             return [
                 state[propertyName],
+                setProperty
             ]
 {{/each}}
         default:
