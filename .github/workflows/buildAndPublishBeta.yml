@@ -72,7 +72,7 @@ jobs:
         echo "Version ${{ needs.prepare.outputs.packageVersion }} has not been deployed to npm yet."
   
   not_deployed: 
-    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && !contains(needs.prepare.outputs.packageVersion, 'beta') }}
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && contains(needs.prepare.outputs.packageVersion, 'beta') == false }}
     name: "Version not for beta"
     runs-on: ubuntu-latest
     needs: 
