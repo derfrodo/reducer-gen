@@ -28,6 +28,8 @@ jobs:
     outputs:
       packageVersion: ${{ needs.readver.outputs.packageVersion  }}
       packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
+      artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
+      nodeVersion: ${{ env.nodeVersion }}
     steps:
     - uses: actions/checkout@v2
     - name: Using Node.js ${{ env.nodeVersion }}
@@ -72,6 +74,13 @@ jobs:
     - name: Info
       run: |
         echo "Version ${{ needs.prepare.outputs.packageVersion }} has been deployed to npm already."
+  buildA:
+    needs: 
+    - prepare
+    uses: ./.github/workflows/templateCreateBundle.yml
+    with:
+      artefactName: ${{ needs.prepare.outputs.artefactName }}
+      nodeVersion: ${{ needs.prepare.outputs.nodeVersion }}
 
   build:
     if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' }}

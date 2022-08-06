@@ -1,0 +1,54 @@
+#https://docs.github.com/en/actions/using-workflows/reusing-workflows#example-reusable-workflow
+name: Create Bundled Package 
+
+on:
+  workflow_call:
+    inputs:
+      nodeVersion:
+        required: true
+        type: string
+      artefactName:
+        required: true
+        type: string
+    outputs:
+      packageVersion:
+        description: "The version evaluated from package"
+        value: ${{ jobs.readversion.outputs.packageVersion }}
+        # This is a basic workflow that is manually triggered
+
+jobs:
+  build:
+    name: "Test, build and bundle package (NodeJS ${{ inputs.nodeVersion }})"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Using Node.js ${{ inputs.nodeVersion }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ inputs.nodeVersion }}
+    
+    - name: perform installation (npm ci)
+      shell: bash
+      run: cd lib && npm ci
+    
+    - name: perform unittests
+      shell: bash
+      run: |
+        cd lib
+        npm test
+    
+    - name: build bundle (npm ci)
+      shell: bash
+      run: cd lib && npm run build
+      
+    - name: prepare package for publishing
+      shell: bash
+      run: |
+        cd lib
+        npm run prepareForPublish
+
+    - name: Archive code 
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.artefactName }}
+        path: "lib"
