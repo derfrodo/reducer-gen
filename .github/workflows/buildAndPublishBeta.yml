@@ -79,9 +79,9 @@ jobs:
     environment: beta
     
     steps:
+    - uses: actions/checkout@v2
     - env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-    - uses: actions/checkout@v2
     - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:
