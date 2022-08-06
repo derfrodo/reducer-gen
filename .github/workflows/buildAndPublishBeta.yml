@@ -82,8 +82,8 @@ jobs:
     uses: ./.github/workflows/templateCreateBundle.yml
     with:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
-      nodeVersion: ${{ needs.prepare.outputs.nodeVersion }}
-      nodeVersions: '["16.x"]'
+      # nodeVersion: ${{ needs.prepare.outputs.nodeVersion }}
+      nodeVersions: '["{{ needs.prepare.outputs.nodeVersion }}"]'
 
   deploy:
     runs-on: ubuntu-latest

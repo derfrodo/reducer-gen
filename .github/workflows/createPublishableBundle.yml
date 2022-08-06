@@ -41,6 +41,6 @@ jobs:
     uses: ./.github/workflows/templateCreateBundle.yml
     with:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
-      nodeVersion: ${{ matrix.node-version }}
+      # nodeVersion: ${{ matrix.node-version }}
       nodeVersions: "[\"14.x\", \"16.x\"]"
       
