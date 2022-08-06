@@ -38,8 +38,10 @@ jobs:
     - name: Write artefact name
       shell: bash
       run: |
-        echo "Artefact"
+        echo "Has Artefact Name"
         echo ${{ matrix.artefactName != 0 }}
+        echo "Artefact"
+        echo ${{ matrix.artefactName }}
         echo "Version"
         echo ${{ matrix.nodeVersion }}
         echo "INCLUDES"
