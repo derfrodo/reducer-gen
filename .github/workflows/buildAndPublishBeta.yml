@@ -57,7 +57,7 @@ jobs:
     needs: 
     - prepare
     #docs.github.com/en/actions/learn-github-actions/expressions
-    if: ${{ needs.prepare.outputs.packageVersionIsPublished == false }}
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == "false" }}
     steps:
     - name: Info
       run: |
@@ -67,7 +67,7 @@ jobs:
     needs: 
     - prepare
     #docs.github.com/en/actions/learn-github-actions/expressions
-    if: ${{ needs.prepare.outputs.packageVersionIsPublished == true }}
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == "true" }}
     steps:
     - name: Info
       run: |
@@ -75,7 +75,7 @@ jobs:
 
 
   build:
-    if: ${{ needs.prepare.outputs.packageVersionIsPublished == false }}
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == "false" }}
     runs-on: ubuntu-latest
     name: "Build package"
     needs: 
