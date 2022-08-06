@@ -71,7 +71,7 @@ jobs:
     needs: 
     - build
     name: "Deploy package as beta"
-    environment: production
+    environment: beta
     
     steps:
     - uses: actions/checkout@v2
