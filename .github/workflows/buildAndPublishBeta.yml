@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/templateReadPackageVersion.yml
     with:
       username: demouser
-      packageName: "${{ env.packageName }}"
+      packageName: ${{ env.packageName }}
     secrets:
       testsecret: demosecret
 
