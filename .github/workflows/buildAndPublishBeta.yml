@@ -18,6 +18,7 @@ jobs:
     uses: ./.github/workflows/templateReadPackageVersion.yml
     with:
       username: demouser
+      packageName: ${{ env.packageName }}
     secrets:
       testsecret: demosecret
 
@@ -26,25 +27,10 @@ jobs:
     name: "Prepare run"
     needs: readver
     outputs:
-      packageVersion: ${{ needs.readver.outputs.version  }}
+      packageVersion: ${{ needs.readver.outputs.packageVersion  }}
       packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
     steps:
     - uses: actions/checkout@v2
-    # - name: Read package version
-    #   run: |
-    #     # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
-    #     # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
-    #     PACKAGE_VERSION=$(cat lib/package.json \
-    #       | grep version \
-    #       | head -1 \
-    #       | awk -F: '{ print $2 }' \
-    #       | sed 's/[",]//g' \
-    #       | sed 's/^ *//;s/ *$//')
-
-    #     echo "Build reducer gen for version '$PACKAGE_VERSION'"
-    #     echo "::set-output name=version::$PACKAGE_VERSION"
-    #   id: read_package_version
-
     - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:

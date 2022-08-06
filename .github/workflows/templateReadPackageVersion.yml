@@ -7,6 +7,9 @@ on:
       username:
         required: true
         type: string
+      packageName:
+        required: true
+        type: string
     secrets:
       testsecret:
         required: true
@@ -32,6 +35,6 @@ jobs:
           | sed 's/[",]//g' \
           | sed 's/^ *//;s/ *$//')
 
-        echo "Build reducer gen for version '$PACKAGE_VERSION'"
+        echo "Pipeline is for ${{ inputs.packageName }} reducer gen for version '$PACKAGE_VERSION'"
         echo "::set-output name=version::$PACKAGE_VERSION"
       id: read_package_version
