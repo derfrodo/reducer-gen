@@ -16,7 +16,7 @@ export type {{featureName.pascalCase}}PropertyTuple<T extends keyof State> = [St
 {{#each state.properties}}
 export function useDirect{{../featureName.pascalCase}}Property<
     T extends keyof {{../state.stateName}}
->(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}PropertyTuple<"{{name}}"> : never;
+>(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}PropertyTuple<"{{name}}"> : {{../featureName.pascalCase}}PropertyTuple<T>;
 {{/each}}
 
 /**
@@ -45,7 +45,7 @@ export function useDirect{{featureName.pascalCase}}PropertyValue<
 {{#each state.properties}}
 export function useDirect{{../featureName.pascalCase}}PropertySetProperty<
     T extends keyof {{../state.stateName}}
->(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}SetPropertyHandler<"{{name}}"> : never;
+>(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}SetPropertyHandler<"{{name}}"> : {{../featureName.pascalCase}}SetPropertyHandler<T>;
 {{/each}}
 
 /**
