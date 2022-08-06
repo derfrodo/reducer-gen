@@ -14,6 +14,10 @@ env:
   artefactName: "derfrodo_reducer-gen"
 
 jobs:
+
+  strategy:
+    matrix:
+      node-version: [14.x, 16.x]
   readver:
     # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
     uses: ./.github/workflows/templateReadPackageVersion.yml
@@ -35,9 +39,6 @@ jobs:
         echo "Version has been published: $IS_PUBLISHED"
 
   build:
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x]
     needs: 
     - prepare
     uses: ./.github/workflows/templateCreateBundle.yml
