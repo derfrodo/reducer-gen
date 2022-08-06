@@ -15,7 +15,7 @@ jobs:
 
   readver:
     # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
-    uses: ./.github/workflows/readPackageVersion.yml@main
+    uses: ./.github/workflows/readPackageVersion.yml
     with:
       username: demouser
     secrets:
