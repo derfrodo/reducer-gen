@@ -1,0 +1,84 @@
+# This is a basic workflow that is manually triggered
+name: Build and publish Beta
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  node-version: "your-azure-container-registry"
+permissions:
+  contents: read
+  # issues: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: "Build package"
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Using Node.js ${{ env.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.node-version }}
+    
+    - name: Read package version
+      run: |
+        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
+        # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
+        PACKAGE_VERSION=$(cat lib/package.json \
+          | grep version \
+          | head -1 \
+          | awk -F: '{ print $2 }' \
+          | sed 's/[",]//g' \
+          | sed 's/^ *//;s/ *$//')
+
+        echo "Build reducer gen for version '$PACKAGE_VERSION'"
+        echo "::set-output name=version::$PACKAGE_VERSION"
+      id: read_package_version
+
+    - name: perform installation (npm ci)
+      shell: bash
+      run: cd lib && npm ci
+    
+    - name: perform unittests
+      shell: bash
+      run: |
+        cd lib
+        npm test
+    
+    - name: build bundle (npm ci)
+      shell: bash
+      run: cd lib && npm run build
+      
+    - name: prepare package for publishing
+      shell: bash
+      run: |
+        cd lib
+        npm run prepareForPublish
+
+#    - name: Archive code 
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: code-node-${{ matrix.node-version }}
+#        path: "lib/*"
+        
+    # - name: create ZIP archive
+    #   shell: bash
+    #   run: |
+    #     cd lib
+    #     zip -r "../archive-node-${{ matrix.node-version }}.zip" "."
+
+    # - name: Archive code 
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: code-node-${{ matrix.node-version }}
+    #     path: "archive-node-${{ matrix.node-version }}.zip"
+
+    - name: Archive code 
+      uses: actions/upload-artifact@v2
+      with:
+        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run_id }}
+        path: "lib"
