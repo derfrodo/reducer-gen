@@ -74,6 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: 
     - build
+    - prepare
     name: "Deploy package as beta"
     environment: beta
     
