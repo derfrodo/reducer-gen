@@ -212,7 +212,7 @@ export class ReduxCodeGenerator {
 
     generateStatePropertiesContent(stateInfo: StateInterfaceInfo): string {
         return this.templatingEngine.compile(
-            this.templatingEngine.rootTemplates.defaultState,
+            this.templatingEngine.rootTemplates.stateProperties,
             this.modelFactory.createHandlebarModel(stateInfo)
         );
     }
