@@ -12,28 +12,38 @@ env:
   artefactName: "derfrodo_reducer-gen"
 
 jobs:
+
+  readver:
+    # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
+    uses: .github/workflows/readPackageVersion.yml@main
+    with:
+      username: demouser
+    secrets:
+      testsecret: demosecret
+
   prepare: 
     runs-on: ubuntu-latest
     name: "Prepare run"
+    needs: readver
     outputs:
-      packageVersion: ${{ steps.read_package_version.outputs.version  }}
+      packageVersion: ${{ needs.readver.outputs.version  }}
       packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
     steps:
     - uses: actions/checkout@v2
-    - name: Read package version
-      run: |
-        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
-        # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
-        PACKAGE_VERSION=$(cat lib/package.json \
-          | grep version \
-          | head -1 \
-          | awk -F: '{ print $2 }' \
-          | sed 's/[",]//g' \
-          | sed 's/^ *//;s/ *$//')
+    # - name: Read package version
+    #   run: |
+    #     # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
+    #     # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
+    #     PACKAGE_VERSION=$(cat lib/package.json \
+    #       | grep version \
+    #       | head -1 \
+    #       | awk -F: '{ print $2 }' \
+    #       | sed 's/[",]//g' \
+    #       | sed 's/^ *//;s/ *$//')
 
-        echo "Build reducer gen for version '$PACKAGE_VERSION'"
-        echo "::set-output name=version::$PACKAGE_VERSION"
-      id: read_package_version
+    #     echo "Build reducer gen for version '$PACKAGE_VERSION'"
+    #     echo "::set-output name=version::$PACKAGE_VERSION"
+    #   id: read_package_version
 
     - name: Read Deployed Versions
       run: |
@@ -41,8 +51,8 @@ jobs:
         # echo $PACKAGE_VERSIONS
 
         # see also stackoverflow.com/questions/19345872/how-to-remove-a-newline-from-a-string-in-bash
-        # SCRIPT="const index=${PACKAGE_VERSIONS//[$'\t\r\n']}.indexOf(\"${{ steps.read_package_version.outputs.version }}\"); console.log({index});"
-        SCRIPT="const index=${PACKAGE_VERSIONS}.indexOf(\"${{ steps.read_package_version.outputs.version }}\"); console.log(index >= 0);"
+        # SCRIPT="const index=${PACKAGE_VERSIONS//[$'\t\r\n']}.indexOf(\"${{ needs.readver.outputs.version }}\"); console.log({index});"
+        SCRIPT="const index=${PACKAGE_VERSIONS}.indexOf(\"${{ needs.readver.outputs.version }}\"); console.log(index >= 0);"
         echo $SCRIPT > script.js
 
         IS_PUBLISHED=$(node script.js)

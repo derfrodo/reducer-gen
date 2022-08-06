@@ -1,0 +1,37 @@
+#https://docs.github.com/en/actions/using-workflows/reusing-workflows#example-reusable-workflow
+name: Read Package Versions
+
+on:
+  workflow_call:
+    inputs:
+      username:
+        required: true
+        type: string
+    secrets:
+      testsecret:
+        required: true
+
+        
+jobs:
+  readversion:
+    runs-on: ubuntu-latest
+
+    outputs:
+      packageVersion: ${{ steps.read_package_version.outputs.version  }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Read package version
+      run: |
+        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
+        # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
+        PACKAGE_VERSION=$(cat lib/package.json \
+          | grep version \
+          | head -1 \
+          | awk -F: '{ print $2 }' \
+          | sed 's/[",]//g' \
+          | sed 's/^ *//;s/ *$//')
+
+        echo "Build reducer gen for version '$PACKAGE_VERSION'"
+        echo "::set-output name=version::$PACKAGE_VERSION"
+      id: read_package_version
