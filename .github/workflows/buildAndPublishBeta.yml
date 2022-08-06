@@ -57,7 +57,7 @@ jobs:
     needs: 
     - prepare
     #docs.github.com/en/actions/learn-github-actions/expressions
-    if: ${{ steps.read_package_version.outputs.packageVersionIsPublished == false }}
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == false }}
     steps:
     - name: Info
       run: |
@@ -67,7 +67,7 @@ jobs:
     needs: 
     - prepare
     #docs.github.com/en/actions/learn-github-actions/expressions
-    if: ${{ steps.read_package_version.outputs.packageVersionIsPublished == true }}
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == true }}
     steps:
     - name: Info
       run: |
