@@ -74,52 +74,15 @@ jobs:
     - name: Info
       run: |
         echo "Version ${{ needs.prepare.outputs.packageVersion }} has been deployed to npm already."
-  buildA:
+  
+  build:
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' }}
     needs: 
     - prepare
     uses: ./.github/workflows/templateCreateBundle.yml
     with:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
       nodeVersion: ${{ needs.prepare.outputs.nodeVersion }}
-
-  build:
-    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' }}
-    runs-on: ubuntu-latest
-    name: "Build package"
-    needs: 
-    - prepare
-    steps:
-    - uses: actions/checkout@v2
-    - name: Using Node.js ${{ env.nodeVersion }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.nodeVersion }}
-    
-    - name: perform installation (npm ci)
-      shell: bash
-      run: cd lib && npm ci
-    
-    - name: perform unittests
-      shell: bash
-      run: |
-        cd lib
-        npm test
-    
-    - name: build bundle (npm ci)
-      shell: bash
-      run: cd lib && npm run build
-      
-    - name: prepare package for publishing
-      shell: bash
-      run: |
-        cd lib
-        npm run prepareForPublish
-
-    - name: Archive code 
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ env.artefactName }}-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
-        path: "lib"
 
   deploy:
     runs-on: ubuntu-latest
@@ -140,7 +103,7 @@ jobs:
       uses: actions/download-artifact@v3
       id: downloadArtefact
       with:
-        name: ${{ env.artefactName }}-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
+        name: ${{ needs.prepare.outputs.artefactName }}
         path: ${{ env.packageName }}-${{ needs.prepare.outputs.packageVersion }}-artefact
 
     - name: What has been downloaded

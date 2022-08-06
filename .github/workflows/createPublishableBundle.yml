@@ -8,6 +8,11 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  nodeVersion: 16.x
+  packageName: "@derfrodo/reducer-gen"
+  artefactName: "derfrodo_reducer-gen"
+
 jobs:
   readver:
     # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
@@ -17,44 +22,25 @@ jobs:
     secrets:
       testsecret: demosecret
 
-  build:
-    name: "Test and Build bundle (${{ matrix.node-version }})"
+  prepare: 
     runs-on: ubuntu-latest
+    name: "Prepare build settings"
     needs: readver
+    outputs:
+      packageVersion: ${{ needs.readver.outputs.packageVersion  }}
+      artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
+    steps:
+    - name: Read Deployed Versions
+      run: |
+        echo "Version has been published: $IS_PUBLISHED"
+
+  build:
     strategy:
       matrix:
         node-version: [14.x, 16.x]
-        # node-version: [12.x, 14.x, 16.x]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: perform installation (npm ci)
-      shell: bash
-      run: cd lib && npm ci
-    
-    - name: perform unittests
-      shell: bash
-      run: |
-        cd lib
-        npm test
-    
-    - name: build bundle (npm ci)
-      shell: bash
-      run: cd lib && npm run build
-      
-    - name: prepare package for publishing
-      shell: bash
-      run: |
-        cd lib
-        npm run prepareForPublish
-
-    - name: Archive code 
-      uses: actions/upload-artifact@v2
-      with:
-        name: reducer-gen-${{ needs.readver.outputs.packageVersion }}-node-${{ matrix.node-version }}-run-${{ github.run_id }}
-        path: "lib"
+    needs: 
+    - prepare
+    uses: ./.github/workflows/templateCreateBundle.yml
+    with:
+      artefactName: ${{ needs.prepare.outputs.artefactName }}
+      nodeVersion: ${{ matrix.node-version }}
