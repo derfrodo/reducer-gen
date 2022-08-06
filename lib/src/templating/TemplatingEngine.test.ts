@@ -1077,6 +1077,12 @@ export function useDirectTestFeatureProperty<
     return useMemo(() => [value, setProperty], [value, setProperty]);
 };
 
+export function useNamedTestFeatureStateProperty<
+    T extends keyof TESTSTATE
+>(propertyName: T) {
+    return useDirectTestFeatureProperty<T>(propertyName);
+}
+
 /**
  * Use this method if you want to get only a single property from state of TestFeature
  * @param propertyName property of state
@@ -1087,6 +1093,12 @@ export function useDirectTestFeaturePropertyValue<
     const state = useTestFeatureReducerContextState();
     return state[propertyName];
 };
+
+export function useNamedTestFeatureStatePropertyValue<
+    T extends keyof TESTSTATE
+>(propertyName: T) {
+    return useDirectTestFeaturePropertyValue<T>(propertyName);
+}
 
 export function useDirectTestFeaturePropertySetProperty<
     T extends keyof TESTSTATE

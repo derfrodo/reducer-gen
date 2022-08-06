@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.4.1-beta:
+- Add alias useNamed[Feature]StateProperty for useDirectProperty hooks
+
 ## Version 0.4.0-beta:
 - Add [FeatureName]StateProperties as Object.freeze for better future refactoring when renaming properties
 
