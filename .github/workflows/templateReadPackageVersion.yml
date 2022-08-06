@@ -10,7 +10,10 @@ on:
     secrets:
       testsecret:
         required: true
-
+    outputs:
+      packageVersion:
+        description: "The version evaluated from package"
+        value: ${{ jobs.readversion.outputs.packageVersion }}
         
 jobs:
   readversion:
