@@ -40,10 +40,10 @@ jobs:
         echo $PACKAGE_VERSIONS
 
         # see also stackoverflow.com/questions/19345872/how-to-remove-a-newline-from-a-string-in-bash
-        SCRIPT="console.log(${PACKAGE_VERSIONS//[$'\t\r\n']}}.indexOf("${{ steps.read_package_version.outputs.version }}"))"
+        SCRIPT="console.log(${PACKAGE_VERSIONS//[$'\t\r\n']}}.indexOf(\"${{ steps.read_package_version.outputs.version }}\"))"
         echo $SCRIPT
 
-        INDEX_OF_VERSION=$(node -e $SCRIPT)
+        INDEX_OF_VERSION=$(node -e '"$SCRIPT"')
 
         echo $INDEX_OF_VERSION
         echo "::set-output name=versions::$PACKAGE_VERSIONS"
