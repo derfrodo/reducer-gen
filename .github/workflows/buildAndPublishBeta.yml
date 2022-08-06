@@ -93,10 +93,10 @@ jobs:
         path: artefact
 
     - name: What has been downloaded
-      working-directory: ${{steps.downloadArtefact.outputs.download-path}}
+      working-directory: ${{ steps.downloadArtefact.outputs.download-path }}
       run: |
         ls -R
-        
+
     - name: Just say "Hi"
       working-directory: artefact
       - env:
