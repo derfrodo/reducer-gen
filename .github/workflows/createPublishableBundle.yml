@@ -19,6 +19,7 @@ jobs:
     # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
     uses: ./.github/workflows/templateReadPackageVersion.yml
     with:
+      folderWithPackage: lib
       packageName: "@derfrodo/reducer-gen"
     secrets:
       testsecret: demosecret
