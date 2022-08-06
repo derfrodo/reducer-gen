@@ -7,13 +7,14 @@ on:
       packageVersion:
         required: false
         type: string
-      nodeVersions:
-        required: true
-        type: string
       artefactName:
         required: false
         type: string
+      nodeVersions:
+        required: true
+        type: string
       include:
+        required: true
         type: string
     outputs:
       packageVersion:
