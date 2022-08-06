@@ -9,10 +9,6 @@ on:
 env:
   nodeVersion: 16.x
 
-permissions:
-  contents: read
-  # issues: write
-
 jobs:
   prepare: 
     runs-on: ubuntu-latest
