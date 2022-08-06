@@ -53,6 +53,7 @@ jobs:
       id: evaluate_package_version
 
   info: 
+    name: "No version of package has been deployed yet"
     runs-on: ubuntu-latest
     needs: 
     - prepare
@@ -64,6 +65,7 @@ jobs:
         echo "Not Published"
   info2: 
     runs-on: ubuntu-latest
+    name: "No version of package has been deployed already"
     needs: 
     - prepare
     #docs.github.com/en/actions/learn-github-actions/expressions
