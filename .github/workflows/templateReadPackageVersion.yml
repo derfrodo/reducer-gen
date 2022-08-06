@@ -35,6 +35,6 @@ jobs:
           | sed 's/[",]//g' \
           | sed 's/^ *//;s/ *$//')
 
-        echo "Pipeline is for ${{ inputs.packageName }} reducer gen for version '$PACKAGE_VERSION'"
+        echo "Pipeline is for ${{ inputs.packageName }} for version '$PACKAGE_VERSION'"
         echo "::set-output name=version::$PACKAGE_VERSION"
       id: read_package_version
