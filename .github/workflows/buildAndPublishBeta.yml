@@ -17,7 +17,7 @@ jobs:
     name: "Prepare run"
     outputs:
       packageVersion: ${{ steps.read_package_version.outputs.version  }}
-      packageVersionIsPublished: ${{ steps.read_package_version.outputs.versionPublished  }}
+      packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
     steps:
     - uses: actions/checkout@v2
     - name: Read package version
