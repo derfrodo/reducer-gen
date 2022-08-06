@@ -31,6 +31,12 @@ export function useDirect{{featureName.pascalCase}}Property<
     return useMemo(() => [value, setProperty], [value, setProperty]);
 };
 
+export function useNamed{{featureName.pascalCase}}StateProperty<
+    T extends keyof {{state.stateName}}
+>(propertyName: T) {
+    return useDirect{{featureName.pascalCase}}Property<T>(propertyName);
+}
+
 /**
  * Use this method if you want to get only a single property from state of {{featureName.pascalCase}}
  * @param propertyName property of state
@@ -41,6 +47,12 @@ export function useDirect{{featureName.pascalCase}}PropertyValue<
     const state = use{{featureName.pascalCase}}ReducerContextState();
     return state[propertyName];
 };
+
+export function useNamed{{featureName.pascalCase}}StatePropertyValue<
+    T extends keyof {{state.stateName}}
+>(propertyName: T) {
+    return useDirect{{featureName.pascalCase}}PropertyValue<T>(propertyName);
+}
 
 {{#each state.properties}}
 export function useDirect{{../featureName.pascalCase}}PropertySetProperty<
