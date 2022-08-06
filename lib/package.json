@@ -20,6 +20,7 @@
         "test:coverage": "jest --coverage",
         "test:coverage-watch": "jest --coverage --watchAll",
         "clean": "npm ci && node clean.js",
+        "build:NoInstall": "node clean.js && tsc --project tsconfig.build.json && npm run copyTemplates",
         "build": "tsc --project tsconfig.build.json && npm run copyTemplates",
         "build:watch": "npm run copyTemplates && tsc -w --project tsconfig.build.json",
         "prebuild": "npm run clean",

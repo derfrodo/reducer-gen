@@ -82,7 +82,6 @@ jobs:
     uses: ./.github/workflows/templateCreateBundle.yml
     with:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
-      # nodeVersion: ${{ needs.prepare.outputs.nodeVersion }}
       nodeVersions: '["{{ needs.prepare.outputs.nodeVersion }}"]'
 
   deploy:

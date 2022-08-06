@@ -57,9 +57,9 @@ jobs:
         cd lib
         npm test
     
-    - name: build bundle (npm ci)
+    - name: build bundle (no installation)
       shell: bash
-      run: cd lib && npm run build
+      run: cd lib && npm run build:NoInstall
       
     - name: prepare package for publishing
       shell: bash
@@ -67,14 +67,14 @@ jobs:
         cd lib
         npm run prepareForPublish
 
-    - name: Archive code 
+    - name: Archive code as useing name from matrix (${{ matrix.artefactName }})
       if: ${{ matrix.artefactName != 0 }}
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.artefactName }}
         path: "lib"
 
-    - name: Archive code 
+    - name: Archive code as useing name from inputs (${{ inputs.artefactName }})
       if: ${{ matrix.artefactName == 0 }}
       uses: actions/upload-artifact@v2
       with:
