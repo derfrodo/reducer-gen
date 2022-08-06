@@ -34,6 +34,12 @@ jobs:
       with:
         node-version: ${{ matrix.nodeVersion }}
     
+    
+    - name: Write artefact name
+      shell: bash
+      run: |
+        echo ${{ matrix.artefactName != 0 }}
+    
     - name: perform installation (npm ci)
       shell: bash
       run: cd lib && npm ci
