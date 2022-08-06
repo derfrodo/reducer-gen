@@ -39,7 +39,7 @@ jobs:
         PACKAGE_VERSIONS=$(npm view ${{ env.packageName }} versions --json)
         echo $PACKAGE_VERSIONS
 
-        SCRIPT = "console.log($PACKAGE_VERSIONS.indexOf("$PACKAGE_VERSION"))"
+        SCRIPT="console.log($PACKAGE_VERSIONS.indexOf("${{ steps.read_package_version.outputs.version }}"))"
         echo $SCRIPT
 
         INDEX_OF_VERSION=$(node -e $SCRIPT)
