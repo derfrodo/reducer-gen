@@ -103,11 +103,12 @@ jobs:
         echo ${{ steps.downloadArtefact.outputs.download-path }}
         ls -R
 
-    - name: Just say "Hi"
+    - name: Deploy to npm js as beta version
       working-directory: artefact
       env:
         NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
       run: |
-        echo "Hi dev"
         touch .npmrc
         echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+        npm publish --access public --tag beta
+
