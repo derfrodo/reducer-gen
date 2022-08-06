@@ -10,6 +10,8 @@ on:
       artefactName:
         required: true
         type: string
+      include:
+        type: string
     outputs:
       packageVersion:
         description: "The version evaluated from package"
@@ -22,6 +24,7 @@ jobs:
     strategy:
       matrix:
         nodeVersion: ${{ fromJSON(inputs.nodeVersions) }}
+        include: ${{ fromJSON(inputs.include) }}
     name: "Test, build and bundle package (NodeJS ${{ matrix.nodeVersion }})"
     runs-on: ubuntu-latest
     steps:
