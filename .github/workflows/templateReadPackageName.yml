@@ -1,0 +1,38 @@
+#https://docs.github.com/en/actions/using-workflows/reusing-workflows#example-reusable-workflow
+name: Read Package Name
+
+on:
+  workflow_call:
+    inputs:
+      folderWithPackage:
+        required: true
+        type: string
+    outputs:
+      packageName:
+        description: "The name evaluated from package.json"
+        value: ${{ jobs.readname.outputs.packageName }}
+        
+jobs:
+  readname:
+    runs-on: ubuntu-latest
+
+    outputs:
+      packageName: ${{ steps.read_package_name.outputs.name  }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Read package version
+      working-directory: ${{ inputs.folderWithPackage }}
+      run: |
+        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
+        # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
+        PACKAGE_NAME=$(cat package.json \
+          | grep name \
+          | head -1 \
+          | awk -F: '{ print $2 }' \
+          | sed 's/[",]//g' \
+          | sed 's/^ *//;s/ *$//')
+
+        echo "Pipeline is for '$PACKAGE_NAME'"
+        echo "::set-output name=name::$PACKAGE_NAME"
+      id: read_package_name

@@ -8,7 +8,6 @@ on:
 
 env:
   nodeVersion: 16.x
-  packageName: "@derfrodo/reducer-gen"
   artefactName: "derfrodo_reducer-gen"
 
 jobs:
@@ -17,15 +16,24 @@ jobs:
     # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
     uses: ./.github/workflows/templateReadPackageVersion.yml
     with:
+      folderWithPackage: lib
       packageName: "@derfrodo/reducer-gen"
     secrets:
       testsecret: demosecret
 
+  readname:
+    uses: ./.github/workflows/templateReadPackageName.yml
+    with:
+      folderWithPackage: lib
+
   prepare: 
     runs-on: ubuntu-latest
     name: "Prepare run"
-    needs: readver
+    needs: 
+    - readver
+    - readname
     outputs:
+      packageName: ${{ needs.readname.outputs.packageName  }}
       packageVersion: ${{ needs.readver.outputs.packageVersion  }}
       packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
       artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
@@ -40,8 +48,8 @@ jobs:
       run: |
         # see also stackoverflow.com/questions/19345872/how-to-remove-a-newline-from-a-string-in-bash
         PACKAGE_VERSION=${{ needs.readver.outputs.packageVersion }}
-        echo "Search for $PACKAGE_VERSION in published versions"
-        PACKAGE_VERSIONS=$(npm view ${{ env.packageName }} versions --json)
+        echo "Search for $PACKAGE_VERSION in published versions of ${{ needs.readname.outputs.packageName }}"
+        PACKAGE_VERSIONS=$(npm view ${{ needs.readname.outputs.packageName }} versions --json)
         SCRIPT="const index=${PACKAGE_VERSIONS}.indexOf(\"${PACKAGE_VERSION}\"); console.log(index >= 0);"
         echo $SCRIPT > script.js
 
@@ -90,7 +98,8 @@ jobs:
     needs: 
     - build
     - prepare
-    name: "Deploy package as beta"
+
+    name: "Deploy package as beta (${{ needs.prepare.outputs.packageName }}@${{ needs.prepare.outputs.packageVersion }})"
     environment: beta
     
     steps:
@@ -105,7 +114,7 @@ jobs:
       id: downloadArtefact
       with:
         name: ${{ needs.prepare.outputs.artefactName }}
-        path: ${{ env.packageName }}-${{ needs.prepare.outputs.packageVersion }}-artefact
+        path: ${{ env.artefactName }}-${{ needs.prepare.outputs.packageVersion }}-artefact
 
     - name: What has been downloaded
       working-directory: ${{ steps.downloadArtefact.outputs.download-path }}

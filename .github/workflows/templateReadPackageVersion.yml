@@ -1,10 +1,13 @@
 #https://docs.github.com/en/actions/using-workflows/reusing-workflows#example-reusable-workflow
-name: Read Package Versions
+name: Read Package Version
 
 on:
   workflow_call:
     inputs:
       packageName:
+        required: true
+        type: string
+      folderWithPackage:
         required: true
         type: string
     secrets:
@@ -25,10 +28,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Read package version
+      working-directory: ${{ inputs.folderWithPackage }}
       run: |
         # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
         # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
-        PACKAGE_VERSION=$(cat lib/package.json \
+        PACKAGE_VERSION=$(cat package.json \
           | grep version \
           | head -1 \
           | awk -F: '{ print $2 }' \
