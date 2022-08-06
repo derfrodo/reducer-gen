@@ -80,6 +80,13 @@ jobs:
       with:
         node-version: ${{ env.node-version }}
     
+
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run_id }}
+
+
     - name: Just say "Hi"
       run: |
         echo "Hi dev"
