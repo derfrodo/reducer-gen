@@ -39,6 +39,7 @@ jobs:
         npm view ${{ env.packageName }} versions --json
 
   build:
+    # if: ${{ always() }}
     runs-on: ubuntu-latest
     name: "Build package"
     needs: 
@@ -105,7 +106,7 @@ jobs:
         ls -R
 
     - name: Deploy to npm js as beta version
-      working-directory: artefact
+      working-directory: ${{ steps.downloadArtefact.outputs.download-path }}
       env:
         NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
       run: |
