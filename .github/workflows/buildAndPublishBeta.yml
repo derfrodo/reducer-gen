@@ -80,8 +80,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:
@@ -101,6 +99,8 @@ jobs:
 
     - name: Just say "Hi"
       working-directory: artefact
+      - env:
+          NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
       run: |
         echo "Hi dev"
         touch .npmrc
