@@ -83,6 +83,7 @@ jobs:
     with:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
       nodeVersions: '["{{ needs.prepare.outputs.nodeVersion }}"]'
+      include: "[]"
 
   deploy:
     runs-on: ubuntu-latest
