@@ -42,5 +42,5 @@ jobs:
     with:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
       nodeVersion: ${{ matrix.node-version }}
-      nodeVersions: ["14.x", "16.x"]
+      nodeVersions: '["14.x", "16.x"]''
       

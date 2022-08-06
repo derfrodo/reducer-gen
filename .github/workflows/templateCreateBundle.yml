@@ -24,7 +24,7 @@ jobs:
   
     strategy:
       matrix:
-        node-version: ${{ input.nodeVersions }}
+        node-version: ${{ fromJSON(input.nodeVersions) }}
     name: "Test, build and bundle package (NodeJS ${{ inputs.nodeVersion }})"
     runs-on: ubuntu-latest
     steps:
