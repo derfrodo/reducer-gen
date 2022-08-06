@@ -7,9 +7,6 @@ on:
       nodeVersions:
         required: true
         type: string
-      nodeVersion:
-        required: true
-        type: string
       artefactName:
         required: true
         type: string
@@ -24,15 +21,15 @@ jobs:
   
     strategy:
       matrix:
-        node-version: ${{ fromJSON(inputs.nodeVersions) }}
+        nodeVersion: ${{ fromJSON(inputs.nodeVersions) }}
     name: "Test, build and bundle package (NodeJS ${{ inputs.nodeVersion }})"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Using Node.js ${{ inputs.nodeVersion }}
+    - name: Using Node.js ${{ matrix.nodeVersion }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ inputs.nodeVersion }}
+        node-version: ${{ matrix.nodeVersion }}
     
     - name: perform installation (npm ci)
       shell: bash
