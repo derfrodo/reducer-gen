@@ -62,11 +62,11 @@ jobs:
       shell: bash
       run: cd lib && npm run build:NoInstall
       
-    - name: prepare package for publishing
+    - name: Prepare package for publishing
       shell: bash
       run: |
         cd lib
-        npm run prepareForPublish
+        npm run prepareForPublish:NoBuildNoClean
 
     - name: Publish artefact with name from matrix (${{ matrix.artefactName }})
       if: ${{ matrix.artefactName != 0 }}

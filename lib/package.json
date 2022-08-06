@@ -11,6 +11,7 @@
         "reducer-gen": "./dist/cli.js"
     },
     "scripts": {
+        "prepareForPublish:NoBuildNoClean": "npm install --production && npm run cleanForPublish",
         "prepareForPublish": "npm run initializeTestState && npm run build && npm install --production && npm run cleanForPublish",
         "copyTemplates": "node copyTemplates",
         "initializeTestState": "node initializeTestState.js",
@@ -20,10 +21,10 @@
         "test:coverage": "jest --coverage",
         "test:coverage-watch": "jest --coverage --watchAll",
         "clean": "npm ci && node clean.js",
-        "build:NoInstall": "node clean.js && tsc --project tsconfig.build.json && npm run copyTemplates",
+        "build:NoInstall": "npm run initializeTestState && node clean.js && tsc --project tsconfig.build.json && npm run copyTemplates",
         "build": "tsc --project tsconfig.build.json && npm run copyTemplates",
         "build:watch": "npm run copyTemplates && tsc -w --project tsconfig.build.json",
-        "prebuild": "npm run clean",
+        "prebuild": "npm run initializeTestState && npm run clean",
         "prestart": "npm run clean",
         "start": "tsc -w",
         "lint": "tsc -p tsconfig.test.json --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
