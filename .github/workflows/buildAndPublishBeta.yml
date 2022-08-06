@@ -60,12 +60,24 @@ jobs:
       id: evaluate_package_version
 
   not_deployed: 
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && contains(needs.prepare.outputs.packageVersion, 'beta') }}
     name: "Version not deployed yet"
     runs-on: ubuntu-latest
     needs: 
     - prepare
     #docs.github.com/en/actions/learn-github-actions/expressions
-    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' }}
+    steps:
+    - name: Info
+      run: |
+        echo "Version ${{ needs.prepare.outputs.packageVersion }} has not been deployed to npm yet."
+  
+  not_deployed: 
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && !contains(needs.prepare.outputs.packageVersion, 'beta') }}
+    name: "Version not for beta"
+    runs-on: ubuntu-latest
+    needs: 
+    - prepare
+    #docs.github.com/en/actions/learn-github-actions/expressions
     steps:
     - name: Info
       run: |
@@ -84,9 +96,9 @@ jobs:
         echo "Version ${{ needs.prepare.outputs.packageVersion }} has been deployed to npm already."
   
   build:
-    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' }}
     needs: 
     - prepare
+    - not_deployed
     uses: ./.github/workflows/templateCreateBundle.yml
     with:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
