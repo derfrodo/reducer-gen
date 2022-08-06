@@ -4,11 +4,14 @@ name: Create Bundled Package
 on:
   workflow_call:
     inputs:
+      packageVersion:
+        required: false
+        type: string
       nodeVersions:
         required: true
         type: string
       artefactName:
-        required: true
+        required: false
         type: string
       include:
         type: string
@@ -42,6 +45,8 @@ jobs:
         echo ${{ matrix.artefactName != 0 }}
         echo "Artefact"
         echo ${{ matrix.artefactName }}
+        echo "PackageVersion"
+        echo ${{ matrix.packageVersion }}
         echo "Version"
         echo ${{ matrix.nodeVersion }}
         echo "INCLUDES"
@@ -67,16 +72,23 @@ jobs:
         cd lib
         npm run prepareForPublish
 
-    - name: Archive code as useing name from matrix (${{ matrix.artefactName }})
+    - name: Publish artefact with name from matrix (${{ matrix.artefactName }})
       if: ${{ matrix.artefactName != 0 }}
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.artefactName }}
         path: "lib"
 
-    - name: Archive code as useing name from inputs (${{ inputs.artefactName }})
-      if: ${{ matrix.artefactName == 0 }}
+    - name: Publish artefact with name from inputs (${{ inputs.artefactName }})
+      if: ${{ matrix.artefactName == 0 && inputs.artefactName != 0}}
       uses: actions/upload-artifact@v2
       with:
         name: ${{ inputs.artefactName }}
+        path: "lib"
+
+    - name: Publish artefact with generic name (artefact-derfrodo-reducer-gen-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }})
+      if: ${{ matrix.artefactName == 0 && inputs.artefactName == 0}}
+      uses: actions/upload-artifact@v2
+      with:
+        name: artefact-derfrodo-reducer-gen-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }}
         path: "lib"

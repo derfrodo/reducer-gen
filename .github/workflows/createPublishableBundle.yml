@@ -29,7 +29,7 @@ jobs:
     needs: readver
     outputs:
       packageVersion: ${{ needs.readver.outputs.packageVersion  }}
-      artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
+      # artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
     steps:
     - name: Read Deployed Versions
       run: |
@@ -40,7 +40,8 @@ jobs:
     - prepare
     uses: ./.github/workflows/templateCreateBundle.yml
     with:
-      artefactName: ${{ needs.prepare.outputs.artefactName }}
+      # artefactName: ${{ needs.prepare.outputs.artefactName }}
+      packageVersion: ${{ needs.readver.outputs.packageVersion }}
       nodeVersions: "[\"14.x\", \"16.x\"]"
-      include: "[{\"nodeVersion\":\"14.x\", \"artefactName\":\"artefact-${{ needs.readver.outputs.packageVersion }}-14.x-run-${{ github.run_id }}\"}]"
+      # include: "[{\"nodeVersion\":\"14.x\", \"artefactName\":\"artefact-${{ needs.readver.outputs.packageVersion }}-14.x-run-${{ github.run_id }}\"}]"
       
