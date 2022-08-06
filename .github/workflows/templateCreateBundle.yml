@@ -4,6 +4,9 @@ name: Create Bundled Package
 on:
   workflow_call:
     inputs:
+      nodeVersions:
+        required: true
+        type: string
       nodeVersion:
         required: true
         type: string
@@ -18,6 +21,10 @@ on:
 
 jobs:
   build:
+  
+    strategy:
+      matrix:
+        node-version: ${{ input.nodeVersions }}
     name: "Test, build and bundle package (NodeJS ${{ inputs.nodeVersion }})"
     runs-on: ubuntu-latest
     steps:

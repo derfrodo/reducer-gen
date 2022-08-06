@@ -15,9 +15,6 @@ env:
 
 jobs:
 
-  strategy:
-    matrix:
-      node-version: [14.x, 16.x]
   readver:
     # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
     uses: ./.github/workflows/templateReadPackageVersion.yml
@@ -45,3 +42,5 @@ jobs:
     with:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
       nodeVersion: ${{ matrix.node-version }}
+      nodeVersions: ["14.x", "16.x"]
+      
