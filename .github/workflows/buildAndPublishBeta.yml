@@ -97,7 +97,6 @@ jobs:
       run: |
         echo ${{ steps.downloadArtefact.outputs.download-path }}
         ls -R
-
     - name: Just say "Hi"
       working-directory: artefact
       - env:
