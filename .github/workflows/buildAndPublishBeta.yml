@@ -16,9 +16,10 @@ jobs:
   readver:
     # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
     uses: ./.github/workflows/templateReadPackageVersion.yml
+    env: 
+      packageName: ${{ env.packageName }}
     with:
       username: demouser
-      packageName: ${{ env.packageName }}
     secrets:
       testsecret: demosecret
 
