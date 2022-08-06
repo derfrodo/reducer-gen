@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  node-version: 16.x
+  nodeVersion: 16.x
 
 permissions:
   contents: read
@@ -20,10 +20,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Using Node.js ${{ env.node-version }}
+    - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ env.node-version }}
+        nodeVersion: ${{ env.nodeVersion }}
     
     - name: Read package version
       run: |
@@ -63,7 +63,7 @@ jobs:
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run_id }}
+        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-run-${{ github.run_id }}
         path: "lib"
 
   deploy:
@@ -75,16 +75,31 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - name: Using Node.js ${{ env.node-version }}
+    - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ env.node-version }}
-    
+        nodeVersion: ${{ env.nodeVersion }}
+
+    - name: Read package version
+      run: |
+        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
+        # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
+        PACKAGE_VERSION=$(cat lib/package.json \
+          | grep version \
+          | head -1 \
+          | awk -F: '{ print $2 }' \
+          | sed 's/[",]//g' \
+          | sed 's/^ *//;s/ *$//')
+
+        echo "Deploy reducer gen for version '$PACKAGE_VERSION'"
+        echo "::set-output name=version::$PACKAGE_VERSION"
+      id: read_package_version
+
 
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
       with:
-        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run_id }}
+        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-run-${{ github.run_id }}
 
 
     - name: Just say "Hi"
