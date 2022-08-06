@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         nodeVersion: ${{ fromJSON(inputs.nodeVersions) }}
-    name: "Test, build and bundle package (NodeJS ${{ inputs.nodeVersion }})"
+    name: "Test, build and bundle package (NodeJS ${{ matrix.nodeVersion }})"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -52,6 +52,14 @@ jobs:
         npm run prepareForPublish
 
     - name: Archive code 
+      if: ${{ matrix.artefactName != 0 }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.artefactName }}
+        path: "lib"
+
+    - name: Archive code 
+      if: ${{ matrix.artefactName == 0 }}
       uses: actions/upload-artifact@v2
       with:
         name: ${{ inputs.artefactName }}

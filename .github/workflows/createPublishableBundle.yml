@@ -43,4 +43,5 @@ jobs:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
       # nodeVersion: ${{ matrix.node-version }}
       nodeVersions: "[\"14.x\", \"16.x\"]"
+      include: "[{"nodeVersion":\"14.x\", "artefactName":"${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-14.x-run-${{ github.run_id }}"}]"
       
