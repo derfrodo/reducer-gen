@@ -1162,10 +1162,17 @@ export function useDirectTestFeaturePropertySetProperty<
                 // console.log(result);
                 // assert
                 expect(result.replace(/\r\n/g, "\n"))
-                    .toBe(`export const TestFeatureStateProperties = Object.freeze({
+                    .toBe(`import type { TESTSTATE } from "./state";
+
+export const TestFeatureStateProperties: { [key in keyof TESTSTATE]: key } = Object.freeze({
     prop1: "prop1",
     prop2: "prop2",
 });
+
+export enum TestFeatureStatePropertiesEnum {
+    prop1 = "prop1",
+    prop2 = "prop2",
+}
 `);
             });
 

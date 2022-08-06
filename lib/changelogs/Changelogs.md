@@ -1,5 +1,11 @@
 # Changelog 
 
+## Version 0.4.3-beta:
+- Fix issue when state is not recognized as default export
+
+## Version 0.4.2-beta:
+- Enhanced Typing for [FeatureName]StateProperties
+
 ## Version 0.4.1-beta:
 - Add alias useNamed[Feature]StateProperty for useDirectProperty hooks
 

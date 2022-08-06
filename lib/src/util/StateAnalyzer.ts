@@ -126,6 +126,11 @@ export class StateAnalyzer {
                 case ts.SyntaxKind.InterfaceDeclaration:
                     if (this.isStateInterface(node)) {
                         result.stateInterfaceName = node.name.text;
+                        log.info(`File ${path} contains state interface: ${node.name.text}`);
+                        if ((node.modifiers?.filter(m => ts.isToken(m) && m.kind === ts.SyntaxKind.DefaultKeyword).length ?? 0) > 0) {
+                            log.info(`State "${node.name.text}" in file "${path}" is default export.`);
+                            result.hasStateAsDefaultExport = true;
+                        }
                         result = await this.getWithAnalyseStateInterface(
                             node,
                             doc,
@@ -148,14 +153,18 @@ export class StateAnalyzer {
                 case ts.SyntaxKind.ExportAssignment:
                     if (ts.isExportAssignment(node)) {
                         const text = node.expression.getText(doc);
+                        node.modifiers
                         result.hasStateAsDefaultExport =
                             typeof text === "string" &&
                             result.stateInterfaceName === text;
+
+                        log.info(`State in file ${path} is default export.`);
                     }
-                    log.debug("Found export in state file");
+                    log.info(`File ${path} contains state interface.`);
                     // TODO: Check if exported item used in state (may also be state itself :) )
                     break;
                 default:
+                    log.info(`File ${path} contains node.`);
                     this.printNode(node);
                     break;
             }
@@ -329,10 +338,8 @@ export class StateAnalyzer {
                     );
                 } else {
                     throw new Error(
-                        `Inner type for unionType for property "${
-                            statePropertyInfo?.name
-                        }" in State for feature "${
-                            info?.featureData.featureName
+                        `Inner type for unionType for property "${statePropertyInfo?.name
+                        }" in State for feature "${info?.featureData.featureName
                         }" is literaltype and will not be resolved.
 You may set it to resolve typeliterals always to objects by passing --analyseLiteralTypes. (Content ${JSON.stringify(
                             ut
@@ -369,12 +376,9 @@ You may set it to resolve typeliterals always to objects by passing --analyseLit
                     this.printNode(ut);
                 }
                 throw new Error(
-                    `Inner type for unionType for property "${
-                        statePropertyInfo?.name
-                    }" in State for feature "${
-                        info?.featureData.featureName
-                    }" can not be resolved: ${
-                        ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
+                    `Inner type for unionType for property "${statePropertyInfo?.name
+                    }" in State for feature "${info?.featureData.featureName
+                    }" can not be resolved: ${ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
                     }`
                 );
         }
@@ -398,12 +402,9 @@ You may set it to resolve typeliterals always to objects by passing --analyseLit
                     this.printNode(ut);
                 }
                 throw new Error(
-                    `Inner type for literal node for property "${
-                        statePropertyInfo?.name
-                    }" in State for feature "${
-                        info?.featureData.featureName
-                    }" can not be resolved: ${
-                        ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
+                    `Inner type for literal node for property "${statePropertyInfo?.name
+                    }" in State for feature "${info?.featureData.featureName
+                    }" can not be resolved: ${ut && ut.kind ? ts.SyntaxKind[ut.kind] : ut
                     }`
                 );
         }

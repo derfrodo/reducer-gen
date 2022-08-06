@@ -1,4 +1,11 @@
-export const {{featureName.pascalCase}}StateProperties = Object.freeze({
+import type {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
+
+export const {{featureName.pascalCase}}StateProperties: { [key in keyof {{state.stateName}}]: key } = Object.freeze({
 {{#each state.properties}}    {{name}}: "{{name}}",
 {{/each}}
 });
+
+export enum {{featureName.pascalCase}}StatePropertiesEnum {
+{{#each state.properties}}    {{name}} = "{{name}}",
+{{/each}}
+}
