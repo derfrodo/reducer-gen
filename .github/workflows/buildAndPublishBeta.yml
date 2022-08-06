@@ -61,7 +61,7 @@ jobs:
 
   not_deployed: 
     if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && contains(needs.prepare.outputs.packageVersion, 'beta') }}
-    name: "Version not deployed yet"
+    name: "Version ${{ needs.prepare.outputs.packageVersion }} not deployed yet"
     runs-on: ubuntu-latest
     needs: 
     - prepare
@@ -73,7 +73,7 @@ jobs:
   
   not_for_beta: 
     if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && !contains(needs.prepare.outputs.packageVersion, 'beta') }}
-    name: "Version not for beta"
+    name: "Version ${{ needs.prepare.outputs.packageVersion }} not for beta"
     runs-on: ubuntu-latest
     needs: 
     - prepare
@@ -85,7 +85,7 @@ jobs:
   
   already_deployed: 
     runs-on: ubuntu-latest
-    name: "Version already deployed"
+    name: "Version ${{ needs.prepare.outputs.packageVersion }} already deployed"
     needs: 
     - prepare
     #docs.github.com/en/actions/learn-github-actions/expressions
