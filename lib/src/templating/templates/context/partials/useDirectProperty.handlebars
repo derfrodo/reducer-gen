@@ -1,15 +1,4 @@
 
-export function isKeyof{{../featureName.pascalCase}}State(propertyName: any): propertyName is keyof State {
-    return (
-        typeof propertyName === "string" ||
-        typeof propertyName === "number" ||
-        typeof propertyName === "symbol"
-        ) &&
-        ({{#each state.properties}}
-            propertyName === "{{name}}"{{#unless @last}} ||{{/unless}}{{/each}}
-        )
-} 
-
 export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
 export type {{featureName.pascalCase}}PropertyTuple<T extends keyof State> = [State[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
 

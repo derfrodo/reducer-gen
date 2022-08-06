@@ -9,3 +9,14 @@ export enum {{featureName.pascalCase}}StatePropertiesEnum {
 {{#each state.properties}}    {{name}} = "{{name}}",
 {{/each}}
 }
+
+export function isKeyof{{featureName.pascalCase}}State(propertyName: any): propertyName is keyof {{state.stateName}} {
+    return (
+        typeof propertyName === "string" ||
+        typeof propertyName === "number" ||
+        typeof propertyName === "symbol"
+        ) &&
+        ({{#each state.properties}}
+            propertyName === "{{name}}"{{#unless @last}} ||{{/unless}}{{/each}}
+        )
+}

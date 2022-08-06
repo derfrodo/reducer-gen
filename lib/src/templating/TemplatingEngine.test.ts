@@ -1043,18 +1043,6 @@ export const useTestFeatureStatePropertyChangedEffect = <
     useTestFeatureStateChangedEffect(changedCallback);
 };
 
-export function isKeyofState(propertyName: any): propertyName is keyof State {
-    return (
-        typeof propertyName === "string" ||
-        typeof propertyName === "number" ||
-        typeof propertyName === "symbol"
-        ) &&
-        (
-            propertyName === "prop1" ||
-            propertyName === "prop2"
-        )
-} 
-
 export type TestFeatureSetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
 export type TestFeaturePropertyTuple<T extends keyof State> = [State[T], TestFeatureSetPropertyHandler<T>]
 
@@ -1172,6 +1160,18 @@ export const TestFeatureStateProperties: { [key in keyof TESTSTATE]: key } = Obj
 export enum TestFeatureStatePropertiesEnum {
     prop1 = "prop1",
     prop2 = "prop2",
+}
+
+export function isKeyofTestFeatureState(propertyName: any): propertyName is keyof TESTSTATE {
+    return (
+        typeof propertyName === "string" ||
+        typeof propertyName === "number" ||
+        typeof propertyName === "symbol"
+        ) &&
+        (
+            propertyName === "prop1" ||
+            propertyName === "prop2"
+        )
 }
 `);
             });
