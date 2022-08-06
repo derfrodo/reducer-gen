@@ -8,6 +8,7 @@ on:
 
 env:
   nodeVersion: 16.x
+  packageName: "@derfrodo/reducer-gen"
 
 jobs:
   prepare: 
@@ -31,6 +32,10 @@ jobs:
         echo "Build reducer gen for version '$PACKAGE_VERSION'"
         echo "::set-output name=version::$PACKAGE_VERSION"
       id: read_package_version
+
+    - name: Read Deployed Versions
+      run: |
+        npm view ${{ env.packageName }} versions --json
 
   build:
     runs-on: ubuntu-latest
@@ -97,6 +102,7 @@ jobs:
       run: |
         echo ${{ steps.downloadArtefact.outputs.download-path }}
         ls -R
+
     - name: Just say "Hi"
       working-directory: artefact
       env:
