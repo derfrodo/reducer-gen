@@ -9,6 +9,7 @@ on:
 env:
   nodeVersion: 16.x
   packageName: "@derfrodo/reducer-gen"
+  artefactName: "derfrodo_reducer-gen"
 
 jobs:
   prepare: 
@@ -72,7 +73,7 @@ jobs:
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ env.packageName }}-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
+        name: ${{ env.artefactName }}-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
         path: "lib"
 
   deploy:
@@ -94,7 +95,7 @@ jobs:
       uses: actions/download-artifact@v3
       id: downloadArtefact
       with:
-        name: ${{ env.packageName }}-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
+        name: ${{ env.artefactName }}-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
         path: ${{ env.packageName }}-${{ needs.prepare.outputs.packageVersion }}-artefact
 
     - name: What has been downloaded
