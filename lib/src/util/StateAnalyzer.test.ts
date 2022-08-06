@@ -42,52 +42,52 @@ const getDefaultTestGeneratorOptions = (): StateAnalyzerOptions => {
 const getVisitStateFileTestDefaultParams = (): Parameters<
     StateAnalyzer["visitStateFile"]
 > => [
-    {
-        featureName: "fakeFeature",
-        folderToFeatureReducer: "fakefeaturefolder",
-        indexFile: {
-            fileExists: false,
-            filePath: "indexfile path",
+        {
+            featureName: "fakeFeature",
+            folderToFeatureReducer: "fakefeaturefolder",
+            indexFile: {
+                fileExists: false,
+                filePath: "indexfile path",
+            },
+            pathToStateFile: "pathToIndexFile",
+            extensionFiles: {
+                action: {
+                    fileExists: false,
+                    filePath: "action",
+                },
+                actionCreators: {
+                    fileExists: false,
+                    filePath: "actionCreators",
+                },
+                defaultState: {
+                    fileExists: false,
+                    filePath: "defaultState",
+                },
+                reducerActions: {
+                    fileExists: false,
+                    filePath: "reducerAction",
+                },
+            },
+            mainFiles: {
+                action: {
+                    fileExists: false,
+                    filePath: "action",
+                },
+                actionCreators: {
+                    fileExists: false,
+                    filePath: "actionCreators",
+                },
+                defaultState: {
+                    fileExists: false,
+                    filePath: "defaultState",
+                },
+                reducerActions: {
+                    fileExists: false,
+                    filePath: "reducerAction",
+                },
+            },
         },
-        pathToStateFile: "pathToIndexFile",
-        extensionFiles: {
-            action: {
-                fileExists: false,
-                filePath: "action",
-            },
-            actionCreators: {
-                fileExists: false,
-                filePath: "actionCreators",
-            },
-            defaultState: {
-                fileExists: false,
-                filePath: "defaultState",
-            },
-            reducerActions: {
-                fileExists: false,
-                filePath: "reducerAction",
-            },
-        },
-        mainFiles: {
-            action: {
-                fileExists: false,
-                filePath: "action",
-            },
-            actionCreators: {
-                fileExists: false,
-                filePath: "actionCreators",
-            },
-            defaultState: {
-                fileExists: false,
-                filePath: "defaultState",
-            },
-            reducerActions: {
-                fileExists: false,
-                filePath: "reducerAction",
-            },
-        },
-    },
-];
+    ];
 
 describe("StateAnalyzer tests", () => {
     describe("StateAnalyzer.visitStateFile tests", () => {
@@ -111,6 +111,7 @@ export default IState;
 `);
             });
 
+
             const analyzer = new StateAnalyzer(
                 options,
                 fsMock.service,
@@ -124,6 +125,78 @@ export default IState;
             // console.log(visitResult);
             expect(visitResult.stateInterfaceName === "IState");
         });
+
+        it("StateAnalyzer.visitStateFile finds IState default interface export", async () => {
+            // arrange:
+            const options = { ...getDefaultTestGeneratorOptions() };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.getObjectNameFromFSObjectsPath.mockImplementation(() =>
+                Promise.resolve("state.ts")
+            );
+
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve(`import { APP_STATES } from "../interfaces/APP_STATES";
+
+export default interface IState {
+    appState: APP_STATES | undefined;
+    darkMode: boolean;
+}
+
+export default IState;
+`);
+            });
+
+
+            const analyzer = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const visitResult = await analyzer.visitStateFile(
+                ...getVisitStateFileTestDefaultParams()
+            );
+
+            // console.log(visitResult);
+            expect(visitResult.hasStateAsDefaultExport)
+        });
+
+
+        it("StateAnalyzer.visitStateFile finds IState named interface export", async () => {
+            // arrange:
+            const options = { ...getDefaultTestGeneratorOptions() };
+            const fsMock = getFileSystemHelperMock();
+            fsMock.mock.getObjectNameFromFSObjectsPath.mockImplementation(() =>
+                Promise.resolve("state.ts")
+            );
+
+            fsMock.mock.readFile.mockImplementation(() => {
+                return Promise.resolve(`import { APP_STATES } from "../interfaces/APP_STATES";
+
+export interface IState {
+    appState: APP_STATES | undefined;
+    darkMode: boolean;
+}
+
+export default IState;
+`);
+            });
+
+
+            const analyzer = new StateAnalyzer(
+                options,
+                fsMock.service,
+                new StringHelper()
+            );
+
+            const visitResult = await analyzer.visitStateFile(
+                ...getVisitStateFileTestDefaultParams()
+            );
+
+            // console.log(visitResult);
+            expect(visitResult.hasStateAsDefaultExport === false)
+        });
+
         it("StateAnalyzer.visitStateFile finds State interface name", async () => {
             // arrange:
             const options = { ...getDefaultTestGeneratorOptions() };
@@ -348,12 +421,12 @@ export default State;
                         ts.factory.createNodeArray(
                             given.map(
                                 (val, i) =>
-                                    ({
-                                        kind: val,
-                                        end: 80 + i,
-                                        flags: ts.NodeFlags.None,
-                                        pos: 75,
-                                    } as ts.KeywordTypeNode)
+                                ({
+                                    kind: val,
+                                    end: 80 + i,
+                                    flags: ts.NodeFlags.None,
+                                    pos: 75,
+                                } as ts.KeywordTypeNode)
                             ),
                             false
                         );
@@ -397,12 +470,12 @@ export default State;
                                 } as ts.TypeNode,
                                 ...given.map(
                                     (val, i) =>
-                                        ({
-                                            kind: val,
-                                            end: 80 + i,
-                                            flags: ts.NodeFlags.None,
-                                            pos: 75,
-                                        } as ts.KeywordTypeNode)
+                                    ({
+                                        kind: val,
+                                        end: 80 + i,
+                                        flags: ts.NodeFlags.None,
+                                        pos: 75,
+                                    } as ts.KeywordTypeNode)
                                 ),
                             ],
                             false
@@ -447,12 +520,12 @@ export default State;
                                 } as ts.TypeNode,
                                 ...given.map(
                                     (val, i) =>
-                                        ({
-                                            kind: val,
-                                            end: 80 + i,
-                                            flags: ts.NodeFlags.None,
-                                            pos: 75,
-                                        } as ts.KeywordTypeNode)
+                                    ({
+                                        kind: val,
+                                        end: 80 + i,
+                                        flags: ts.NodeFlags.None,
+                                        pos: 75,
+                                    } as ts.KeywordTypeNode)
                                 ),
                             ],
                             false
@@ -653,35 +726,34 @@ export default State;
             [ts.factory.createFalse()],
             [{ kind: ts.SyntaxKind.PrefixUnaryExpression } as any],
         ])("resolveLiteralType throws on %s as literal", (given) => {
-            it(`resolveLiteralType throws when ${
-                ts.SyntaxKind[given.kind]
-            } is passed`, async () => {
-                // arrange:
-                const options: StateAnalyzerOptions = {
-                    ...getDefaultTestGeneratorOptions(),
-                    srcFolder: "Fakefolder",
-                };
-                const fsMock = getFileSystemHelperMock();
-                fsMock.mock.readFile.mockImplementation(() => {
-                    return Promise.resolve("");
+            it(`resolveLiteralType throws when ${ts.SyntaxKind[given.kind]
+                } is passed`, async () => {
+                    // arrange:
+                    const options: StateAnalyzerOptions = {
+                        ...getDefaultTestGeneratorOptions(),
+                        srcFolder: "Fakefolder",
+                    };
+                    const fsMock = getFileSystemHelperMock();
+                    fsMock.mock.readFile.mockImplementation(() => {
+                        return Promise.resolve("");
+                    });
+
+                    const uut = new StateAnalyzer(
+                        options,
+                        fsMock.service,
+                        new StringHelper()
+                    );
+
+                    const typeNode: ts.LiteralTypeNode["literal"] = given;
+
+                    // act
+                    const result = () => uut.resolveLiteralType(typeNode);
+
+                    // assert
+                    expect(result).toThrowError(
+                        /Inner type for literal node for property /
+                    );
                 });
-
-                const uut = new StateAnalyzer(
-                    options,
-                    fsMock.service,
-                    new StringHelper()
-                );
-
-                const typeNode: ts.LiteralTypeNode["literal"] = given;
-
-                // act
-                const result = () => uut.resolveLiteralType(typeNode);
-
-                // assert
-                expect(result).toThrowError(
-                    /Inner type for literal node for property /
-                );
-            });
         });
         describe.each<[ts.LiteralTypeNode["literal"], STATE_PROPERT_TYPES]>([
             [ts.factory.createNull(), STATE_PROPERT_TYPES.NULL],
@@ -809,31 +881,30 @@ export default State;
                 STATE_PROPERT_TYPES.ARRAY,
             ],
         ])("resolveTypeType resolves on %s", (given, expected) => {
-            it(`resolveTypeType resolves when ${
-                ts.SyntaxKind[given.kind]
-            } is passed`, async () => {
-                // arrange:
-                const options: StateAnalyzerOptions = {
-                    ...getDefaultTestGeneratorOptions(),
-                    srcFolder: "Fakefolder",
-                };
-                const fsMock = getFileSystemHelperMock();
-                fsMock.mock.readFile.mockImplementation(() => {
-                    return Promise.resolve("");
+            it(`resolveTypeType resolves when ${ts.SyntaxKind[given.kind]
+                } is passed`, async () => {
+                    // arrange:
+                    const options: StateAnalyzerOptions = {
+                        ...getDefaultTestGeneratorOptions(),
+                        srcFolder: "Fakefolder",
+                    };
+                    const fsMock = getFileSystemHelperMock();
+                    fsMock.mock.readFile.mockImplementation(() => {
+                        return Promise.resolve("");
+                    });
+
+                    const uut = new StateAnalyzer(
+                        options,
+                        fsMock.service,
+                        new StringHelper()
+                    );
+
+                    // act
+                    const result = uut.resolveTypeType(given);
+
+                    // assert
+                    expect(result).toBe(expected);
                 });
-
-                const uut = new StateAnalyzer(
-                    options,
-                    fsMock.service,
-                    new StringHelper()
-                );
-
-                // act
-                const result = uut.resolveTypeType(given);
-
-                // assert
-                expect(result).toBe(expected);
-            });
         });
     });
 
