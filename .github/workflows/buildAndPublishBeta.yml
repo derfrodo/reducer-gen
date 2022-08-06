@@ -71,8 +71,8 @@ jobs:
       run: |
         echo "Version ${{ needs.prepare.outputs.packageVersion }} has not been deployed to npm yet."
   
-  not_deployed: 
-    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && (!contains(needs.prepare.outputs.packageVersion, 'beta')) }}
+  not_for_beta: 
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && !contains(needs.prepare.outputs.packageVersion, 'beta') }}
     name: "Version not for beta"
     runs-on: ubuntu-latest
     needs: 
@@ -81,7 +81,7 @@ jobs:
     steps:
     - name: Info
       run: |
-        echo "Version ${{ needs.prepare.outputs.packageVersion }} has not been deployed to npm yet."
+        echo "Version ${{ needs.prepare.outputs.packageVersion }} has not been deployed to npm yet. Anyway: It is not ment to be deployed as beta version."
   
   already_deployed: 
     runs-on: ubuntu-latest
