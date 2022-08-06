@@ -72,7 +72,7 @@ jobs:
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: reducer-gen-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
+        name: ${{ env.packageName }}-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
         path: "lib"
 
   deploy:
@@ -94,8 +94,8 @@ jobs:
       uses: actions/download-artifact@v3
       id: downloadArtefact
       with:
-        name: reducer-gen-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
-        path: artefact
+        name: ${{ env.packageName }}-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
+        path: ${{ env.packageName }}-${{ needs.prepare.outputs.packageVersion }}-artefact
 
     - name: What has been downloaded
       working-directory: ${{ steps.downloadArtefact.outputs.download-path }}
