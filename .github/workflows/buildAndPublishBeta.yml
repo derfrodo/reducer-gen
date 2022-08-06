@@ -43,7 +43,7 @@ jobs:
         SCRIPT="const index=${PACKAGE_VERSIONS//[$'\t\r\n']}.indexOf(\"${{ steps.read_package_version.outputs.version }}\"); console.log(index);"
         echo $SCRIPT
 
-        INDEX_OF_VERSION=$(node -e SCRIPT)
+        INDEX_OF_VERSION=$(node -e $SCRIPT)
 
         echo $INDEX_OF_VERSION
         echo "::set-output name=versions::$PACKAGE_VERSIONS"
