@@ -15,7 +15,7 @@ jobs:
 
   readver:
     # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
-    uses: .github/workflows/readPackageVersion.yml@main
+    uses: ./.github/workflows/readPackageVersion.yml@main
     with:
       username: demouser
     secrets:
@@ -45,6 +45,10 @@ jobs:
     #     echo "::set-output name=version::$PACKAGE_VERSION"
     #   id: read_package_version
 
+    - name: Using Node.js ${{ env.nodeVersion }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.nodeVersion }}
     - name: Read Deployed Versions
       run: |
         PACKAGE_VERSIONS=$(npm view ${{ env.packageName }} versions --json)
