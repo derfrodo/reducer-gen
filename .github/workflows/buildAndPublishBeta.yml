@@ -60,26 +60,26 @@ jobs:
         cd lib
         npm run prepareForPublish
 
-#    - name: Archive code 
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: code-node-${{ matrix.node-version }}
-#        path: "lib/*"
-        
-    # - name: create ZIP archive
-    #   shell: bash
-    #   run: |
-    #     cd lib
-    #     zip -r "../archive-node-${{ matrix.node-version }}.zip" "."
-
-    # - name: Archive code 
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: code-node-${{ matrix.node-version }}
-    #     path: "archive-node-${{ matrix.node-version }}.zip"
-
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
         name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run_id }}
         path: "lib"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: 
+    - build
+    name: "Deploy package as beta"
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Using Node.js ${{ env.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.node-version }}
+    
+    - name: Just say "Hi"
+      run: |
+        echo "Hi dev"
