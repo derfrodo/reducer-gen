@@ -2,22 +2,29 @@
 name: Create Publishable Bundle
 
 on:
-  # push:
-  #   branches: [ main ]
-  # pull_request:
-  #   branches: [ main ]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
+  readver:
+    # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
+    uses: ./.github/workflows/templateReadPackageVersion.yml
+    with:
+      packageName: "@derfrodo/reducer-gen"
+    secrets:
+      testsecret: demosecret
+
   build:
-
+    name: "Test and Build bundle (${{ matrix.node-version }})"
     runs-on: ubuntu-latest
-
+    needs: readver
     strategy:
       matrix:
         node-version: [14.x, 16.x]
         # node-version: [12.x, 14.x, 16.x]
-#        node-version: [10.x, 12.x, 14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,21 +32,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    
-    - name: Read package version
-      run: |
-        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
-        # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
-        PACKAGE_VERSION=$(cat lib/package.json \
-          | grep version \
-          | head -1 \
-          | awk -F: '{ print $2 }' \
-          | sed 's/[",]//g' \
-          | sed 's/^ *//;s/ *$//')
-
-        echo "Build reducer gen for version '$PACKAGE_VERSION'"
-        echo "::set-output name=version::$PACKAGE_VERSION"
-      id: read_package_version
 
     - name: perform installation (npm ci)
       shell: bash
@@ -61,26 +53,8 @@ jobs:
         cd lib
         npm run prepareForPublish
 
-#    - name: Archive code 
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: code-node-${{ matrix.node-version }}
-#        path: "lib/*"
-        
-    # - name: create ZIP archive
-    #   shell: bash
-    #   run: |
-    #     cd lib
-    #     zip -r "../archive-node-${{ matrix.node-version }}.zip" "."
-
-    # - name: Archive code 
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: code-node-${{ matrix.node-version }}
-    #     path: "archive-node-${{ matrix.node-version }}.zip"
-
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-node-${{ matrix.node-version }}-run-${{ github.run_id }}
+        name: reducer-gen-${{ needs.readver.outputs.packageVersion }}-node-${{ matrix.node-version }}-run-${{ github.run_id }}
         path: "lib"
