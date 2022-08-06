@@ -14,17 +14,12 @@ permissions:
   # issues: write
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: "Build package"
-
+  prepare: 
+    name: "Prepare run"
+    outputs:
+      packageVersion: ${{ steps.read_package_version.outputs.version  }}
     steps:
     - uses: actions/checkout@v2
-    - name: Using Node.js ${{ env.nodeVersion }}
-      uses: actions/setup-node@v1
-      with:
-        nodeVersion: ${{ env.nodeVersion }}
-    
     - name: Read package version
       run: |
         # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
@@ -40,6 +35,18 @@ jobs:
         echo "::set-output name=version::$PACKAGE_VERSION"
       id: read_package_version
 
+  build:
+    runs-on: ubuntu-latest
+    name: "Build package"
+    needs: 
+    - prepare
+    steps:
+    - uses: actions/checkout@v2
+    - name: Using Node.js ${{ env.nodeVersion }}
+      uses: actions/setup-node@v1
+      with:
+        nodeVersion: ${{ env.nodeVersion }}
+    
     - name: perform installation (npm ci)
       shell: bash
       run: cd lib && npm ci
@@ -63,7 +70,7 @@ jobs:
     - name: Archive code 
       uses: actions/upload-artifact@v2
       with:
-        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-run-${{ github.run_id }}
+        name: reducer-gen-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
         path: "lib"
 
   deploy:
@@ -80,26 +87,10 @@ jobs:
       with:
         nodeVersion: ${{ env.nodeVersion }}
 
-    - name: Read package version
-      run: |
-        # See also https://gist.github.com/darrenn/8c6a5b969481725a4413
-        # and https://phil.lavin.me.uk/2012/04/trimming-white-space-with-sed/
-        PACKAGE_VERSION=$(cat lib/package.json \
-          | grep version \
-          | head -1 \
-          | awk -F: '{ print $2 }' \
-          | sed 's/[",]//g' \
-          | sed 's/^ *//;s/ *$//')
-
-        echo "Deploy reducer gen for version '$PACKAGE_VERSION'"
-        echo "::set-output name=version::$PACKAGE_VERSION"
-      id: read_package_version
-
-
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
       with:
-        name: reducer-gen-${{ steps.read_package_version.outputs.version }}-run-${{ github.run_id }}
+        name: reducer-gen-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
 
 
     - name: Just say "Hi"
