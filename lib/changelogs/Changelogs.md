@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.3.8-beta:
+- Start with autodeployment
+
 ## Version 0.3.7-beta:
 - Better types ...
 
