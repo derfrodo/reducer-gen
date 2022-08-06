@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.4.4-beta:
+- Sparkling pipelines
+
 ## Version 0.4.3-beta:
 - Fix issue when state is not recognized as default export
 
