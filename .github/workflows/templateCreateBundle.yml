@@ -16,11 +16,6 @@ on:
       include:
         required: true
         type: string
-    outputs:
-      packageVersion:
-        description: "The version evaluated from package"
-        value: ${{ jobs.readversion.outputs.packageVersion }}
-        # This is a basic workflow that is manually triggered
 
 jobs:
   build:
