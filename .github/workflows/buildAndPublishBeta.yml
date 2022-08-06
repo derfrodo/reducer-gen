@@ -51,18 +51,16 @@ jobs:
         node-version: ${{ env.nodeVersion }}
     - name: Read Deployed Versions
       run: |
-        PACKAGE_VERSIONS=$(npm view ${{ env.packageName }} versions --json)
-        # echo $PACKAGE_VERSIONS
-
         # see also stackoverflow.com/questions/19345872/how-to-remove-a-newline-from-a-string-in-bash
-        # SCRIPT="const index=${PACKAGE_VERSIONS//[$'\t\r\n']}.indexOf(\"${{ needs.readver.outputs.version }}\"); console.log({index});"
-        SCRIPT="const index=${PACKAGE_VERSIONS}.indexOf(\"${{ needs.readver.outputs.version }}\"); console.log(index >= 0);"
+        PACKAGE_VERSION=${{ needs.readver.outputs.packageVersion }}
+        echo "Search for $PACKAGE_VERSION in published versions"
+        PACKAGE_VERSIONS=$(npm view ${{ env.packageName }} versions --json)
+        SCRIPT="const index=${PACKAGE_VERSIONS}.indexOf(\"${PACKAGE_VERSION}\"); console.log(index >= 0);"
         echo $SCRIPT > script.js
 
         IS_PUBLISHED=$(node script.js)
 
-        echo $IS_PUBLISHED
-        # echo "::set-output name=versions::$PACKAGE_VERSIONS"
+        echo "Version has been published: $IS_PUBLISHED"
         echo "::set-output name=versionPublished::$IS_PUBLISHED"
       id: evaluate_package_version
 
