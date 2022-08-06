@@ -7,6 +7,9 @@ export function useDirect{{../featureName.pascalCase}}Property<
     T extends keyof {{../state.stateName}}
 >(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}PropertyTuple<"{{name}}"> : {{../featureName.pascalCase}}PropertyTuple<T>;
 {{/each}}
+export function useDirect{{featureName.pascalCase}}Property<
+    T extends keyof {{state.stateName}} | {{featureName.pascalCase}}StatePropertiesEnum
+>(propertyName: T): {{featureName.pascalCase}}PropertyTuple<T>;
 
 /**
  * Use this method if you want to get a single property from state and a callback function for updating it of {{featureName.pascalCase}}
@@ -21,10 +24,14 @@ export function useDirect{{featureName.pascalCase}}Property<
 };
 
 export function useNamed{{featureName.pascalCase}}StateProperty<
-    T extends keyof {{state.stateName}}
+    T extends keyof {{state.stateName}} | {{featureName.pascalCase}}StatePropertiesEnum
 >(propertyName: T) {
     return useDirect{{featureName.pascalCase}}Property<T>(propertyName);
 }
+
+export function useDirect{{featureName.pascalCase}}PropertyValue<
+    T extends keyof {{state.stateName}} | {{featureName.pascalCase}}StatePropertiesEnum
+>(propertyName: T): {{state.stateName}}[T];
 
 /**
  * Use this method if you want to get only a single property from state of {{featureName.pascalCase}}

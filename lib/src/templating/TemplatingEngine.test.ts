@@ -497,7 +497,7 @@ export { isExtendedTestReducer } from "./reducerActions/reducerActions.extended"
 export { isBaseTestReducer } from "./reducerActions/reducerActions.base.generated";
 
 export { getTestStateDefault } from "./defaultState.base.generated";
-export { TestFeatureStateProperties } from "./stateProperties.base.generated";
+export { TestFeatureStateProperties, TestFeatureStatePropertiesEnum, isKeyofTestFeatureState } from "./stateProperties.base.generated";
 
 export type MAIN_REDUCERACTIONS = RAs;
 export type TestFeatureState = TESTSTATE;
@@ -534,7 +534,7 @@ export { isExtendedTestReducer } from "./reducerActions/reducerActions.extended"
 export { isBaseTestReducer } from "./reducerActions/reducerActions.base.generated";
 
 export { getTestStateDefault } from "./defaultState.base.generated";
-export { TestFeatureStateProperties } from "./stateProperties.base.generated";
+export { TestFeatureStateProperties, TestFeatureStatePropertiesEnum, isKeyofTestFeatureState } from "./stateProperties.base.generated";
 
 export type MAIN_REDUCERACTIONS = RAs;
 export type TestFeatureState = TESTSTATE;
@@ -837,6 +837,7 @@ import { mainTestReducer } from "./reducer/reducer.main.generated";
 import { getTestStateDefault } from "./defaultState.base.generated";
 import { MAIN_REDUCERACTIONS } from "./reducerActions/reducerActions.main.generated";
 import { CREATOR_MAIN } from "./actionCreators/actionCreators.main.generated";
+import { TestFeatureStatePropertiesEnum } from "./stateProperties.base.generated";
 
 export type OnTestFeatureReducerContextDispatchWillBeCalled = (action: MAIN_REDUCERACTIONS) => void;
 
@@ -1052,6 +1053,9 @@ export function useDirectTestFeatureProperty<
 export function useDirectTestFeatureProperty<
     T extends keyof TESTSTATE
 >(propertyName: T): T extends "prop2" ? TestFeaturePropertyTuple<"prop2"> : TestFeaturePropertyTuple<T>;
+export function useDirectTestFeatureProperty<
+    T extends keyof TESTSTATE | TestFeatureStatePropertiesEnum
+>(propertyName: T): TestFeaturePropertyTuple<T>;
 
 /**
  * Use this method if you want to get a single property from state and a callback function for updating it of TestFeature
@@ -1066,10 +1070,14 @@ export function useDirectTestFeatureProperty<
 };
 
 export function useNamedTestFeatureStateProperty<
-    T extends keyof TESTSTATE
+    T extends keyof TESTSTATE | TestFeatureStatePropertiesEnum
 >(propertyName: T) {
     return useDirectTestFeatureProperty<T>(propertyName);
 }
+
+export function useDirectTestFeaturePropertyValue<
+    T extends keyof TESTSTATE | TestFeatureStatePropertiesEnum
+>(propertyName: T): TESTSTATE[T];
 
 /**
  * Use this method if you want to get only a single property from state of TestFeature

@@ -5,6 +5,7 @@ import { {{state.getDefaultStateMethodName}} } from "./{{moduleNames.base.defaul
 import { {{reducerActions.mainReducerActionsName}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
 {{#if options.createContextDirectPropertyHooks}}
 import { {{actionCreators.mainActionCreatorsName}} } from "./actionCreators/{{moduleNames.main.actionCreators}}";
+import { {{featureName.pascalCase}}StatePropertiesEnum } from "./{{moduleNames.base.stateProperties}}";
 {{/if}}
 
 export type On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled = (action: {{reducerActions.mainReducerActionsName}}) => void;
