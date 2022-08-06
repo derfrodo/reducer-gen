@@ -1,0 +1,4 @@
+export const {{featureName.pascalCase}}StateProperties = Object.freeze({
+{{#each state.properties}}    {{name}}: "{{name}}",
+{{/each}}
+});

@@ -43,7 +43,7 @@ export class ReduxCodeGenerator {
             modelFactory,
             templatingEngine
         )
-    ) {}
+    ) { }
     initialize(): Promise<void> {
         return this.templatingEngine.initialize();
     }
@@ -74,6 +74,9 @@ export class ReduxCodeGenerator {
                 ),
                 defaultState: addGeneratedHeader(
                     this.generateDefaultStateContent(stateInfo)
+                ),
+                stateProperties: addGeneratedHeader(
+                    this.generateStatePropertiesContent(stateInfo)
                 ),
             },
             generatedExtendedCodes: {
@@ -206,6 +209,14 @@ export class ReduxCodeGenerator {
             this.modelFactory.createHandlebarModel(stateInfo)
         );
     }
+
+    generateStatePropertiesContent(stateInfo: StateInterfaceInfo): string {
+        return this.templatingEngine.compile(
+            this.templatingEngine.rootTemplates.defaultState,
+            this.modelFactory.createHandlebarModel(stateInfo)
+        );
+    }
+
 
     // Ext Elements
     generateExtActCreatorContent(stateInfo: StateInterfaceInfo): string {

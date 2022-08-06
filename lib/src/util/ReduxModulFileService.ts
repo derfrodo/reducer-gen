@@ -12,6 +12,7 @@ export interface ReduxFileNames {
 }
 export type FullReduxFileNames = ReduxFileNames & {
     defaultState: string;
+    stateProperties: string;
     index: string;
     reducerContext: string;
 };
@@ -22,6 +23,7 @@ export const REDUX_FILE_NAME: Readonly<FullReduxFileNames> = Object.freeze({
     reducer: "reducer",
     reducerActions: "reducerActions",
     defaultState: "defaultState",
+    stateProperties: "stateProperties",
     index: "index",
     reducerContext: "ReducerContext",
 });
@@ -57,16 +59,17 @@ export class ReduxModulFileService {
         const { mainFilesSuffix: suffix } = this.options;
         return suffix === undefined ? ".main.generated" : suffix;
     }
-    getGeneratedModulNames(): ReduxFileNames & { defaultState: string } {
+    getGeneratedModulNames(): ReduxFileNames & { defaultState: string; stateProperties: string } {
         return this.getCombinedReduxNames<
             ReduxFileNames,
-            keyof ReduxFileNames & "defaultState",
-            ReduxFileNames & { defaultState: string }
+            keyof ReduxFileNames & "defaultState" & "stateProperties",
+            ReduxFileNames & { defaultState: string; stateProperties: string }
         >(this.getGeneratedFilesPrefix(), this.getGeneratedFilesSuffix(), {
             defaultState: REDUX_FILE_NAME.defaultState,
+            stateProperties: REDUX_FILE_NAME.stateProperties,
         });
     }
-    getGeneratedFileNames(): ReduxFileNames & { defaultState: string } {
+    getGeneratedFileNames(): ReduxFileNames & { defaultState: string; stateProperties: string } {
         return this.getFilenamesWithExtension(
             this.getGeneratedModulNames(),
             ".ts"

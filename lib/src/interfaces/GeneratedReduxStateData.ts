@@ -13,7 +13,7 @@ export interface GeneratedReduxStateData {
     stateInfo: StateInterfaceInfo;
 
     generatedIndexCode: string;
-    generatedBaseCodes: ReduxCodes & { defaultState: string };
+    generatedBaseCodes: ReduxCodes & { defaultState: string; stateProperties: string };
     generatedMainCodes: ReduxCodes & { index: string; reducerContext: string };
     generatedExtendedCodes: ReduxCodes;
 }

@@ -497,6 +497,7 @@ export { isExtendedTestReducer } from "./reducerActions/reducerActions.extended"
 export { isBaseTestReducer } from "./reducerActions/reducerActions.base.generated";
 
 export { getTestStateDefault } from "./defaultState.base.generated";
+export { TestFeatureStateProperties } from "./stateProperties.base.generated";
 
 export type MAIN_REDUCERACTIONS = RAs;
 export type TestFeatureState = TESTSTATE;
@@ -533,6 +534,7 @@ export { isExtendedTestReducer } from "./reducerActions/reducerActions.extended"
 export { isBaseTestReducer } from "./reducerActions/reducerActions.base.generated";
 
 export { getTestStateDefault } from "./defaultState.base.generated";
+export { TestFeatureStateProperties } from "./stateProperties.base.generated";
 
 export type MAIN_REDUCERACTIONS = RAs;
 export type TestFeatureState = TESTSTATE;
@@ -1127,6 +1129,37 @@ export function useDirectTestFeaturePropertySetProperty<
 };
 `);
             });
+
+
+            
+        });
+
+        describe("... and compilation will be for stateproperties files", () => {
+            it("... and boilerplate template is passed and has state as default export, Then result will match expected string", async () => {
+                // arrange:
+                const testModel = getTestModel();
+                const clazz = new TemplatingEngine();
+
+                // act
+                await clazz.initialize();
+                const result = await clazz.compile(
+                    clazz.rootTemplates.stateProperties,
+                    testModel
+                );
+
+                // console.log(result);
+                // assert
+                expect(result.replace(/\r\n/g, "\n"))
+                    .toBe(`export const TestFeatureStateProperties = Object.freeze({
+    prop1: "prop1",
+    prop2: "prop2",
+});
+`);
+            });
+
+
+
+            
         });
     });
 });

@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.4.0-beta:
+- Add [FeatureName]StateProperties as Object.freeze for better future refactoring when renaming properties
+
 ## Version 0.3.8-beta:
 - Start with autodeployment
 

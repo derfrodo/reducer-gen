@@ -44,6 +44,7 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
                 actionCreators: "actionCreators.base.generated",
                 actions: "actions.base.generated",
                 defaultState: "defaultState.base.generated",
+                stateProperties: "stateProperties.base.generated",
                 reducer: "reducer.base.generated",
                 reducerActions: "reducerActions.base.generated",
             },

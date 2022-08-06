@@ -31,6 +31,7 @@ const readTemplate = (filePath: string): Promise<string> =>
     );
 
 type RootTemplates = {
+    stateProperties: string;
     defaultState: string;
     index: string;
     indexMain: string;
@@ -198,7 +199,7 @@ export class TemplatingEngine {
             if (
                 file.isFile() &&
                 name.toLowerCase().lastIndexOf(extension) ===
-                    name.length - extensionLength
+                name.length - extensionLength
             ) {
                 const partialName = name.substr(
                     0,
@@ -255,6 +256,14 @@ export class TemplatingEngine {
                     "templates",
                     "general",
                     "defaultState.handlebars"
+                )
+            ),
+            stateProperties: await readTemplate(
+                path.join(
+                    __dirname,
+                    "templates",
+                    "general",
+                    "statePropertyNames.handlebars"
                 )
             ),
         };

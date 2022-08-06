@@ -26,6 +26,7 @@ export class ReduxModulFileGenerator {
             reducer: reducerCode,
             reducerActions: reducerActionsCode,
             defaultState: defaultStateCode,
+            stateProperties: statePropertiesCode,
         } = generatedBaseCodes;
 
         const { folderToFeatureReducer } = featureData;
@@ -36,6 +37,7 @@ export class ReduxModulFileGenerator {
             defaultState,
             reducer,
             reducerActions,
+            stateProperties
         } = this.fileService.getGeneratedFileNames();
 
         return Promise.all([
@@ -70,6 +72,10 @@ export class ReduxModulFileGenerator {
             fsHelper.writeFile(
                 fsHelper.combinePath(folderToFeatureReducer, defaultState),
                 defaultStateCode
+            ),
+            fsHelper.writeFile(
+                fsHelper.combinePath(folderToFeatureReducer, stateProperties),
+                statePropertiesCode
             ),
         ]);
     }
