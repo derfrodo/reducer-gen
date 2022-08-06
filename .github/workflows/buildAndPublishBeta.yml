@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   prepare: 
+    runs-on: ubuntu-latest
     name: "Prepare run"
     outputs:
       packageVersion: ${{ steps.read_package_version.outputs.version  }}
