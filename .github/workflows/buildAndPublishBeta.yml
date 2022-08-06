@@ -52,8 +52,8 @@ jobs:
         echo "::set-output name=versionPublished::$IS_PUBLISHED"
       id: evaluate_package_version
 
-  info: 
-    name: "No version of package has been deployed yet"
+  not_deployed: 
+    name: "Version has not been deployed yet"
     runs-on: ubuntu-latest
     needs: 
     - prepare
@@ -63,9 +63,10 @@ jobs:
     - name: Info
       run: |
         echo "Not Published"
-  info2: 
+  
+  already_deployed: 
     runs-on: ubuntu-latest
-    name: "No version of package has been deployed already"
+    name: "Version has been deployed already"
     needs: 
     - prepare
     #docs.github.com/en/actions/learn-github-actions/expressions
