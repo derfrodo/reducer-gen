@@ -75,7 +75,7 @@ jobs:
 
 
   build:
-    # if: ${{ always() }}
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == false }}
     runs-on: ubuntu-latest
     name: "Build package"
     needs: 
