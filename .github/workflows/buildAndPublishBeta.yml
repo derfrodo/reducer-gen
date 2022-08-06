@@ -42,7 +42,7 @@ jobs:
     - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:
-        nodeVersion: ${{ env.nodeVersion }}
+        node-version: ${{ env.nodeVersion }}
     
     - name: perform installation (npm ci)
       shell: bash
@@ -82,7 +82,7 @@ jobs:
     - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:
-        nodeVersion: ${{ env.nodeVersion }}
+        node-version: ${{ env.nodeVersion }}
 
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
