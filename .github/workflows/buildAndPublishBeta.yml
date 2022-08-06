@@ -94,11 +94,13 @@ jobs:
         path: artefact
 
     - name: Just say "Hi"
+      working-directory: artefact
       run: |
         cd artefact
         ls -R
 
     - name: Just say "Hi"
+      working-directory: artefact
       run: |
         echo "Hi dev"
         touch .npmrc
