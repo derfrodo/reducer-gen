@@ -79,6 +79,8 @@ jobs:
     environment: beta
     
     steps:
+    - env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     - uses: actions/checkout@v2
     - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
@@ -89,8 +91,15 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: reducer-gen-${{ needs.prepare.outputs.packageVersion }}-run-${{ github.run_id }}
+        path: artefact
 
+    - name: Just say "Hi"
+      run: |
+        cd artefact
+        ls -R
 
     - name: Just say "Hi"
       run: |
         echo "Hi dev"
+        touch .npmrc
+        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
