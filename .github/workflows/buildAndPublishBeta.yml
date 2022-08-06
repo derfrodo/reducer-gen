@@ -37,9 +37,10 @@ jobs:
     - name: Read Deployed Versions
       run: |
         PACKAGE_VERSIONS=$(npm view ${{ env.packageName }} versions --json)
+        echo $PACKAGE_VERSIONS
+        
         INDEX_OF_VERSION=$(node -e 'console.log($PACKAGE_VERSIONS.indexOf("$PACKAGE_VERSION"))')
 
-        echo $PACKAGE_VERSIONS
         echo $INDEX_OF_VERSION
         echo "::set-output name=versions::$PACKAGE_VERSIONS"
         echo "::set-output name=indexofversion::$INDEX_OF_VERSION"
