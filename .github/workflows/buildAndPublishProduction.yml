@@ -56,7 +56,8 @@ jobs:
         IS_PUBLISHED=$(node script.js)
 
         echo "Version has been published: $IS_PUBLISHED"
-        echo "::set-output name=versionPublished::$IS_PUBLISHED"
+        # echo "::set-output name=versionPublished::$IS_PUBLISHED"
+        echo "versionPublished=$IS_PUBLISHED" >> $GITHUB_OUTPUT
       id: evaluate_package_version
 
   not_deployed: 

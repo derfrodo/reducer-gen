@@ -34,5 +34,6 @@ jobs:
           | sed 's/^ *//;s/ *$//')
 
         echo "Pipeline is for '$PACKAGE_NAME'"
-        echo "::set-output name=name::$PACKAGE_NAME"
+        # echo "::set-output name=name::$PACKAGE_NAME"
+        echo "name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
       id: read_package_name

@@ -40,5 +40,6 @@ jobs:
           | sed 's/^ *//;s/ *$//')
 
         echo "Pipeline is for ${{ inputs.packageName }} for version '$PACKAGE_VERSION'"
-        echo "::set-output name=version::$PACKAGE_VERSION"
+        # echo "::set-output name=version::$PACKAGE_VERSION"
+        echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
       id: read_package_version
