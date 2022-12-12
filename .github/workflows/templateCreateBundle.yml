@@ -27,7 +27,7 @@ jobs:
     name: "Test, build and bundle package (NodeJS ${{ matrix.nodeVersion }})"
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Using Node.js ${{ matrix.nodeVersion }}
       uses: actions/setup-node@v1
       with:

@@ -26,7 +26,7 @@ jobs:
       packageVersion: ${{ steps.read_package_version.outputs.version  }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Read package version
       working-directory: ${{ inputs.folderWithPackage }}
       run: |

@@ -39,7 +39,7 @@ jobs:
       artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
       nodeVersion: ${{ env.nodeVersion }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:
@@ -116,7 +116,7 @@ jobs:
     environment: prod
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Using Node.js ${{ env.nodeVersion }}
       uses: actions/setup-node@v1
       with:
