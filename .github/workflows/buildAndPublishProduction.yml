@@ -1,0 +1,145 @@
+# This is a basic workflow that is manually triggered
+name: Build and publish prod
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  nodeVersion: 16.x
+  artefactName: "derfrodo_reducer-gen"
+
+jobs:
+
+  readver:
+    # uses: derfrodok/reducer-gen/.github/workflows/readPackageVersion.yml@main
+    uses: ./.github/workflows/templateReadPackageVersion.yml
+    with:
+      folderWithPackage: lib
+      packageName: "@derfrodo/reducer-gen"
+    secrets:
+      testsecret: demosecret
+
+  readname:
+    uses: ./.github/workflows/templateReadPackageName.yml
+    with:
+      folderWithPackage: lib
+
+  prepare: 
+    runs-on: ubuntu-latest
+    name: "Prepare run"
+    needs: 
+    - readver
+    - readname
+    outputs:
+      packageName: ${{ needs.readname.outputs.packageName  }}
+      packageVersion: ${{ needs.readver.outputs.packageVersion  }}
+      packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
+      artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
+      nodeVersion: ${{ env.nodeVersion }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Using Node.js ${{ env.nodeVersion }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.nodeVersion }}
+    - name: Read Deployed Versions
+      run: |
+        # see also stackoverflow.com/questions/19345872/how-to-remove-a-newline-from-a-string-in-bash
+        PACKAGE_VERSION=${{ needs.readver.outputs.packageVersion }}
+        echo "Search for $PACKAGE_VERSION in published versions of ${{ needs.readname.outputs.packageName }}"
+        PACKAGE_VERSIONS=$(npm view ${{ needs.readname.outputs.packageName }} versions --json)
+        SCRIPT="const index=${PACKAGE_VERSIONS}.indexOf(\"${PACKAGE_VERSION}\"); console.log(index >= 0);"
+        echo $SCRIPT > script.js
+
+        IS_PUBLISHED=$(node script.js)
+
+        echo "Version has been published: $IS_PUBLISHED"
+        echo "::set-output name=versionPublished::$IS_PUBLISHED"
+      id: evaluate_package_version
+
+  not_deployed: 
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && !contains(needs.prepare.outputs.packageVersion, 'prod') }}
+    name: "Version ${{ needs.prepare.outputs.packageVersion }} not deployed yet"
+    runs-on: ubuntu-latest
+    needs: 
+    - prepare
+    #docs.github.com/en/actions/learn-github-actions/expressions
+    steps:
+    - name: Info
+      run: |
+        echo "Version ${{ needs.prepare.outputs.packageVersion }} has not been deployed to npm yet."
+  
+  not_for_prod: 
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'false' && contains(needs.prepare.outputs.packageVersion, 'prod') }}
+    name: "Version ${{ needs.prepare.outputs.packageVersion }} not for prod"
+    runs-on: ubuntu-latest
+    needs: 
+    - prepare
+    #docs.github.com/en/actions/learn-github-actions/expressions
+    steps:
+    - name: Info
+      run: |
+        echo "Version ${{ needs.prepare.outputs.packageVersion }} has not been deployed to npm yet. Anyway: It is not ment to be deployed as prod version."
+  
+  already_deployed: 
+    runs-on: ubuntu-latest
+    name: "Version ${{ needs.prepare.outputs.packageVersion }} already deployed"
+    needs: 
+    - prepare
+    #docs.github.com/en/actions/learn-github-actions/expressions
+    if: ${{ needs.prepare.outputs.packageVersionIsPublished == 'true' }}
+    steps:
+    - name: Info
+      run: |
+        echo "Version ${{ needs.prepare.outputs.packageVersion }} has been deployed to npm already."
+  
+  build:
+    needs: 
+    - prepare
+    - not_deployed
+    uses: ./.github/workflows/templateCreateBundle.yml
+    with:
+      artefactName: ${{ needs.prepare.outputs.artefactName }}
+      nodeVersions: '["${{ needs.prepare.outputs.nodeVersion }}"]'
+      include: "[]"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: 
+    - build
+    - prepare
+
+    name: "Deploy package as prod (${{ needs.prepare.outputs.packageName }}@${{ needs.prepare.outputs.packageVersion }})"
+    environment: prod
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Using Node.js ${{ env.nodeVersion }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.nodeVersion }}
+
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      id: downloadArtefact
+      with:
+        name: ${{ needs.prepare.outputs.artefactName }}
+        path: ${{ env.artefactName }}-${{ needs.prepare.outputs.packageVersion }}-artefact
+
+    - name: What has been downloaded
+      working-directory: ${{ steps.downloadArtefact.outputs.download-path }}
+      run: |
+        echo ${{ steps.downloadArtefact.outputs.download-path }}
+        ls -R
+
+    - name: Deploy to npm js as prod version
+      working-directory: ${{ steps.downloadArtefact.outputs.download-path }}
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+      run: |
+        touch .npmrc
+        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+        npm publish --access public
+
