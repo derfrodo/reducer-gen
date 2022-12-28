@@ -1044,8 +1044,8 @@ export const useTestFeatureStatePropertyChangedEffect = <
     useTestFeatureStateChangedEffect(changedCallback);
 };
 
-export type TestFeatureSetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
-export type TestFeaturePropertyTuple<T extends keyof State> = [State[T], TestFeatureSetPropertyHandler<T>]
+export type TestFeatureSetPropertyHandler<T extends keyof TESTSTATE> = (next: TESTSTATE[T]) => void;
+export type TestFeaturePropertyTuple<T extends keyof TESTSTATE> = [TESTSTATE[T], TestFeatureSetPropertyHandler<T>]
 
 export function useDirectTestFeatureProperty<
     T extends keyof TESTSTATE
