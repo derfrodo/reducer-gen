@@ -1,6 +1,6 @@
 
-export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof State> = (next: State[T]) => void;
-export type {{featureName.pascalCase}}PropertyTuple<T extends keyof State> = [State[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
+export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof {{../state.stateName}}> = (next: {{../state.stateName}}[T]) => void;
+export type {{featureName.pascalCase}}PropertyTuple<T extends keyof {{../state.stateName}}> = [{{../state.stateName}}[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
 
 {{#each state.properties}}
 export function useDirect{{../featureName.pascalCase}}Property<

@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.4.6:
+- Fix issue in template for Direct property Types
+
 ## Version 0.4.4-beta:
 - Sparkling pipelines
 
