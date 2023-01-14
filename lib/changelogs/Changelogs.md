@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.4.7:
+- Fix dependency vulnerabilities
+
 ## Version 0.4.6:
 - Fix issue in template for Direct property Types
 
