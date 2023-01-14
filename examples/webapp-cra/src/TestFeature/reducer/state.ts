@@ -1,6 +1,6 @@
 import type { TestFeatureType } from "TestFeature/types/TestFeatureType";
 
 // Just a teststate - not really used in this app ;)
-export default interface State {
+export interface State {
   testFeatureType: TestFeatureType | null;
 }
