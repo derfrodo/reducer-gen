@@ -53,16 +53,27 @@ export const {{featureName.pascalCase}}ReducerContextProvider = (props: {
         }
         dispatch(...args);
     }, []);
+{{#if options.addGetCurrentStateToContext}}
+
+    const stateRef = useRef(state);
+    const getState = useCallback(() => stateRef.current, []);
+{{/if}}
 
     const context: I{{featureName.pascalCase}}ReducerContext = React.useMemo(
         () => ({
             state,
+            {{#if options.addGetCurrentStateToContext}}
+            getState,
+            {{/if}}
             dispatch: dispatchCallback,
             listenOnDispatchWillBeCalled,
             removeOnDispatchWillBeCalled,
         }),
         [
             state,
+            {{#if options.addGetCurrentStateToContext}}
+            getState,
+            {{/if}}
             dispatchCallback,
             listenOnDispatchWillBeCalled,
             removeOnDispatchWillBeCalled,

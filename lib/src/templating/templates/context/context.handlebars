@@ -12,7 +12,8 @@ export type On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled = (ac
 
 export interface I{{featureName.pascalCase}}ReducerContext {
     state: {{state.stateName}};
-    dispatch: React.Dispatch<{{reducerActions.mainReducerActionsName}}>;
+    {{#if options.addGetCurrentStateToContext}}getState: () => {{state.stateName}};
+    {{/if}}dispatch: React.Dispatch<{{reducerActions.mainReducerActionsName}}>;
     listenOnDispatchWillBeCalled: (callback: On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled) => void;
     removeOnDispatchWillBeCalled: (callback: On{{featureName.pascalCase}}ReducerContextDispatchWillBeCalled) => void;
 }
@@ -23,8 +24,8 @@ export type IState{{featureName.pascalCase}}ReducerContext = {{state.stateName}}
 
 export const {{featureName.pascalCase}}ReducerContext = React.createContext<I{{featureName.pascalCase}}ReducerContext>({
     state: {{state.getDefaultStateMethodName}}(),
-    {{#if options.addGetCurrentStateToContext}}{{>useDirectProperty}}{{/if}}
-    dispatch: () => undefined,
+    {{#if options.addGetCurrentStateToContext}}getState: () => {{state.getDefaultStateMethodName}}(),
+    {{/if}}dispatch: () => undefined,
     listenOnDispatchWillBeCalled: () => undefined,
     removeOnDispatchWillBeCalled: () => undefined,
 });
