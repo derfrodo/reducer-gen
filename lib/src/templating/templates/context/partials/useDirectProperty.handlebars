@@ -138,7 +138,7 @@ export function useDirect{{featureName.pascalCase}}PropertyFunctional<
  * Use this method if you want to get a single property from state and a callback function for updating it of {{featureName.pascalCase}} by method
  * @param propertyName property of state
  */
-export function useDirect{{featureName.pascalCase}}Property<
+export function useDirect{{featureName.pascalCase}}PropertyFunctional<
     T extends keyof {{state.stateName}}
 >(propertyName: T) {
     const value = useDirect{{featureName.pascalCase}}PropertyValue(propertyName);
