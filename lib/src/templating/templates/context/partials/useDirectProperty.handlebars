@@ -1,4 +1,6 @@
-
+{{#if options.addFunctionalParametersForContextDispatch}}
+export type {{featureName.pascalCase}}SetPropertyCallback<T extends keyof {{state.stateName}}> = (state: {{state.stateName}}) => {{state.stateName}}[T];
+export type {{featureName.pascalCase}}SetPropertyFunctionalHandler<T extends keyof {{state.stateName}}> = (next: {{featureName.pascalCase}}SetPropertyCallback<T>) => void;{{/if}}
 export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof {{state.stateName}}> = (next: {{state.stateName}}[T]) => void;
 export type {{featureName.pascalCase}}PropertyTuple<T extends keyof {{state.stateName}}> = [{{state.stateName}}[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
 

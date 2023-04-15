@@ -1,7 +1,11 @@
 # Changelog 
 
-## Version 0.4.8-beta:
+## Version 0.5.8-beta:
 - Add parameter ```addGetCurrentStateToContext``` to create an option to directly access current state
+- Add parameter ```addFunctionalParametersForContextDispatch``` to create an option to change data due to current state via direct property handling
+- BREAKING: missing ContextProvider will lead to errors while calling dispatch or any other functions of it by default
+  - Applies if ReducerContext is generated (and therfore no redux is used)
+  - Having the reducer hooks running without context provider does not make sense anyway
 
 ## Version 0.4.7:
 - Fix dependency vulnerabilities

@@ -2,6 +2,9 @@
 {{this}}
 {{/each}}
 import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
+{{#if options.addFunctionalParametersForContextDispatch}}
+import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
+{{/if}}
 
 export type {{reducerActions.baseReducerActionsName}} = {
     type: actions;
@@ -18,6 +21,15 @@ export type {{reducerActions.baseReducerActionsName}} = {
 
 {{>additionalArrayReducerActions}}
 {{/hasArrayProperties}}
+{{/if}}
+{{#if options.addFunctionalParametersForContextDispatch}}
+
+// Actions for properties using functional parameters
+{{#each state.properties}}
+    | {
+        type: actions.{{baseActionEnumValue}}_FUNCTIONAL;
+        next: (state: {{../state.stateName}}) => {{type}};
+    }{{/each}}
 {{/if}}
 );
 

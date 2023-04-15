@@ -24,10 +24,10 @@ export type IState{{featureName.pascalCase}}ReducerContext = {{state.stateName}}
 
 export const {{featureName.pascalCase}}ReducerContext = React.createContext<I{{featureName.pascalCase}}ReducerContext>({
     state: {{state.getDefaultStateMethodName}}(),
-    {{#if options.addGetCurrentStateToContext}}getState: () => {{state.getDefaultStateMethodName}}(),
-    {{/if}}dispatch: () => undefined,
-    listenOnDispatchWillBeCalled: () => undefined,
-    removeOnDispatchWillBeCalled: () => undefined,
+    {{#if options.addGetCurrentStateToContext}}getState: () => { throw new Error("Reducer Context {{featureName.pascalCase}}ReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
+    {{/if}}dispatch: () => { throw new Error("Reducer Context {{featureName.pascalCase}}ReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
+    listenOnDispatchWillBeCalled: () => { throw new Error("Reducer Context {{featureName.pascalCase}}ReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
+    removeOnDispatchWillBeCalled: () => { throw new Error("Reducer Context {{featureName.pascalCase}}ReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
 });
 
 export const Dispatch{{featureName.pascalCase}}ReducerContext = React.createContext<IDispatch{{featureName.pascalCase}}ReducerContext>(() => undefined);

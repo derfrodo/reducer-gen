@@ -620,9 +620,9 @@ export type IStateTestFeatureReducerContext = TESTSTATE;
 
 export const TestFeatureReducerContext = React.createContext<ITestFeatureReducerContext>({
     state: getTestStateDefault(),
-    dispatch: () => undefined,
-    listenOnDispatchWillBeCalled: () => undefined,
-    removeOnDispatchWillBeCalled: () => undefined,
+    dispatch: () => { throw new Error("Reducer Context TestFeatureReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
+    listenOnDispatchWillBeCalled: () => { throw new Error("Reducer Context TestFeatureReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
+    removeOnDispatchWillBeCalled: () => { throw new Error("Reducer Context TestFeatureReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
 });
 
 export const DispatchTestFeatureReducerContext = React.createContext<IDispatchTestFeatureReducerContext>(() => undefined);
@@ -854,9 +854,9 @@ export type IStateTestFeatureReducerContext = TESTSTATE;
 
 export const TestFeatureReducerContext = React.createContext<ITestFeatureReducerContext>({
     state: getTestStateDefault(),
-    dispatch: () => undefined,
-    listenOnDispatchWillBeCalled: () => undefined,
-    removeOnDispatchWillBeCalled: () => undefined,
+    dispatch: () => { throw new Error("Reducer Context TestFeatureReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
+    listenOnDispatchWillBeCalled: () => { throw new Error("Reducer Context TestFeatureReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
+    removeOnDispatchWillBeCalled: () => { throw new Error("Reducer Context TestFeatureReducerContext has not been initialized yet. Did you forget to add a provider to the application as parent node?"); },
 });
 
 export const DispatchTestFeatureReducerContext = React.createContext<IDispatchTestFeatureReducerContext>(() => undefined);

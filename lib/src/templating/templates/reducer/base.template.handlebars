@@ -18,6 +18,9 @@ export const {{reducer.baseReducerName}} = (state: {{state.stateName}} = {{state
 {{>additionalArrayReducerCases}}
 {{/hasArrayProperties}}
 {{/if}}
+{{#if options.addFunctionalParametersForContextDispatch}}
+{{>addFunctionalReducerFunctions}}
+{{/if}}
         default:
             return state;
     }

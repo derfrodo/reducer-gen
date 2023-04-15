@@ -8,6 +8,13 @@ export enum {{actions.baseActionsEnumName}} {
 {{>additionalArrayActions}}
 {{/hasArrayProperties}}
 {{/if}}
+{{#if options.addFunctionalParametersForContextDispatch}}
+
+// Actions for properties using functional parameters
+{{#each actions.baseActions}}
+    {{this}}_FUNCTIONAL = "{{this}}_FUNCTIONAL",
+{{/each}}
+{{/if}}
 }
 
 export default {{actions.baseActionsEnumName}};

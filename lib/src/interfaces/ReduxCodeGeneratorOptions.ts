@@ -1,5 +1,6 @@
 export interface ReduxCodeGeneratorOptions {
     createContextDirectPropertyHooks: boolean;
+    addFunctionalParametersForContextDispatch: boolean;
     addGetCurrentStateToContext: boolean;
     createReducerContext: boolean;
     addBubbleFlagForActions?: boolean;
@@ -11,6 +12,7 @@ export const getDefaultReduxCodeGeneratorOptions: (
     presets?: Partial<ReduxCodeGeneratorOptions>
 ) => ReduxCodeGeneratorOptions = (presets) => ({
     createContextDirectPropertyHooks: false,
+    addFunctionalParametersForContextDispatch: false,
     addGetCurrentStateToContext: false,
     createReducerContext: false,
     addBubbleFlagForActions: false,

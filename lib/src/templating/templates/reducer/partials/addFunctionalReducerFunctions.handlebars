@@ -1,0 +1,9 @@
+
+    // cases for properties using functional parameters
+{{#each state.properties}}
+        case actions.{{baseActionEnumValue}}_FUNCTIONAL:
+            return {
+                ...state,
+                {{name}}: action.next,
+            };
+{{/each}}
