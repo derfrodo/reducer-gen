@@ -1,0 +1,4 @@
+*.generated.ts
+*.generated.tsx
+*.extended.ts
+*.extended.tsx

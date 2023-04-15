@@ -12,7 +12,8 @@ export interface CliArgs {
 
     createReducerContext: boolean;
     createContextDirectPropertyHooks: boolean;
-
+    addGetCurrentStateToContext: boolean;
+    
     addBubbleFlagForActions: boolean;
     addArrayFunctions: boolean;
 

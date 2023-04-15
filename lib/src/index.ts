@@ -35,10 +35,12 @@ const getGeneratorOptionsFromArgs = (
         addArrayFunctions,
         decoupleStateChangedCallbackByTimeout,
         createContextDirectPropertyHooks,
+        addGetCurrentStateToContext,
     } = argv;
     const result: ReduxCodeGeneratorOptions = {
         ...getDefaultReduxCodeGeneratorOptions(),
         createContextDirectPropertyHooks: createContextDirectPropertyHooks,
+        addGetCurrentStateToContext: addGetCurrentStateToContext,
         createReducerContext: createReducerContext,
         addBubbleFlagForActions:
             addBubbleFlagForActions === undefined ||

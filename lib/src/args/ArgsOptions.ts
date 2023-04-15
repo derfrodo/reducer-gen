@@ -41,6 +41,8 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
 
     createContextDirectPropertyHooks: { boolean: true, default: false },
     createReducerContext: { boolean: true, default: false },
+    addGetCurrentStateToContext: { boolean: true, default: false },
+    
     addBubbleFlagForActions: { boolean: true, default: true },
     addArrayFunctions: { boolean: true, default: true },
 

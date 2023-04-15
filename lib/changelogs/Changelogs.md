@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.4.8-beta:
+- Add parameter ```addGetCurrentStateToContext``` to create an option to directly access current state
+
 ## Version 0.4.7:
 - Fix dependency vulnerabilities
 

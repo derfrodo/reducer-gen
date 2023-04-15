@@ -23,6 +23,7 @@ export type IState{{featureName.pascalCase}}ReducerContext = {{state.stateName}}
 
 export const {{featureName.pascalCase}}ReducerContext = React.createContext<I{{featureName.pascalCase}}ReducerContext>({
     state: {{state.getDefaultStateMethodName}}(),
+    {{#if options.addGetCurrentStateToContext}}{{>useDirectProperty}}{{/if}}
     dispatch: () => undefined,
     listenOnDispatchWillBeCalled: () => undefined,
     removeOnDispatchWillBeCalled: () => undefined,
