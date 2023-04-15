@@ -3,7 +3,7 @@
 {{/each}}
 import { {{actions.baseActionsEnumName}} as actions } from "./../actions/{{moduleNames.base.actions}}";
 {{#if options.addFunctionalParametersForContextDispatch}}
-import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
+import type {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
 {{/if}}
 
 export type {{reducerActions.baseReducerActionsName}} = {

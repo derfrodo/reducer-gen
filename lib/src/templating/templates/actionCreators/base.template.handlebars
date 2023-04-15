@@ -3,6 +3,9 @@
 {{/each}}
 import { {{reducerActions.baseReducerActionsName}} as ReducerActions } from "./../reducerActions/{{moduleNames.base.reducerActions}}";
 import { {{actions.mainActionsEnumName}} as actions } from "./../actions/{{moduleNames.main.actions}}";
+{{#if options.addFunctionalParametersForContextDispatch}}
+import type {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
+{{/if}}
 
 export const {{actionCreators.baseActionCreatorsName}} = {
 {{#each state.properties}}
@@ -16,6 +19,16 @@ export const {{actionCreators.baseActionCreatorsName}} = {
 
 {{>additionalArrayCreators}}
 {{/hasArrayProperties}}
+{{/if}}
+{{#if options.addFunctionalParametersForContextDispatch}}
+
+// Action Creators for properties using functional parameters
+{{#each state.properties}}
+    set{{namePascalCase}}Functional: (next{{namePascalCase}}: (state: {{../state.stateName}}) => {{type}}): ReducerActions => ({
+        type: actions.{{baseActionEnumValue}}_FUNCTIONAL,
+        next: next{{namePascalCase}},
+    }),
+{{/each}}
 {{/if}}
 };
 

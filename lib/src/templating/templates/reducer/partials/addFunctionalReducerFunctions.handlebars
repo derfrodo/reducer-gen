@@ -1,9 +1,13 @@
 
-    // cases for properties using functional parameters
+    // cases for properties using functional parameters (will return original state, if result does not change)
 {{#each state.properties}}
         case actions.{{baseActionEnumValue}}_FUNCTIONAL:
-            return {
+        {
+            {{!-- {{json this}} --}}
+            const next = action.next(state);
+            return next !== state.{{name}} ? {
                 ...state,
-                {{name}}: action.next,
-            };
+                {{name}}: next,
+            } : state;
+        }
 {{/each}}
