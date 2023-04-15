@@ -3,6 +3,9 @@ export type {{featureName.pascalCase}}SetPropertyCallback<T extends keyof {{stat
 export type {{featureName.pascalCase}}SetPropertyFunctionalHandler<T extends keyof {{state.stateName}}> = (next: {{featureName.pascalCase}}SetPropertyCallback<T>) => void;{{/if}}
 export type {{featureName.pascalCase}}SetPropertyHandler<T extends keyof {{state.stateName}}> = (next: {{state.stateName}}[T]) => void;
 export type {{featureName.pascalCase}}PropertyTuple<T extends keyof {{state.stateName}}> = [{{state.stateName}}[T], {{featureName.pascalCase}}SetPropertyHandler<T>]
+{{#if options.addFunctionalParametersForContextDispatch}}
+export type {{featureName.pascalCase}}PropertyTupleFunctional<T extends keyof {{state.stateName}}> = [{{state.stateName}}[T], {{featureName.pascalCase}}SetPropertyFunctionalHandler<T>]
+{{/if}}
 
 {{#each state.properties}}
 export function useDirect{{../featureName.pascalCase}}Property<
@@ -85,3 +88,62 @@ export function useDirect{{featureName.pascalCase}}PropertySetProperty<
         }
     }, [dispatch, propertyName]);
 };
+
+{{#if options.addFunctionalParametersForContextDispatch}}
+
+{{#each state.properties}}
+export function useDirect{{../featureName.pascalCase}}PropertySetPropertyFunctional<
+    T extends keyof {{../state.stateName}}
+>(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}SetPropertyFunctionalHandler<"{{name}}"> : {{../featureName.pascalCase}}SetPropertyFunctionalHandler<T>;
+{{/each}}
+
+/**
+ * Use this method if you want a callback function for updating a single property of {{featureName.pascalCase}} by method
+ * @param propertyName property of state
+ */
+export function useDirect{{featureName.pascalCase}}PropertySetPropertyFunctional<
+    T extends keyof {{state.stateName}}
+>(propertyName: T) {
+    const dispatch = use{{featureName.pascalCase}}ReducerContextDispatch();
+
+    return useMemo(() => {
+        switch (propertyName) {
+    {{#each state.properties}}
+            case "{{name}}":
+                return (next: {{../featureName.pascalCase}}SetPropertyCallback<"{{name}}">) =>
+                    dispatch(
+                        {{../actionCreators.mainActionCreatorsName}}.set{{namePascalCase}}Functional(
+                            next
+                        )
+                    );
+    {{/each}}
+            default:
+                throw new Error(
+                    `Unknown property. No property with name "${propertyName}" has been registered for state of feature "{{featureName.pascalCase}}".`
+                );
+        }
+    }, [dispatch, propertyName]);
+};
+
+{{#each state.properties}}
+export function useDirect{{../featureName.pascalCase}}PropertyFunctional<
+    T extends keyof {{../state.stateName}}
+>(propertyName: T): T extends "{{name}}" ? {{../featureName.pascalCase}}PropertyTupleFunctional<"{{name}}"> : {{../featureName.pascalCase}}PropertyTupleFunctional<T>;
+{{/each}}
+export function useDirect{{featureName.pascalCase}}PropertyFunctional<
+    T extends keyof {{state.stateName}} | {{featureName.pascalCase}}StatePropertiesEnum
+>(propertyName: T): {{featureName.pascalCase}}PropertyTupleFunctional<T>;
+
+/**
+ * Use this method if you want to get a single property from state and a callback function for updating it of {{featureName.pascalCase}} by method
+ * @param propertyName property of state
+ */
+export function useDirect{{featureName.pascalCase}}Property<
+    T extends keyof {{state.stateName}}
+>(propertyName: T) {
+    const value = useDirect{{featureName.pascalCase}}PropertyValue(propertyName);
+    const setProperty = useDirect{{featureName.pascalCase}}PropertySetPropertyFunctional(propertyName as any);
+    return useMemo(() => [value, setProperty], [value, setProperty]);
+};
+
+{{/if}}
