@@ -43,7 +43,7 @@ jobs:
     with:
       # artefactName: ${{ needs.prepare.outputs.artefactName }}
       packageVersion: ${{ needs.prepare.outputs.packageVersion }}
-      nodeVersions: "[\"14.x\", \"16.x\"]"
+      nodeVersions: "[\"14.x\", \"16.x\", \"20.x\"]"
       include: "[]"
       # include: "[{\"nodeVersion\":\"14.x\", \"artefactName\":\"artefact-${{ needs.prepare.outputs.packageVersion }}-14.x-run-${{ github.run_id }}\"}]"
       
