@@ -12,6 +12,7 @@
     "type=volume,source=reducer-gen-examples-demo-node_modules,target=/workspace/examples/demo/node_modules",
     "type=volume,source=reducer-gen-lib-node_modules,target=/workspace/lib/node_modules"
   ],
+  "postCreateCommand": "sudo chown node:node /workspace/examples/webapp-cra/node_modules && sudo chown node:node /workspace/examples/demo/node_modules && sudo chown node:node /workspace/lib/node_modules",
   "forwardPorts": [
     3000
   ]
