@@ -24,4 +24,6 @@ export interface CliArgs {
     decoupleStateChangedCallbackByTimeout: boolean;
 
     analyseLiteralTypes: boolean;
+
+    verbatimModuleSyntax: boolean;
 }

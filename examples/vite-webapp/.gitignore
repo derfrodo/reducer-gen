@@ -1,6 +1,8 @@
 **/*.generated.*
 *.generated.*
 
+.vite
+
 # Logs
 logs
 *.log
