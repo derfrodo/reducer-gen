@@ -791,6 +791,7 @@ describe("TemplateModelFactory tests", () => {
                     addFunctionalParametersForContextDispatch: false,
                     addGetCurrentStateToContext: false,
                     decoupleStateChangedCallbackByTimeout: false,
+                    verbatimModuleSyntax: true,
                 },
                 reducer: {
                     baseReducerName: undefined,
