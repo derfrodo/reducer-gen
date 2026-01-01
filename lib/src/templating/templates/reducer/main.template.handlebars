@@ -5,7 +5,7 @@ import { {{reducer.extendedReducerName}} } from "./{{moduleNames.extended.reduce
 import { {{reducerActions.baseReducerTypeguard}} } from "./../reducerActions/{{moduleNames.base.reducerActions}}";
 import { {{reducerActions.mainReducerTypeguard}} } from "./../reducerActions/{{moduleNames.main.reducerActions}}";
 
-export const {{reducer.mainReducerName}} = (state: {{state.stateName}} = {{state.getDefaultStateMethodName}}(), action: any): {{state.stateName}} => {
+export const {{reducer.mainReducerName}} = (state: {{state.stateName}} = {{state.getDefaultStateMethodName}}(), action: unknown): {{state.stateName}} => {
     // Note: Generator may be extended to inversify this order => Just talk to me ;)
     // return {{reducer.extendedReducerName}}(({{reducerActions.baseReducerTypeguard}}(action) ? {{reducer.baseReducerName}}(state, action) : state), action);
 

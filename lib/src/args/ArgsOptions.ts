@@ -60,5 +60,5 @@ export const ArgsOptions: { [key in keyof CliArgs]: Options } = {
         alias: ["literalTypesAsObject"],
     },
 
-    verbatimModuleSyntax: { boolean: true, default: true },
+    verbatimModuleSyntax: { boolean: true, default: false },
 };

@@ -1,5 +1,6 @@
 import TodoItem from "./Todo/TodoItem";
-import { TodoReducerContextProvider, useNamedTodoStatePropertyValue } from "./Todo/reducer/ReducerContext.main.generated";
+import { todoActionCreators } from "./Todo/reducer";
+import { TodoReducerContextProvider, useDirectTodoProperty, useNamedTodoStatePropertyValue, useTodoReducerContextDispatch } from "./Todo/reducer/ReducerContext.main.generated";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
           <p>Nobody had this brilliant app idea ever before! Source: Trust me, bro!</p>
         </header>
         <main>
+          <AddTodo />
           <TodoList />
         </main>
       </div>
@@ -20,8 +22,33 @@ function App() {
 function TodoList() {
   const todos = useNamedTodoStatePropertyValue("todos");
   return <ul>
-    {todos.map(todo => (<TodoItem key={todo.text} todo={todo} />))}
+    {todos.map(todo => (<TodoItem key={todo.task} todo={todo} />))}
   </ul>;
+}
+
+function AddTodo() {
+  const dispatch = useTodoReducerContextDispatch();
+  const [nextId, setNextId] = useDirectTodoProperty("nextId");
+  const addTodo = (task: string) => {
+    dispatch(todoActionCreators.todosAddItem({ done: false, task, id: nextId }));
+    setNextId(nextId + 1);
+  };
+  return <>
+    <form onSubmit={e => {
+      e.preventDefault();
+      if (!e.target || !(e.target instanceof HTMLFormElement)) return;
+      const formData = new FormData(e.target);
+      const task = formData.get("task");
+
+      if (typeof task !== "string" || task === null) return;
+      addTodo(task);
+
+      e.target.reset();
+    }}>
+      <input autoComplete="off" type="text" placeholder="New todo task" name="task" required />
+      <button type="submit">Add Todo</button>
+    </form>
+  </>;
 }
 
 export default App;

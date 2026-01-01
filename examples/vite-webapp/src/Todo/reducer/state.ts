@@ -5,4 +5,5 @@ export interface State {
   todos: TodoData[];
   categories: TodoCategory[];
   currentData: TodoData | null;
+  nextId: number;
 }

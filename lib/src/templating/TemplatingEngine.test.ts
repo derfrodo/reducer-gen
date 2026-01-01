@@ -189,7 +189,7 @@ const extendedActionCreators = {
 }
 
 // Start: This is just for typechecking, so that you can utilize the awesomeness of Typescript
-type ActionCreator = { [key in string]: (...params: any[]) => EXTENDED_REDUCERACTIONS };
+type ActionCreator = { [key in string]: (...params: unknown[]) => EXTENDED_REDUCERACTIONS };
 
 const checkActionCreator: <T>(item: T & ActionCreator) => T = <T>(item: T & ActionCreator) => {
     return item;
@@ -238,12 +238,12 @@ export type BASE_REDUCERACTIONS = {
 );
 
 export const isBaseTestReducer = (
-    item: any
+    item: unknown
 ): item is BASE_REDUCERACTIONS => {
     if (!item) {
         return false;
     }
-    if (typeof item === "object") {
+    if (typeof item === "object" && "type" in item) {
         const { type } = item;
 
         return (
@@ -289,12 +289,12 @@ export type EXTENDED_REDUCERACTIONS = {
 };
 
 export const isExtendedTestReducer = (
-    item: any
+    item: unknown
 ): item is EXTENDED_REDUCERACTIONS => {
     if (!item) {
         return false;
     }
-    if (typeof item === "object") {
+    if (typeof item === "object" && "type" in item) {
         const { type } = item;
 
         return (
@@ -328,10 +328,9 @@ import { EXTENDED_REDUCERACTIONS, isExtendedTestReducer } from "./reducerActions
 
 export type MAIN_REDUCERACTIONS = BASE_REDUCERACTIONS | EXTENDED_REDUCERACTIONS;
 
-export const isMainTestReducer = (item: any): item is MAIN_REDUCERACTIONS => {
+export const isMainTestReducer = (item: unknown): item is MAIN_REDUCERACTIONS => {
     return isBaseTestReducer(item) || isExtendedTestReducer(item);
 }
-
 export default MAIN_REDUCERACTIONS;
 `);
             });
@@ -449,7 +448,7 @@ import { extendedTestReducer } from "./reducer.extended";
 import { isBaseTestReducer } from "./../reducerActions/reducerActions.base.generated";
 import { isMainTestReducer } from "./../reducerActions/reducerActions.main.generated";
 
-export const mainTestReducer = (state: TESTSTATE = getTestStateDefault(), action: any): TESTSTATE => {
+export const mainTestReducer = (state: TESTSTATE = getTestStateDefault(), action: unknown): TESTSTATE => {
     // Note: Generator may be extended to inversify this order => Just talk to me ;)
     // return extendedTestReducer((isBaseTestReducer(action) ? baseTestReducer(state, action) : state), action);
 
@@ -1170,7 +1169,7 @@ export enum TestFeatureStatePropertiesEnum {
     prop2 = "prop2",
 }
 
-export function isKeyofTestFeatureState(propertyName: any): propertyName is keyof TESTSTATE {
+export function isKeyofTestFeatureState(propertyName: unknown): propertyName is keyof TESTSTATE {
     return (
         typeof propertyName === "string" ||
         typeof propertyName === "number" ||

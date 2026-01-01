@@ -17,12 +17,12 @@ export type {{reducerActions.extendedReducerActionsName}} = {
 };
 
 export const {{reducerActions.extendedReducerTypeguard}} = (
-    item: any
+    item: unknown
 ): item is {{reducerActions.extendedReducerActionsName}} => {
     if (!item) {
         return false;
     }
-    if (typeof item === "object") {
+    if (typeof item === "object" && "type" in item) {
         const { type } = item;
 
         return (
@@ -33,4 +33,6 @@ export const {{reducerActions.extendedReducerTypeguard}} = (
     return false;
 };
 
+{{#unless options.verbatimModuleSyntax}}
 export default {{reducerActions.extendedReducerActionsName}};
+{{/unless}}

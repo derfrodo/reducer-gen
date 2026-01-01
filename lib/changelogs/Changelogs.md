@@ -1,4 +1,8 @@
 # Changelog 
+## 1.6.1-beta
+- Add parameter ```verbatimModuleSyntax``` to prevent compile and runtime issues for projects having this configuration set to true in tsconfig
+- replaced ```any``` types with ```unknown``` at some places
+- updated dependencies with vulnerabilities
 
 ## Version 0.5.8-beta:
 - Add parameter ```addGetCurrentStateToContext``` to create an option to directly access current state
