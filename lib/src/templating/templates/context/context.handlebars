@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useLayoutEffect, {{#if options.createContextDirectPropertyHooks}}useMemo, {{/if}}useRef, useState } from "react";
-import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
+import {{>typeForVerbatimSyntax}}{{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
 import { {{reducer.mainReducerName}} } from "./reducer/{{moduleNames.main.reducer}}";
 import { {{state.getDefaultStateMethodName}} } from "./{{moduleNames.base.defaultState}}";
-import { {{reducerActions.mainReducerActionsName}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
+import { {{>typeForVerbatimSyntax}}{{reducerActions.mainReducerActionsName}} } from "./reducerActions/{{moduleNames.main.reducerActions}}";
 {{#if options.createContextDirectPropertyHooks}}
 import { {{actionCreators.mainActionCreatorsName}} } from "./actionCreators/{{moduleNames.main.actionCreators}}";
 import { {{featureName.pascalCase}}StatePropertiesEnum } from "./{{moduleNames.base.stateProperties}}";
