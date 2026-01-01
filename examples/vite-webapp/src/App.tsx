@@ -40,7 +40,7 @@ function AddTodo() {
       const formData = new FormData(e.target);
       const task = formData.get("task");
 
-      if (typeof task !== "string" || task === null) return;
+      if (typeof task !== "string") return;
       addTodo(task);
 
       e.target.reset();
