@@ -6,6 +6,7 @@ export interface ReduxCodeGeneratorOptions {
     addBubbleFlagForActions?: boolean;
     addArrayFunctions: boolean;
     decoupleStateChangedCallbackByTimeout: boolean;
+    verbatimModuleSyntax: boolean;
 }
 
 export const getDefaultReduxCodeGeneratorOptions: (
@@ -18,5 +19,6 @@ export const getDefaultReduxCodeGeneratorOptions: (
     addBubbleFlagForActions: false,
     addArrayFunctions: false,
     decoupleStateChangedCallbackByTimeout: false,
+    verbatimModuleSyntax: true,
     ...(presets ?? {}),
 });

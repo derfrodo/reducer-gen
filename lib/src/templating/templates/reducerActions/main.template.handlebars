@@ -1,5 +1,5 @@
-import { {{reducerActions.baseReducerActionsName}}, {{reducerActions.baseReducerTypeguard}} } from "./{{moduleNames.base.reducerActions}}";
-import { {{reducerActions.extendedReducerActionsName}}, {{reducerActions.extendedReducerTypeguard}} } from "./{{moduleNames.extended.reducerActions}}";
+import { {{>typeForVerbatimSyntax}}{{reducerActions.baseReducerActionsName}}, {{reducerActions.baseReducerTypeguard}} } from "./{{moduleNames.base.reducerActions}}";
+import { {{>typeForVerbatimSyntax}}{{reducerActions.extendedReducerActionsName}}, {{reducerActions.extendedReducerTypeguard}} } from "./{{moduleNames.extended.reducerActions}}";
 
 export type {{reducerActions.mainReducerActionsName}} = {{reducerActions.baseReducerActionsName}} | {{reducerActions.extendedReducerActionsName}};
 

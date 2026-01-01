@@ -4,7 +4,7 @@
 // import { type TodoData } from "../../types/TodoData";
 // import { type TodoCategory } from "../../types/TodoCategory";
 
-import { TodoReducerActionsExtended } from "./../reducerActions/reducerActions.extended";
+import { type TodoReducerActionsExtended } from "./../reducerActions/reducerActions.extended";
 // import { TODO_ACTIONS_EXTENDED } from "./../actions/actions.extended";
 
 /**

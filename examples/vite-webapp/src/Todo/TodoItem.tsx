@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
+import { todoActionCreators } from "./reducer";
+import { useTodoReducerContextDispatch } from "./reducer/ReducerContext.main.generated";
+import type { TodoData } from "./types/TodoData";
 
 interface TodoItemProps {
-  initialText?: string;
+  todo: TodoData;
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({
-  initialText = "My first todo",
+  todo,
 }) => {
-  const [isDone, setIsDone] = useState(false);
+  const dispatch = useTodoReducerContextDispatch();
 
   const handleClick = () => {
-    setIsDone(!isDone);
+    dispatch(todoActionCreators.todosUpdateItem(todo, { ...todo, done: !todo.done }));
   };
 
   return (
@@ -18,10 +21,10 @@ const TodoItem: React.FC<TodoItemProps> = ({
       onClick={handleClick}
       style={{
         cursor: "pointer",
-        textDecoration: isDone ? "line-through" : "none",
+        textDecoration: todo.done ? "line-through" : "none",
       }}
     >
-      {initialText}
+      {todo.text}
     </li>
   );
 };

@@ -37,6 +37,7 @@ const getGeneratorOptionsFromArgs = (
         createContextDirectPropertyHooks,
         addGetCurrentStateToContext,
         addFunctionalParametersForContextDispatch,
+        verbatimModuleSyntax
     } = argv;
     const result: ReduxCodeGeneratorOptions = {
         ...getDefaultReduxCodeGeneratorOptions(),
@@ -50,6 +51,7 @@ const getGeneratorOptionsFromArgs = (
         addArrayFunctions,
         decoupleStateChangedCallbackByTimeout:
             decoupleStateChangedCallbackByTimeout ?? false,
+        verbatimModuleSyntax: verbatimModuleSyntax ?? true,
     };
     return result;
 };

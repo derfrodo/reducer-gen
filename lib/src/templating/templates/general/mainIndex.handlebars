@@ -1,5 +1,5 @@
-import { {{reducerActions.mainReducerActionsName}} as RAs } from "./reducerActions/{{moduleNames.main.reducerActions}}";
-import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
+import { {{>typeForVerbatimSyntax}}{{reducerActions.mainReducerActionsName}} as RAs } from "./reducerActions/{{moduleNames.main.reducerActions}}";
+import {{>typeForVerbatimSyntax}}{{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./state";
 
 export { {{reducer.mainReducerName}} } from "./reducer/{{moduleNames.main.reducer}}";
 export { {{actions.mainActionsEnumName}} } from "./actions/{{moduleNames.main.actions}}";

@@ -11,6 +11,7 @@ export const getTestModel: () => TemplateHandlebarModel = () => {
             addBubbleFlagForActions: true,
             addArrayFunctions: true,
             decoupleStateChangedCallbackByTimeout: false,
+            verbatimModuleSyntax: false,
         },
         featureName: {
             asIs: "test_feature",

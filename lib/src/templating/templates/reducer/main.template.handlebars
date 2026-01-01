@@ -1,4 +1,4 @@
-import {{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
+import {{>typeForVerbatimSyntax}}{{#if state.hasStateAsDefaultExport}}{{state.stateName}}{{else}}{ {{state.stateName}} }{{/if}} from "./../state";
 import { {{state.getDefaultStateMethodName}} } from "./../{{moduleNames.base.defaultState}}";
 import { {{reducer.baseReducerName}} } from "./{{moduleNames.base.reducer}}";
 import { {{reducer.extendedReducerName}} } from "./{{moduleNames.extended.reducer}}";
