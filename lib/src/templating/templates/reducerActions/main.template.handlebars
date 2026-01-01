@@ -3,8 +3,9 @@ import { {{>typeForVerbatimSyntax}}{{reducerActions.extendedReducerActionsName}}
 
 export type {{reducerActions.mainReducerActionsName}} = {{reducerActions.baseReducerActionsName}} | {{reducerActions.extendedReducerActionsName}};
 
-export const {{reducerActions.mainReducerTypeguard}} = (item: any): item is {{reducerActions.mainReducerActionsName}} => {
+export const {{reducerActions.mainReducerTypeguard}} = (item: unknown): item is {{reducerActions.mainReducerActionsName}} => {
     return {{reducerActions.baseReducerTypeguard}}(item) || {{reducerActions.extendedReducerTypeguard}}(item);
 }
-
+{{#unless options.verbatimModuleSyntax}}
 export default {{reducerActions.mainReducerActionsName}};
+{{/unless}}

@@ -17,12 +17,12 @@ export type TodoReducerActionsExtended = {
 };
 
 export const isTodoReducerActionsExtended = (
-    item: any
+    item: unknown
 ): item is TodoReducerActionsExtended => {
     if (!item) {
         return false;
     }
-    if (typeof item === "object") {
+    if (typeof item === "object" && item !== null && "type" in item) {
         const { type } = item;
 
         return (
@@ -33,4 +33,3 @@ export const isTodoReducerActionsExtended = (
     return false;
 };
 
-export default TodoReducerActionsExtended;

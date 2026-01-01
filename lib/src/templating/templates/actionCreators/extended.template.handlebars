@@ -25,7 +25,7 @@ const extendedActionCreators = {
 }
 
 // Start: This is just for typechecking, so that you can utilize the awesomeness of Typescript
-type ActionCreator = { [key in string]: (...params: any[]) => {{reducerActions.extendedReducerActionsName}} };
+type ActionCreator = { [key in string]: (...params: unknown[]) => {{reducerActions.extendedReducerActionsName}} };
 
 const checkActionCreator: <T>(item: T & ActionCreator) => T = <T>(item: T & ActionCreator) => {
     return item;

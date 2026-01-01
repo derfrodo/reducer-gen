@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generateReducer": "reducer-gen --loglevel info --createReducerContext --createContextDirectPropertyHooks --addBubbleFlagForActions --analyseLiteralTypes",
+    "generateReducer": "reducer-gen --verbatimModuleSyntax --loglevel info --createReducerContext --createContextDirectPropertyHooks --addBubbleFlagForActions --analyseLiteralTypes",
     "linkReducerGen": "npm link ../../lib/"
   },
   "dependencies": {
