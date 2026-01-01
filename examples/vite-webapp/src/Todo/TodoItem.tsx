@@ -20,11 +20,13 @@ const TodoItem: React.FC<TodoItemProps> = ({
     <li
       onClick={handleClick}
       style={{
+        listStyleType: "none",
         cursor: "pointer",
         textDecoration: todo.done ? "line-through" : "none",
       }}
+      role="button"
     >
-      {todo.task}
+      {todo.done ? "✅ " : "⏹️ "}{todo.task}
     </li>
   );
 };

@@ -11,8 +11,8 @@ function App() {
           <p>Nobody had this brilliant app idea ever before! Source: Trust me, bro!</p>
         </header>
         <main>
-          <TodoList />
           <AddTodo />
+          <TodoList />
         </main>
       </div>
     </TodoReducerContextProvider>
@@ -38,10 +38,13 @@ function AddTodo() {
       if (!e.target || !(e.target instanceof HTMLFormElement)) return;
       const formData = new FormData(e.target);
       const task = formData.get("task");
-      addTodo(task ? String(task) : "New Task");
+      
+      if (typeof task !== "string" || task === null) return;
+      addTodo(task);
+
       e.target.reset();
     }}>
-      <input type="text" placeholder="New todo task" name="task" required/>
+      <input autoComplete="off" type="text" placeholder="New todo task" name="task" required />
       <button type="submit">Add Todo</button>
     </form>
   </>;
