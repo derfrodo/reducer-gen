@@ -29,15 +29,20 @@ function TodoList() {
 function AddTodo() {
   const dispatch = useTodoReducerContextDispatch();
 
-  const addTodo = () => {
-    dispatch(todoActionCreators.todosAddItem({ done: false, task: "New Task" }));
+  const addTodo = (task: string) => {
+    dispatch(todoActionCreators.todosAddItem({ done: false, task }));
   };
   return <>
     <form onSubmit={e => {
       e.preventDefault();
-      addTodo();
+      if (!e.target || !(e.target instanceof HTMLFormElement)) return;
+      const formData = new FormData(e.target);
+      const task = formData.get("task");
+      addTodo(task ? String(task) : "New Task");
+      e.target.reset();
     }}>
-      <button type="button" onClick={addTodo}>Add Todo</button>
+      <input type="text" placeholder="New todo task" name="task" required/>
+      <button type="submit">Add Todo</button>
     </form>
     {/* {todos.map(todo => (<TodoItem key={todo.text} todo={todo} />))} */}
   </>;

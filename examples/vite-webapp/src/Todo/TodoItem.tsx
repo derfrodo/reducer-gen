@@ -24,7 +24,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
         textDecoration: todo.done ? "line-through" : "none",
       }}
     >
-      {todo.text}
+      {todo.task}
     </li>
   );
 };
