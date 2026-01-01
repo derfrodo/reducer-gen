@@ -22,7 +22,7 @@ export const isTodoReducerActionsExtended = (
     if (!item) {
         return false;
     }
-    if (typeof item === "object" && item !== null && "type" in item) {
+    if (typeof item === "object" && "type" in item) {
         const { type } = item;
 
         return (

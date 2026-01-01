@@ -243,7 +243,7 @@ export const isBaseTestReducer = (
     if (!item) {
         return false;
     }
-    if (typeof item === "object" && item !== null && "type" in item) {
+    if (typeof item === "object" && "type" in item) {
         const { type } = item;
 
         return (
@@ -294,7 +294,7 @@ export const isExtendedTestReducer = (
     if (!item) {
         return false;
     }
-    if (typeof item === "object" && item !== null && "type" in item) {
+    if (typeof item === "object" && "type" in item) {
         const { type } = item;
 
         return (
