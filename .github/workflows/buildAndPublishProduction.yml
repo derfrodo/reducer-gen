@@ -126,6 +126,7 @@ jobs:
       uses: actions/download-artifact@v4
       id: downloadArtefact
       with:
+        name: ${{ needs.prepare.outputs.artefactName }}
         path: ${{ env.artefactName }}-${{ needs.prepare.outputs.packageVersion }}-artefact
 
     - name: What has been downloaded
