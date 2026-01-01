@@ -44,9 +44,7 @@ function AddTodo() {
       <input type="text" placeholder="New todo task" name="task" required/>
       <button type="submit">Add Todo</button>
     </form>
-    {/* {todos.map(todo => (<TodoItem key={todo.text} todo={todo} />))} */}
   </>;
-
 }
 
 export default App;
