@@ -1,6 +1,6 @@
 import TodoItem from "./Todo/TodoItem";
 import { todoActionCreators } from "./Todo/reducer";
-import { TodoReducerContextProvider, useNamedTodoStatePropertyValue, useTodoReducerContextDispatch } from "./Todo/reducer/ReducerContext.main.generated";
+import { TodoReducerContextProvider, useDirectTodoProperty, useNamedTodoStatePropertyValue, useTodoReducerContextDispatch } from "./Todo/reducer/ReducerContext.main.generated";
 
 function App() {
   return (
@@ -28,9 +28,10 @@ function TodoList() {
 
 function AddTodo() {
   const dispatch = useTodoReducerContextDispatch();
-
+  const [nextId, setNextId] = useDirectTodoProperty("nextId");
   const addTodo = (task: string) => {
-    dispatch(todoActionCreators.todosAddItem({ done: false, task }));
+    dispatch(todoActionCreators.todosAddItem({ done: false, task, id: nextId }));
+    setNextId(nextId + 1);
   };
   return <>
     <form onSubmit={e => {
@@ -38,7 +39,7 @@ function AddTodo() {
       if (!e.target || !(e.target instanceof HTMLFormElement)) return;
       const formData = new FormData(e.target);
       const task = formData.get("task");
-      
+
       if (typeof task !== "string" || task === null) return;
       addTodo(task);
 
