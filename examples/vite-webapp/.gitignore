@@ -1,3 +1,6 @@
+**/*.generated.*
+*.generated.*
+
 # Logs
 logs
 *.log
